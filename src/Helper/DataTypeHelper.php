@@ -98,7 +98,10 @@ class DataTypeHelper
 
       case 'decimal':
         $ret = $dataTypeInfo['numeric_precision'];
-        if ($dataTypeInfo['numeric_scale']>0) $ret += 1;
+        if ($dataTypeInfo['numeric_scale']>0)
+        {
+          $ret += 1;
+        }
         break;
 
       case 'char':

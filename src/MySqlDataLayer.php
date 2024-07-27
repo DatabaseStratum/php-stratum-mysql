@@ -106,7 +106,6 @@ class MySqlDataLayer
   private MySqlConnector $connector;
 
   //--------------------------------------------------------------------------------------------------------------------
-
   /**
    * MySqlDataLayer constructor.
    *
@@ -132,7 +131,10 @@ class MySqlDataLayer
   public function begin(): void
   {
     $success = @$this->mysqli->autocommit(false);
-    if (!$success) throw $this->dataLayerError('mysqli::autocommit');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli::autocommit');
+    }
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -145,7 +147,10 @@ class MySqlDataLayer
   public function bindAssoc(\mysqli_stmt $stmt, array &$out): void
   {
     $data = $stmt->result_metadata();
-    if (!$data) throw $this->dataLayerError('mysqli_stmt::result_metadata');
+    if (!$data)
+    {
+      throw $this->dataLayerError('mysqli_stmt::result_metadata');
+    }
 
     $fields = [];
     $out    = [];
@@ -156,7 +161,10 @@ class MySqlDataLayer
     }
 
     $b = call_user_func_array([$stmt, 'bind_result'], $fields);
-    if ($b===false) throw $this->dataLayerError('mysqli_stmt::bind_result');
+    if ($b===false)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_result');
+    }
 
     $data->free();
   }
@@ -176,7 +184,10 @@ class MySqlDataLayer
   public function commit(): void
   {
     $success = @$this->mysqli->commit();
-    if (!$success) throw $this->dataLayerError('mysqli::commit');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli::commit');
+    }
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -197,12 +208,18 @@ class MySqlDataLayer
     foreach ($this->options as $option => $value)
     {
       $success = @$this->mysqli->options($option, $value);
-      if (!$success) throw $this->dataLayerError('mysqli::options');
+      if (!$success)
+      {
+        throw $this->dataLayerError('mysqli::options');
+      }
     }
 
     // Set the default character set.
     $success = @$this->mysqli->set_charset($this->charSet);
-    if (!$success) throw $this->dataLayerError('mysqli::set_charset');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli::set_charset');
+    }
 
     // Set the SQL mode.
     $this->executeNone("set sql_mode = '".$this->sqlMode."'");
@@ -269,7 +286,10 @@ class MySqlDataLayer
 
     $bulkHandler->stop();
 
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -294,7 +314,10 @@ class MySqlDataLayer
     do
     {
       $result = @$this->mysqli->store_result();
-      if ($this->mysqli->errno) throw $this->dataLayerError('mysqli::store_result');
+      if ($this->mysqli->errno)
+      {
+        throw $this->dataLayerError('mysqli::store_result');
+      }
       if ($result)
       {
         $fields = $result->fetch_fields();
@@ -303,7 +326,10 @@ class MySqlDataLayer
           $line = '';
           foreach ($row as $i => $field)
           {
-            if ($i>0) $line .= ' ';
+            if ($i>0)
+            {
+              $line .= ' ';
+            }
             $line .= str_pad((string)$field, $fields[$i]->max_length);
           }
           echo date('Y-m-d H:i:s'), ' ', $line, "\n";
@@ -316,7 +342,10 @@ class MySqlDataLayer
       if ($continue)
       {
         $success = @$this->mysqli->next_result();
-        if (!$success) throw $this->dataLayerError('mysqli::next_result');
+        if (!$success)
+        {
+          throw $this->dataLayerError('mysqli::next_result');
+        }
       }
     } while ($continue);
 
@@ -346,7 +375,10 @@ class MySqlDataLayer
     do
     {
       $result = $this->mysqli->store_result();
-      if ($this->mysqli->errno) throw $this->dataLayerError('mysqli::store_result');
+      if ($this->mysqli->errno)
+      {
+        throw $this->dataLayerError('mysqli::store_result');
+      }
       if ($result)
       {
         $ret[] = $result->fetch_all(MYSQLI_ASSOC);
@@ -361,7 +393,10 @@ class MySqlDataLayer
       if ($continue)
       {
         $success = @$this->mysqli->next_result();
-        if (!$success) throw $this->dataLayerError('mysqli::next_result');
+        if (!$success)
+        {
+          throw $this->dataLayerError('mysqli::next_result');
+        }
       }
     } while ($continue);
 
@@ -387,7 +422,10 @@ class MySqlDataLayer
 
     $n = $this->mysqli->affected_rows;
 
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     return $n;
   }
@@ -414,7 +452,10 @@ class MySqlDataLayer
     $n      = $result->num_rows;
     $result->free();
 
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     if (!($n==0 || $n==1))
     {
@@ -446,7 +487,10 @@ class MySqlDataLayer
     $n      = $result->num_rows;
     $result->free();
 
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     if ($n!=1)
     {
@@ -475,7 +519,10 @@ class MySqlDataLayer
     $rows   = $result->fetch_all(MYSQLI_ASSOC);
     $result->free();
 
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     return $rows;
   }
@@ -502,7 +549,10 @@ class MySqlDataLayer
     $n      = $result->num_rows;
     $result->free();
 
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     if ($n==0)
     {
@@ -539,7 +589,10 @@ class MySqlDataLayer
     $n      = $result->num_rows;
     $result->free();
 
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     if ($n!=1)
     {
@@ -571,7 +624,10 @@ class MySqlDataLayer
     do
     {
       $result = @$this->mysqli->store_result();
-      if ($this->mysqli->errno) throw $this->dataLayerError('mysqli::store_result');
+      if ($this->mysqli->errno)
+      {
+        throw $this->dataLayerError('mysqli::store_result');
+      }
       if ($result)
       {
         $columns = [];
@@ -621,7 +677,10 @@ class MySqlDataLayer
       if ($continue)
       {
         $result = @$this->mysqli->next_result();
-        if (!$result) throw $this->dataLayerError('mysqli::next_result');
+        if (!$result)
+        {
+          throw $this->dataLayerError('mysqli::next_result');
+        }
       }
     } while ($continue);
 
@@ -698,7 +757,10 @@ class MySqlDataLayer
    */
   public function quoteBinary(?string $value): string
   {
-    if ($value===null || $value==='') return 'null';
+    if ($value===null || $value==='')
+    {
+      return 'null';
+    }
 
     return '0x'.bin2hex($value);
   }
@@ -731,9 +793,15 @@ class MySqlDataLayer
    */
   public function quoteDecimal(mixed $value): string
   {
-    if ($value===null || $value==='') return 'null';
+    if ($value===null || $value==='')
+    {
+      return 'null';
+    }
 
-    if (is_int($value) || is_float($value)) return (string)$value;
+    if (is_int($value) || is_float($value))
+    {
+      return (string)$value;
+    }
 
     return "'".$this->mysqli->real_escape_string($value)."'";
   }
@@ -748,7 +816,10 @@ class MySqlDataLayer
    */
   public function quoteFloat(?float $value): string
   {
-    if ($value===null) return 'null';
+    if ($value===null)
+    {
+      return 'null';
+    }
 
     return (string)$value;
   }
@@ -763,7 +834,10 @@ class MySqlDataLayer
    */
   public function quoteInt(?int $value): string
   {
-    if ($value===null) return 'null';
+    if ($value===null)
+    {
+      return 'null';
+    }
 
     return (string)$value;
   }
@@ -806,7 +880,10 @@ class MySqlDataLayer
         throw new LogicException("Value '%s' is not a number.", (is_scalar($number)) ? $number : gettype($number));
       }
 
-      if ($ret) $ret .= ',';
+      if ($ret)
+      {
+        $ret .= ',';
+      }
       $ret .= $number;
     }
 
@@ -823,7 +900,10 @@ class MySqlDataLayer
    */
   public function quoteString(?string $value): string
   {
-    if ($value===null || $value==='') return 'null';
+    if ($value===null || $value==='')
+    {
+      return 'null';
+    }
 
     return "'".$this->mysqli->real_escape_string($value)."'";
   }
@@ -858,7 +938,10 @@ class MySqlDataLayer
   public function rollback(): void
   {
     $success = @$this->mysqli->rollback();
-    if (!$success) throw $this->dataLayerError('mysqli::rollback');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli::rollback');
+    }
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -1060,7 +1143,10 @@ class MySqlDataLayer
       while ($p<$n)
       {
         $success = @$statement->send_long_data($paramNr, substr($data, $p, $this->chunkSize));
-        if (!$success) throw $this->dataLayerError('mysqli_stmt::send_long_data');
+        if (!$success)
+        {
+          throw $this->dataLayerError('mysqli_stmt::send_long_data');
+        }
         $p += $this->chunkSize;
       }
     }

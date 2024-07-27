@@ -47,7 +47,7 @@ class MySqlBackend extends Backend
   /**
    * @inheritDoc
    */
-  public function createRoutineWrapperGeneratorWorker(Config $settings,
+  public function createRoutineWrapperGeneratorWorker(Config       $settings,
                                                       StratumStyle $io): ?RoutineWrapperGeneratorWorker
   {
     return new MySqlRoutineWrapperGeneratorWorker($settings, $io);

@@ -58,7 +58,7 @@ class SqlModeHelper
       $this->dl->setSqlMode('ORACLE');
       $hasOracleMode = true;
     }
-    catch (MySqlQueryErrorException $e)
+    catch (MySqlQueryErrorException)
     {
       $hasOracleMode = false;
     }

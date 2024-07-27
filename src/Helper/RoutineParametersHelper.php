@@ -67,9 +67,9 @@ class RoutineParametersHelper
    * @param string             $routineName        The name of the stored routine.
    */
   public function __construct(MySqlMetaDataLayer $dl,
-                              StratumStyle $io,
+                              StratumStyle       $io,
                               DocBlockReflection $docBlockReflection,
-                              string $routineName)
+                              string             $routineName)
   {
     $this->dl                 = $dl;
     $this->io                 = $io;
@@ -122,7 +122,7 @@ class RoutineParametersHelper
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Returns the metadata of of all parameters.
+   * Returns the metadata of all parameters.
    *
    * @return array[]
    */
@@ -197,7 +197,8 @@ class RoutineParametersHelper
       if ($parameter['data_type']==='TYPE OF')
       {
         $n = preg_match('/^("(?<schema>[a-zA-Z0-9_]+)"\.)?("(?<table>[a-zA-Z0-9_]+)")\.("(?<column>[a-zA-Z0-9_]+)")%TYPE$/',
-                        $parameter['dtd_identifier'], $matches);
+                        $parameter['dtd_identifier'],
+                        $matches);
         if ($n!==1)
         {
           throw new RoutineLoaderException('Unable to parse data type description %s of parameter %s.',

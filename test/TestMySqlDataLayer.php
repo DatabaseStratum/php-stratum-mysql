@@ -186,7 +186,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * Test parameters with data type from a table column.
    *
    * @param string|null           $pParam01 Data type from (other) schema, table, and column.
-   *                                        varchar(64) character set utf8 collation utf8_general_ci
+   *                                        varchar(64) character set utf8mb3 collation utf8mb3_general_ci
    * @param int|null              $pParam02 Data type int.
    *                                        int(11)
    * @param int|null              $pParam03 Data type smallint.
@@ -912,7 +912,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @param string|null $pTstLastName   Can be a long string.
    *                                    varchar(16383) character set utf8mb4 collation utf8mb4_general_ci
    * @param string|null $pTstFirstName  Can be a long string.
-   *                                    varchar(21844) character set utf8 collation utf8_general_ci
+   *                                    varchar(21844) character set utf8mb3 collation utf8mb3_general_ci
    * @param string|null $pTstInstrument Can be a long string.
    *                                    varchar(65532) character set ascii collation ascii_general_ci
    *

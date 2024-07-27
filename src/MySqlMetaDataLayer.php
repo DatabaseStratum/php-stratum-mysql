@@ -177,7 +177,8 @@ select TABLE_NAME  as  table_name
 from   information_schema.TABLES
 where  TABLE_SCHEMA = %s
 and    TABLE_TYPE   = 'BASE TABLE'
-order by TABLE_NAME", $this->dl->quoteString($schemaName));
+order by TABLE_NAME",
+                   $this->dl->quoteString($schemaName));
 
     return $this->executeRows($sql);
   }
@@ -214,7 +215,8 @@ order by TABLE_NAME", $this->dl->quoteString($schemaName));
 select 1
 from   information_schema.TABLES
 where table_schema = database()
-and   table_name   = %s', $this->dl->quoteString($tableName));
+and   table_name   = %s',
+                   $this->dl->quoteString($tableName));
 
     return !empty($this->executeSingleton0($sql));
   }
@@ -362,7 +364,7 @@ and   table_name   = %s', $this->dl->quoteString($tableName));
    * @throws MySqlQueryErrorException
    * @throws ResultException
    */
-  public function executeSingleton0(string $sql)
+  public function executeSingleton0(string $sql): mixed
   {
     $this->logQuery($sql);
 
@@ -380,7 +382,7 @@ and   table_name   = %s', $this->dl->quoteString($tableName));
    * @throws MySqlQueryErrorException
    * @throws ResultException
    */
-  public function executeSingleton1(string $sql)
+  public function executeSingleton1(string $sql): mixed
   {
     $this->logQuery($sql);
 
@@ -481,17 +483,18 @@ join information_schema.PARAMETERS t2  on  t2.SPECIFIC_SCHEMA = t1.ROUTINE_SCHEM
                                            t2.SPECIFIC_NAME   = t1.ROUTINE_NAME and
                                            t2.PARAMETER_MODE  is not null
 where t1.ROUTINE_SCHEMA = database()
-and   t1.ROUTINE_NAME   = '%s'", $routineName);
+and   t1.ROUTINE_NAME   = '%s'",
+                   $routineName);
 
     return $this->executeRows($sql);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Sets the default character set and collate.
+   * Sets the default character set and collation.
    *
    * @param string $characterSet The character set.
-   * @param string $collate      The collate.
+   * @param string $collate      The collation.
    *
    * @throws MySqlQueryErrorException
    */
@@ -634,7 +637,7 @@ where Non_unique = 0',
   {
     $sql = trim($sql);
 
-    if (strpos($sql, "\n")!==false)
+    if (str_contains($sql, "\n"))
     {
       // Query is a multi line query.
       $this->io->logVeryVerbose('Executing query:');

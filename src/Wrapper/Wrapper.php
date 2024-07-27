@@ -77,9 +77,9 @@ abstract class Wrapper
    *
    * @return Wrapper
    */
-  public static function createRoutineWrapper(array $routine,
+  public static function createRoutineWrapper(array        $routine,
                                               PhpCodeStore $codeStore,
-                                              NameMangler $nameMangler): Wrapper
+                                              NameMangler  $nameMangler): Wrapper
   {
     switch ($routine['designation'])
     {
@@ -232,7 +232,10 @@ abstract class Wrapper
       if ($binding=='b')
       {
         $bindings .= 'b';
-        if ($nulls!=='') $nulls .= ', ';
+        if ($nulls!=='')
+        {
+          $nulls .= ', ';
+        }
         $nulls .= '$null';
       }
     }
@@ -349,7 +352,7 @@ abstract class Wrapper
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Returns the return type the be used in the DocBlock.
+   * Returns the return type to be used in the DocBlock.
    *
    * @return string
    */
@@ -377,7 +380,10 @@ abstract class Wrapper
     {
       $mangledName = $this->nameMangler->getParameterName($parameter['parameter_name']);
 
-      if ($ret) $ret .= ',';
+      if ($ret)
+      {
+        $ret .= ',';
+      }
       $ret .= DataTypeHelper::escapePhpExpression($parameter, '$'.$mangledName);
     }
 
@@ -401,7 +407,10 @@ abstract class Wrapper
 
     foreach ($this->routine['parameters'] as $parameter)
     {
-      if ($code!=='') $code .= ', ';
+      if ($code!=='')
+      {
+        $code .= ', ';
+      }
 
       $dataType    = DataTypeHelper::columnTypeToPhpTypeHinting($parameter);
       $declaration = DataTypeHelper::phpTypeHintingToPhpTypeDeclaration($dataType.'|null');
@@ -523,7 +532,8 @@ abstract class Wrapper
         if (!empty($lines))
         {
           $line = array_shift($lines);
-          $this->codeStore->append(sprintf($format, '@param', $parameter['php_type'], $parameter['php_name'], $line), false);
+          $this->codeStore->append(sprintf($format, '@param', $parameter['php_type'], $parameter['php_name'], $line),
+                                   false);
           foreach ($lines as $line)
           {
             $this->codeStore->append(sprintf($format, ' ', ' ', ' ', $line), false);
@@ -531,7 +541,8 @@ abstract class Wrapper
         }
         else
         {
-          $this->codeStore->append(sprintf($format, '@param', $parameter['php_type'], $parameter['php_name'], ''), false);
+          $this->codeStore->append(sprintf($format, '@param', $parameter['php_type'], $parameter['php_name'], ''),
+                                   false);
         }
 
         if ($parameter['dtd_identifier']!==null)
@@ -575,7 +586,7 @@ abstract class Wrapper
   /**
    * Generates the PHP doc block with throw tags.
    */
-  private function generatePhpDocBlockThrow()
+  private function generatePhpDocBlockThrow(): void
   {
     if (!empty($this->throws))
     {

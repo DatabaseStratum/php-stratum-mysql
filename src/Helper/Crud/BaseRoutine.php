@@ -73,9 +73,9 @@ abstract class BaseRoutine
    */
   public function __construct(string $tableName,
                               string $routineName,
-                              array $tableColumns,
-                              array $primaryKey,
-                              array $uniqueIndexes)
+                              array  $tableColumns,
+                              array  $primaryKey,
+                              array  $uniqueIndexes)
   {
     $this->tableName     = $tableName;
     $this->routineName   = $routineName;
@@ -414,7 +414,10 @@ abstract class BaseRoutine
     $last = '';
     foreach ($this->uniqueIndexes as $row)
     {
-      if ($last!==$row['Key_name']) $keys[$row['Key_name']] = [];
+      if ($last!==$row['Key_name'])
+      {
+        $keys[$row['Key_name']] = [];
+      }
 
       $keys[$row['Key_name']][] = $row['Column_name'];
 

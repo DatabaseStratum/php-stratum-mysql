@@ -469,7 +469,10 @@ class MySqlRoutineLoaderWorker extends MySqlWorker implements RoutineLoaderWorke
   private function maxCharacters(string $characterSetName): ?int
   {
     $key = RowSetHelper::searchInRowSet($this->characterSets, 'character_set_name', $characterSetName);
-    if ($key===null) return null;
+    if ($key===null)
+    {
+      return null;
+    }
 
     $size = $this->characterSets[$key]['maxlen'];
 
@@ -604,7 +607,10 @@ class MySqlRoutineLoaderWorker extends MySqlWorker implements RoutineLoaderWorke
           $value = null;
       }
 
-      if ($value!==null) $this->replacePairs[$key] = $value;
+      if ($value!==null)
+      {
+        $this->replacePairs[$key] = $value;
+      }
     }
   }
 
@@ -616,14 +622,20 @@ class MySqlRoutineLoaderWorker extends MySqlWorker implements RoutineLoaderWorke
    */
   private function replacePairsConstants(): void
   {
-    if ($this->constantClassName===null) return;
+    if ($this->constantClassName===null)
+    {
+      return;
+    }
 
     $reflection = new \ReflectionClass($this->constantClassName);
 
     $constants = $reflection->getConstants();
     foreach ($constants as $name => $value)
     {
-      if (!is_numeric($value)) $value = "'".$value."'";
+      if (!is_numeric($value))
+      {
+        $value = "'".$value."'";
+      }
 
       $this->replacePairs['@'.$name.'@'] = $value;
     }

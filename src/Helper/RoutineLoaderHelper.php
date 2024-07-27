@@ -220,14 +220,14 @@ class RoutineLoaderHelper
    *                                                    the stored routine.
    */
   public function __construct(MySqlMetaDataLayer $dl,
-                              StratumStyle $io,
-                              SqlModeHelper $sqlModeHelper,
-                              string $routineFilename,
-                              array $phpStratumMetadata,
-                              array $replacePairs,
-                              array $rdbmsOldRoutineMetadata,
-                              string $characterSet,
-                              string $collate)
+                              StratumStyle       $io,
+                              SqlModeHelper      $sqlModeHelper,
+                              string             $routineFilename,
+                              array              $phpStratumMetadata,
+                              array              $replacePairs,
+                              array              $rdbmsOldRoutineMetadata,
+                              string             $characterSet,
+                              string             $collate)
   {
     $this->dl                      = $dl;
     $this->io                      = $io;
@@ -425,7 +425,10 @@ class RoutineLoaderHelper
   private function extractBulkInsertTableColumnsInfo(): void
   {
     // Return immediately if designation type is not appropriate for this method.
-    if ($this->designationType!='bulk_insert') return;
+    if ($this->designationType!='bulk_insert')
+    {
+      return;
+    }
 
     // Check if table is a temporary table or a non-temporary table.
     $tableIsNonTemporary = $this->dl->checkTableExists($this->bulkInsertTableName);
@@ -525,7 +528,7 @@ class RoutineLoaderHelper
    * @throws MySqlQueryErrorException
    * @throws RoutineLoaderException
    */
-  private function extractParameters()
+  private function extractParameters(): void
   {
     $this->routineParameters = new RoutineParametersHelper($this->dl,
                                                            $this->io,
@@ -612,7 +615,7 @@ class RoutineLoaderHelper
     {
       if ($this->routineName!=$matches[2])
       {
-        throw new RoutineLoaderException("Stored routine name '%s' does not corresponds with filename", $matches[2]);
+        throw new RoutineLoaderException("Stored routine name '%s' does not correspond with filename", $matches[2]);
       }
     }
     else
@@ -702,7 +705,10 @@ class RoutineLoaderHelper
   private function logUnknownPlaceholders(array $unknown): void
   {
     // Return immediately if there are no unknown placeholders.
-    if (empty($unknown)) return;
+    if (empty($unknown))
+    {
+      return;
+    }
 
     sort($unknown);
     $this->io->text('Unknown placeholder(s):');
@@ -722,39 +728,56 @@ class RoutineLoaderHelper
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Returns true if the source file must be load or reloaded. Otherwise returns false.
+   * Returns whether the source file must be load or reloaded.
    *
    * @return bool
    */
   private function mustLoadStoredRoutine(): bool
   {
     // If this is the first time we see the source file it must be loaded.
-    if (empty($this->phpStratumOldMetadata)) return true;
+    if (empty($this->phpStratumOldMetadata))
+    {
+      return true;
+    }
 
     // If the source file has changed the source file must be loaded.
-    if ($this->phpStratumOldMetadata['timestamp']!==$this->filemtime) return true;
+    if ($this->phpStratumOldMetadata['timestamp']!==$this->filemtime)
+    {
+      return true;
+    }
 
     // If the value of a placeholder has changed the source file must be loaded.
     foreach ($this->phpStratumOldMetadata['replace'] as $placeHolder => $oldValue)
     {
-      if (!isset($this->replacePairs[strtoupper($placeHolder)]) ||
-        $this->replacePairs[strtoupper($placeHolder)]!==$oldValue)
+      if (!isset($this->replacePairs[strtoupper($placeHolder)]) || $this->replacePairs[strtoupper($placeHolder)]!==$oldValue)
       {
         return true;
       }
     }
 
     // If stored routine not exists in database the source file must be loaded.
-    if (empty($this->rdbmsOldRoutineMetadata)) return true;
+    if (empty($this->rdbmsOldRoutineMetadata))
+    {
+      return true;
+    }
 
     // If current sql-mode is different the source file must reload.
-    if (!$this->sqlModeHelper->compare($this->rdbmsOldRoutineMetadata['sql_mode'])) return true;
+    if (!$this->sqlModeHelper->compare($this->rdbmsOldRoutineMetadata['sql_mode']))
+    {
+      return true;
+    }
 
     // If current character set is different the source file must reload.
-    if ($this->rdbmsOldRoutineMetadata['character_set_client']!==$this->characterSet) return true;
+    if ($this->rdbmsOldRoutineMetadata['character_set_client']!==$this->characterSet)
+    {
+      return true;
+    }
 
     // If current collation is different the source file must reload.
-    if ($this->rdbmsOldRoutineMetadata['collation_connection']!==$this->collate) return true;
+    if ($this->rdbmsOldRoutineMetadata['collation_connection']!==$this->collate)
+    {
+      return true;
+    }
 
     return false;
   }
@@ -780,7 +803,7 @@ class RoutineLoaderHelper
     if ($start!==null && $end!==null && $start<$end)
     {
       $lines    = array_slice($this->routineSourceCodeLines, $start, $end - $start + 1);
-      $docBlock = implode(PHP_EOL, (array)$lines);
+      $docBlock = implode(PHP_EOL, $lines);
     }
     else
     {
@@ -862,7 +885,10 @@ class RoutineLoaderHelper
   private function validateReturnType(): void
   {
     // Return immediately if designation type is not appropriate for this method.
-    if (!in_array($this->designationType, ['function', 'singleton0', 'singleton1'])) return;
+    if (!in_array($this->designationType, ['function', 'singleton0', 'singleton1']))
+    {
+      return;
+    }
 
     $types = explode('|', $this->returnType);
     $diff  = array_diff($types, ['string', 'int', 'float', 'double', 'bool', 'null']);
@@ -873,14 +899,20 @@ class RoutineLoaderHelper
     }
 
     // The following tests are applicable for singleton0 routines only.
-    if (!in_array($this->designationType, ['singleton0'])) return;
+    if ($this->designationType!=='singleton0')
+    {
+      return;
+    }
 
     // Return mixed is OK.
-    if (in_array($this->returnType, ['bool', 'mixed'])) return;
+    if (in_array($this->returnType, ['bool', 'mixed']))
+    {
+      return;
+    }
 
     // In all other cases return type must contain null.
     $parts = explode('|', $this->returnType);
-    $key   = array_search('null', $parts);
+    $key   = in_array('null', $parts);
     if ($key===false)
     {
       throw new RoutineLoaderException("Return type must be 'mixed', 'bool', or contain 'null' (with a combination of 'int', 'float', and 'string')");

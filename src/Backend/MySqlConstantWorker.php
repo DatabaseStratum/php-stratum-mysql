@@ -93,8 +93,8 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Enhances $oldColumns as follows:
-   * If the constant name is *, is is replaced with the column name prefixed by $this->myPrefix in uppercase.
-   * Otherwise the constant name is set to uppercase.
+   * If the constant name is *, is replaced with the column name prefixed by $this->myPrefix in uppercase.
+   * Otherwise, the constant name is set to uppercase.
    */
   private function enhanceColumns(): void
   {
@@ -105,7 +105,7 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
         $tableName  = $column['table_name'];
         $columnName = $column['column_name'];
 
-        if ($column['constant_name']=='*')
+        if ($column['constant_name']==='*')
         {
           $constantName                                               = strtoupper($column['column_name']);
           $this->oldColumns[$tableName][$columnName]['constant_name'] = $constantName;
@@ -207,7 +207,7 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
           // Step 1: Find doc comment with annotation.
           if (is_array($token) && $token[0]==T_DOC_COMMENT)
           {
-            if (strpos($token[1], '@setbased.stratum.constants')!==false)
+            if (str_contains($token[1], '@setbased.stratum.constants'))
             {
               $line1 = $token[2];
               $step  = 2;
@@ -361,7 +361,9 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
         $lineNumber++;
         if ($line!="\n")
         {
-          $n = preg_match('/^\s*(([a-zA-Z0-9_]+)\.)?([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+)\s+(\d+)\s*(\*|[a-zA-Z0-9_]+)?\s*$/', $line, $matches);
+          $n = preg_match('/^\s*(([a-zA-Z0-9_]+)\.)?([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+)\s+(\d+)\s*(\*|[a-zA-Z0-9_]+)?\s*$/',
+                          $line,
+                          $matches);
           if ($n===0)
           {
             throw new RuntimeException("Illegal format at line %d in file '%s'.",

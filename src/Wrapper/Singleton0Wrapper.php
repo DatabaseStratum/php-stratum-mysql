@@ -29,7 +29,10 @@ class Singleton0Wrapper extends Wrapper
   {
     $type = DataTypeHelper::phpTypeHintingToPhpTypeDeclaration($this->getDocBlockReturnType());
 
-    if ($type==='') return '';
+    if ($type==='')
+    {
+      return '';
+    }
 
     return ': '.$type;
   }

@@ -37,7 +37,7 @@ class MySqlQueryErrorException extends MySqlDataLayerException implements QueryE
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Returns true if this exception is caused by an invalid SQL statement. Otherwise returns false.
+   * Returns whether this exception is caused by an invalid SQL statement.
    *
    * @return bool
    */

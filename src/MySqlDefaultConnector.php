@@ -6,7 +6,7 @@ namespace SetBased\Stratum\MySql;
 use SetBased\Stratum\MySql\Exception\MySqlConnectFailedException;
 
 /**
- * Connects to a MySQL or MariaDB instance using user name and password.
+ * Connects to a MySQL or MariaDB instance using username and password.
  */
 class MySqlDefaultConnector implements MySqlConnector
 {
@@ -45,14 +45,13 @@ class MySqlDefaultConnector implements MySqlConnector
   private int $port;
 
   /**
-   * The MySQL user name.
+   * The MySQL username.
    *
    * @var string
    */
   private string $user;
 
   //--------------------------------------------------------------------------------------------------------------------
-
   /**
    * Object constructor.
    *

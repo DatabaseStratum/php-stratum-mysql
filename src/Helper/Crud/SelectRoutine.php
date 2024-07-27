@@ -18,7 +18,7 @@ class SelectRoutine extends BaseRoutine
     $offset = mb_strlen($this->codeStore->getLastLine());
 
     $first = true;
-    foreach ($this->tableColumns as $key => $column)
+    foreach ($this->tableColumns as $column)
     {
       if ($first)
       {

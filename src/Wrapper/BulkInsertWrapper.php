@@ -79,10 +79,16 @@ class BulkInsertWrapper extends Wrapper
     {
       if ($key!='_')
       {
-        if ($columns) $columns .= ',';
+        if ($columns)
+        {
+          $columns .= ',';
+        }
         $columns .= '`'.$this->routine['bulk_insert_columns'][$i]['column_name'].'`';
 
-        if ($fields) $fields .= ',';
+        if ($fields)
+        {
+          $fields .= ',';
+        }
         $fields .= DataTypeHelper::escapePhpExpression($this->routine['bulk_insert_columns'][$i], '$row[\''.$key.'\']');
       }
     }

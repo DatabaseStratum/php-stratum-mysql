@@ -120,7 +120,7 @@ class MySqlRoutineWrapperGeneratorWorker extends MySqlWorker implements RoutineW
       ksort($sortedRoutines);
 
       // Write methods for each stored routine.
-      foreach ($sortedRoutines as $methodName => $routine)
+      foreach ($sortedRoutines as $routine)
       {
         if ($routine['designation']!=='hidden')
         {
@@ -218,7 +218,7 @@ class MySqlRoutineWrapperGeneratorWorker extends MySqlWorker implements RoutineW
       $this->codeStore->append('');
     }
 
-    // If the child class and parent class have different names import the parent class. Otherwise use the fully
+    // If the child class and parent class have different names import the parent class. Otherwise, use the fully
     // qualified parent class name.
     $parentClassName = substr($this->parentClassName, strrpos($this->parentClassName, '\\') + 1);
     if ($className!==$parentClassName)
