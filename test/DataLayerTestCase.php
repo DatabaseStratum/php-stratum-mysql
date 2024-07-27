@@ -23,6 +23,36 @@ class DataLayerTestCase extends TestCase
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * Returns true if the server is a has issues with affected rows.
+   *
+   * @return bool
+   *
+   * @throws MySqlDataLayerException
+   */
+  protected function isMariaDBHasIssuesWithAffectedRows(): bool
+  {
+    $row = $this->dataLayer->executeRow1("show variables like 'version'");
+
+    if (preg_match('/^10\.[3456].*MariaDB$/', $row['Value'])===1)
+    {
+      return true;
+    }
+
+    if (preg_match('/^10\.11.*MariaDB$/', $row['Value'])===1)
+    {
+      return true;
+    }
+
+    if (preg_match('/^11\.4.*MariaDB$/', $row['Value'])===1)
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
    * Connects to the MySQL server.
    *
    * @throws MySqlConnectFailedException
@@ -30,24 +60,9 @@ class DataLayerTestCase extends TestCase
    */
   protected function setUp(): void
   {
-    $connector = new MySqlDefaultConnector('127.0.0.1', 'test', 'test', 'test');
+    $connector       = new MySqlDefaultConnector('127.0.0.1', 'test', 'test', 'test');
     $this->dataLayer = new TestMySqlDataLayer($connector);
     $this->dataLayer->connect();
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Returns true if the server is a MariaDB 10.3 or 10.4 instance.
-   *
-   * @return bool
-   *
-   * @throws MySqlDataLayerException
-   */
-  protected function isMariaDB103plus(): bool
-  {
-    $row = $this->dataLayer->executeRow1("show variables like 'version'");
-
-    return (preg_match('/^10\.[3456789].*MariaDB$/', $row['Value'])===1);
   }
   //--------------------------------------------------------------------------------------------------------------------
 }
