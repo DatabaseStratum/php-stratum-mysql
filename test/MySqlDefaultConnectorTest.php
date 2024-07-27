@@ -62,6 +62,11 @@ class MySqlDefaultConnectorTest extends TestCase
    */
   public function testDisconnectNoServer(): void
   {
+    if (array_key_exists('GITHUB_WORKFLOW', $_SERVER))
+    {
+      $this->markTestSkipped('Can not start stop MySQL or MariaDB server at GitHub');
+    }
+
     $connector = new MySqlDefaultConnector('127.0.0.1', 'test', 'test', 'test');
     $connector->connect();
 
