@@ -399,24 +399,6 @@ class MySqlRoutineLoaderWorker extends MySqlWorker implements RoutineLoaderWorke
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Gathers metadata of all columns types off all tables in the database.
-   *
-   * @return array[]
-   * @throws MySqlQueryErrorException
-   */
-  private function gatherTableColumns(): array
-  {
-    $columns = $this->dl->allTableColumns();
-    foreach ($columns as $index => $column)
-    {
-      $columns[$index]['column_type'] = str_replace(',', ', ', $column['column_type']);
-    }
-
-    return $columns;
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
    * Gathers type hints based on exact column types.
    *
    * @param array[] $columns The details of all table columns.
@@ -446,7 +428,7 @@ class MySqlRoutineLoaderWorker extends MySqlWorker implements RoutineLoaderWorke
    */
   private function gatherTypeHintsPlaceholdersColumnTypes(): void
   {
-    $columns = $this->gatherTableColumns();
+    $columns = $this->dl->allTableColumns();
     $this->gatherPlaceholdersColumnTypesExact($columns);
     $this->gatherPlaceholdersColumnTypesMaxLength($columns);
     $this->gatherTypeHintsColumnTypesExact($columns);

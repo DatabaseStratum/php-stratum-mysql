@@ -281,9 +281,9 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @param string|null           $pParam33 Data type longtext.
    *                                        longtext character set utf8mb4 collation utf8mb4_general_ci
    * @param string|null           $pParam34 Data type enum('a','b').
-   *                                        enum('a','b') character set utf8mb4 collation utf8mb4_general_ci
+   *                                        enum('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
    * @param string|null           $pParam35 Data type set('a','b').
-   *                                        set('a','b') character set utf8mb4 collation utf8mb4_general_ci
+   *                                        set('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
    *
    * @return int
    *
@@ -1738,9 +1738,9 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @param string|null           $pTstVarbinary         Parameter of type varbinary.
    *                                                     varbinary(10)
    * @param string|null           $pTstEnum              Parameter of type enum.
-   *                                                     enum('a','b') character set utf8mb4 collation utf8mb4_general_ci
+   *                                                     enum('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
    * @param string|null           $pTstSet               Parameter of type set.
-   *                                                     set('a','b') character set utf8mb4 collation utf8mb4_general_ci
+   *                                                     set('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
    *
    * @return int
    *
@@ -1823,9 +1823,9 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @param string|null           $pTstLongtext   Parameter of type longtext.
    *                                              longtext character set utf8mb4 collation utf8mb4_general_ci
    * @param string|null           $pTstEnum       Parameter of type enum.
-   *                                              enum('a','b') character set utf8mb4 collation utf8mb4_general_ci
+   *                                              enum('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
    * @param string|null           $pTstSet        Parameter of type set.
-   *                                              set('a','b') character set utf8mb4 collation utf8mb4_general_ci
+   *                                              set('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
    *
    * @return int
    *
@@ -1939,9 +1939,9 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @param string|null           $pTstVarbinary         Parameter of type varbinary.
    *                                                     varbinary(10)
    * @param string|null           $pTstEnum              Parameter of type enum.
-   *                                                     enum('a','b') character set utf8mb4 collation utf8mb4_general_ci
+   *                                                     enum('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
    * @param string|null           $pTstSet               Parameter of type set.
-   *                                                     set('a','b') character set utf8mb4 collation utf8mb4_general_ci
+   *                                                     set('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
    *
    * @return int
    *

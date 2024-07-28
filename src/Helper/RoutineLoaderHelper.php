@@ -965,29 +965,29 @@ class RoutineLoaderHelper
           throw new RoutineLoaderException("Unknown type hint '%s' found at line %d.", $hint, $index + 1);
         }
 
-        switch (true)
+        if (preg_match('/(?<punctuation>\s*[;,]\s*)$/', $matches['datatype'], $other))
         {
-          case (str_ends_with($matches['datatype'], ';')):
-            $punctuation = ';';
-            break;
-
-          case (str_ends_with($matches['datatype'], ',')):
-            $punctuation = ',';
-            break;
-
-          default:
-            $punctuation = '';
+          $punctuation = $other['punctuation'];
+        }
+        else
+        {
+          $punctuation = '';
         }
 
-        $actualType                           = $this->typeHintPool[$hint];
-        $this->routineSourceCodeLines[$index] = sprintf('%s%s%s%s%s%s',
-                                                        mb_substr($line, 0, -mb_strlen($matches[0])),
-                                                        $matches['whitespace'],
-                                                        $actualType, // <== the real replacement
-                                                        $matches['nullable'],
-                                                        $punctuation,
-                                                        $matches['hint']);
-        $this->typeHints[$hint]               = $actualType;
+        $actualType             = $this->typeHintPool[$hint];
+        $newLine                = sprintf('%s%s%s%s%s%s',
+                                          mb_substr($line, 0, -mb_strlen($matches[0])),
+                                          $matches['whitespace'],
+                                          $actualType, // <== the real replacement
+                                          $matches['nullable'],
+                                          $punctuation,
+                                          $matches['hint']);
+        $this->typeHints[$hint] = $actualType;
+
+        if (str_replace(' ', '', $line)!==str_replace(' ', '', $newLine))
+        {
+          $this->routineSourceCodeLines[$index] = $newLine;
+        }
       }
     }
 

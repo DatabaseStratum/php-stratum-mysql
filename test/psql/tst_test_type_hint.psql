@@ -32,32 +32,32 @@
  */
 create procedure tst_test_type_hint
 (
-  in p_tst_int                int(11) --                              type: TST_FOO1.tst_int
-, in p_tst_smallint           smallint(6) --                          type: TST_FOO1.tst_smallint
-, in p_tst_tinyint            tinyint(4) --                           type: TST_FOO1.tst_tinyint
-, in p_tst_mediumint          mediumint(9) --                         type: TST_FOO1.tst_mediumint
-, in p_tst_bigint             bigint(20) --                           type: TST_FOO1.tst_bigint
-, in p_tst_int_unsigned       int(10) unsigned --                     type: TST_FOO1.tst_int_unsigned
-, in p_tst_smallint_unsigned  smallint(5) unsigned --                 type: TST_FOO1.tst_smallint_unsigned
-, in p_tst_tinyint_unsigned   tinyint(3) unsigned --                  type: TST_FOO1.tst_tinyint_unsigned
-, in p_tst_mediumint_unsigned mediumint(8) unsigned --                type: TST_FOO1.tst_mediumint_unsigned
-, in p_tst_bigint_unsigned    bigint(20) unsigned --                  type: TST_FOO1.tst_bigint_unsigned
-, in p_tst_decimal            decimal(10, 2) --                       type: TST_FOO1.tst_decimal
-, in p_tst_decimal0           decimal(65, 0) --                       type: TST_FOO1.tst_decimal0
-, in p_tst_float              float --                                type: TST_FOO1.tst_float
-, in p_tst_double             double --                               type: TST_FOO1.tst_double
-, in p_tst_bit                bit(8) --                               type: TST_FOO1.tst_bit
-, in p_tst_date               date --                                 type: TST_FOO1.tst_date
-, in p_tst_datetime           datetime --                             type: TST_FOO1.tst_datetime
-, in p_tst_timestamp          timestamp --                            type: TST_FOO1.tst_timestamp
-, in p_tst_time               time --                                 type: TST_FOO1.tst_time
-, in p_tst_year               year(4) --                              type: TST_FOO1.tst_year
-, in p_tst_char               char(10) character set utf8mb4 --       type: TST_FOO1.tst_char
-, in p_tst_varchar            varchar(10) character set utf8mb4 --    type: TST_FOO1.tst_varchar
-, in p_tst_binary             binary(10) --                           type: TST_FOO1.tst_binary
-, in p_tst_varbinary          varbinary(10) --                        type: TST_FOO1.tst_varbinary
-, in p_tst_enum               enum('a', 'b') character set utf8mb4 -- type: TST_FOO1.tst_enum
-, in p_tst_set                set('a', 'b') character set utf8mb4 --  type: TST_FOO1.tst_set
+  in p_tst_int                int(11) --                                    type: TST_FOO1.tst_int
+, in p_tst_smallint           smallint(6) --                                type: TST_FOO1.tst_smallint
+, in p_tst_tinyint            tinyint(4) --                                 type: TST_FOO1.tst_tinyint
+, in p_tst_mediumint          mediumint(9) --                               type: TST_FOO1.tst_mediumint
+, in p_tst_bigint             bigint(20) --                                 type: TST_FOO1.tst_bigint
+, in p_tst_int_unsigned       int(10) unsigned --                           type: TST_FOO1.tst_int_unsigned
+, in p_tst_smallint_unsigned  smallint(5) unsigned --                       type: TST_FOO1.tst_smallint_unsigned
+, in p_tst_tinyint_unsigned   tinyint(3) unsigned --                        type: TST_FOO1.tst_tinyint_unsigned
+, in p_tst_mediumint_unsigned mediumint(8) unsigned --                      type: TST_FOO1.tst_mediumint_unsigned
+, in p_tst_bigint_unsigned    bigint(20) unsigned --                        type: TST_FOO1.tst_bigint_unsigned
+, in p_tst_decimal            decimal(10, 2) --                             type: TST_FOO1.tst_decimal
+, in p_tst_decimal0           decimal(65, 0) --                             type: TST_FOO1.tst_decimal0
+, in p_tst_float              float --                                      type: TST_FOO1.tst_float
+, in p_tst_double             double --                                     type: TST_FOO1.tst_double
+, in p_tst_bit                bit(8) --                                     type: TST_FOO1.tst_bit
+, in p_tst_date               date --                                       type: TST_FOO1.tst_date
+, in p_tst_datetime           datetime --                                   type: TST_FOO1.tst_datetime
+, in p_tst_timestamp          timestamp --                                  type: TST_FOO1.tst_timestamp
+, in p_tst_time               time --                                       type: TST_FOO1.tst_time
+, in p_tst_year               year(4) --                                    type: TST_FOO1.tst_year
+, in p_tst_char               char(10) character set utf8mb4 --             type: TST_FOO1.tst_char
+, in p_tst_varchar            varchar(10) character set utf8mb4 --          type: TST_FOO1.tst_varchar
+, in p_tst_binary             binary(10) --                                 type: TST_FOO1.tst_binary
+, in p_tst_varbinary          varbinary(10) --                              type: TST_FOO1.tst_varbinary
+, in p_tst_enum               enum ('a', 'b', 'c') character set utf8mb4 -- type: TST_FOO1.tst_enum
+, in p_tst_set                set ('a', 'b', 'c') character set utf8mb4 --  type: TST_FOO1.tst_set
 )
   modifies sql data
 begin
