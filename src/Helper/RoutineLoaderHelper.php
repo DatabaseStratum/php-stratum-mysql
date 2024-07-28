@@ -931,6 +931,7 @@ class RoutineLoaderHelper
                 'varbinary',
                 'enum',
                 'set',
+                'inet4',
                 'inet6',
                 'tinyblob',
                 'blob',

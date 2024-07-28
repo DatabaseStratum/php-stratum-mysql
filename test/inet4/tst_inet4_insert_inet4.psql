@@ -1,0 +1,16 @@
+/**
+ * Test for stored routine with a inet4 argument.
+ *
+ * @param p_ip_ip The IPv4 address.
+ *
+ * @type none
+ */
+create procedure tst_inet4_insert_inet4
+(
+  in p_ip_ip inet4 -- type: TST_IPV4.ip_ip
+)
+  modifies sql data
+begin
+  insert into TST_IPV4( ip_ip )
+  values ( p_ip_ip );
+end

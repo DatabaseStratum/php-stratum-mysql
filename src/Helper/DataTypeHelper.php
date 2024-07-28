@@ -50,6 +50,7 @@ class DataTypeHelper
       case 'date':
       case 'datetime':
       case 'enum':
+      case 'inet4':
       case 'inet6':
       case 'set':
       case 'tinytext':
@@ -126,6 +127,10 @@ class DataTypeHelper
         $ret = 16;
         break;
 
+      case 'inet4':
+        $ret = 15;
+        break;
+
       case 'inet6':
         // Fully written out IPv4 mapped addresses are not supported.
         $ret = 39;
@@ -190,6 +195,7 @@ class DataTypeHelper
       case 'date':
       case 'datetime':
       case 'enum':
+      case 'inet4':
       case 'inet6':
       case 'set':
         $ret = "'.\$this->quoteString(".$expression.").'";
@@ -274,6 +280,7 @@ class DataTypeHelper
       case 'datetime':
       case 'varbinary':
       case 'decimal':
+      case 'inet4':
       case 'inet6':
       case 'list_of_int':
         $ret = 's';
@@ -333,6 +340,7 @@ class DataTypeHelper
       case 'timestamp':
       case 'binary':
       case 'enum':
+      case 'inet4':
       case 'inet6':
       case 'bit':
       case 'set':

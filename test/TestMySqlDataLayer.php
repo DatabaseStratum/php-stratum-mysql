@@ -21,6 +21,35 @@ class TestMySqlDataLayer extends MySqlDataLayer
    *
    * @throws MySqlQueryErrorException
    */
+  public function tstInet4GetAll(): array
+  {
+    return $this->executeRows('call tst_inet4_get_all()');
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Test for stored routine with a inet4 argument.
+   *
+   * @param string|null $pIpIp The IPv4 address.
+   *                           inet4
+   *
+   * @return int
+   *
+   * @throws MySqlQueryErrorException
+   */
+  public function tstInet4InsertInet4(?string $pIpIp): int
+  {
+    return $this->executeNone('call tst_inet4_insert_inet4('.$this->quoteString($pIpIp).')');
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Select all IP addresses.
+   *
+   * @return array[]
+   *
+   * @throws MySqlQueryErrorException
+   */
   public function tstInet6GetAll(): array
   {
     return $this->executeRows('call tst_inet6_get_all()');

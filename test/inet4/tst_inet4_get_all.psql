@@ -1,0 +1,12 @@
+/**
+ * Select all IP addresses.
+ *
+ * @type rows
+ */
+create procedure tst_inet4_get_all ()
+  modifies sql data
+begin
+  select ip_ip
+  from TST_IPV4
+  order by ip_ip;
+end

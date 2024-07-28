@@ -36,6 +36,8 @@ TST_FOO2.tst_c02 10
 TST_FOO2.tst_c03 10
 TST_FOO2.tst_c04 10
 
+TST_IPV4.ip_ip 15
+
 TST_IPV6.ip_ip 39
 
 TST_LABEL.tst_id    10
@@ -945,6 +947,8 @@ test.TST_FOO2.tst_c01 10
 test.TST_FOO2.tst_c02 10
 test.TST_FOO2.tst_c03 10
 test.TST_FOO2.tst_c04 10
+
+test.TST_IPV4.ip_ip 15
 
 test.TST_IPV6.ip_ip 39
 
