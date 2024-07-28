@@ -1,0 +1,14 @@
+/**
+ * Test for type hints of a variable.
+ *
+ * @type none
+ */
+create procedure tst_test_type_hint_variable ()
+  reads sql data
+begin
+  declare l_date date; -- type: TST_FOO1.tst_date
+
+  set l_date = now();
+
+  select l_date;
+end

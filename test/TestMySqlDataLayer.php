@@ -1753,6 +1753,19 @@ class TestMySqlDataLayer extends MySqlDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * Test for type hints of a variable.
+   *
+   * @return int
+   *
+   * @throws MySqlQueryErrorException
+   */
+  public function tstTestTypeHintVariable(): int
+  {
+    return $this->executeNone('call tst_test_type_hint_variable()');
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
    * Test for all possible types of parameters including LOB's.
    *
    * @param int|null              $pTstInt        Parameter of type int.

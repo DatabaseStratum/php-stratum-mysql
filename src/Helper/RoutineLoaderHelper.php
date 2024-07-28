@@ -941,13 +941,12 @@ class RoutineLoaderHelper
                 'text',
                 'mediumtext',
                 'longtext'];
-    $parts   = ['whitespace'  => '(?<whitespace>\s+)',
-                'type_list'   => str_replace('type-list',
-                                             implode('|', $types),
-                                             '(?<datatype>(type-list).*)'),
-                'nullable'    => '(?<nullable>not\s+null)?',
-                'punctuation' => '(?<punctuation>\s*[,;])?',
-                'hint'        => '(?<hint>\s+--\s+type:\s+(\w+\.)?\w+\.\w+\s*)'];
+    $parts   = ['whitespace' => '(?<whitespace>\s+)',
+                'type_list'  => str_replace('type-list',
+                                            implode('|', $types),
+                                            '(?<datatype>(type-list).*)'),
+                'nullable'   => '(?<nullable>not\s+null)?',
+                'hint'       => '(?<hint>\s+--\s+type:\s+(\w+\.)?\w+\.\w+\s*)'];
     $pattern = '/'.implode('', $parts).'$/i';
 
     foreach ($this->routineSourceCodeLines as $index => $line)
@@ -966,13 +965,27 @@ class RoutineLoaderHelper
           throw new RoutineLoaderException("Unknown type hint '%s' found at line %d.", $hint, $index + 1);
         }
 
+        switch (true)
+        {
+          case (str_ends_with($matches['datatype'], ';')):
+            $punctuation = ';';
+            break;
+
+          case (str_ends_with($matches['datatype'], ',')):
+            $punctuation = ',';
+            break;
+
+          default:
+            $punctuation = '';
+        }
+
         $actualType                           = $this->typeHintPool[$hint];
         $this->routineSourceCodeLines[$index] = sprintf('%s%s%s%s%s%s',
                                                         mb_substr($line, 0, -mb_strlen($matches[0])),
                                                         $matches['whitespace'],
                                                         $actualType, // <== the real replacement
                                                         $matches['nullable'],
-                                                        $matches['punctuation'],
+                                                        $punctuation,
                                                         $matches['hint']);
         $this->typeHints[$hint]               = $actualType;
       }

@@ -3,40 +3,40 @@
  *
  * @type bulk_insert TST_TEMPO field_int,field_smallint,field_mediumint,field_tinyint,field_bigint,field_int_unsigned,field_smallint_unsigned,field_mediumint_unsigned,field_tinyint_unsigned,field_bigint_unsigned,field_year,field_decimal,field_decimal0,field_float,field_double,field_binary,field_varbinary,field_char,field_varchar,field_time,field_timestamp,field_date,field_datetime,field_enum,field_set,field_bit
  */
-create procedure tst_test_bulk_insert01()
-modifies sql data
+create procedure tst_test_bulk_insert01 ()
+  modifies sql data
 begin
   drop temporary table if exists TST_TEMPO;
 
   create temporary table TST_TEMPO
   (
-     tst_int                int,
-     tst_smallint           smallint,
-     tst_mediumint          mediumint,
-     tst_tinyint            tinyint,
-     tst_bigint             bigint,
-     tst_int_unsigned       int unsigned,
-     tst_smallint_unsigned  smallint unsigned,
-     tst_mediumint_unsigned mediumint unsigned,
-     tst_tinyint_unsigned   tinyint unsigned,
-     tst_bigint_unsigned    bigint unsigned,
-     tst_year               year,
-     tst_decimal            decimal(10,2),
-     tst_decimal0           decimal(65),
-     tst_float              float,
-     tst_double             double,
-     tst_binary             binary(10),
-     tst_varbinary          varbinary(10),
-     tst_char               char(10),
-     tst_varchar            varchar(80),
-     tst_time               time,
-     tst_timestamp          timestamp,
-     tst_date               date,
-     tst_datetime           datetime,
-     tst_enum               enum('a','b','c'),
-     tst_set                set('a','b','c'),
-     tst_bit                bit(4),
-     primary key (tst_int)
-  ) engine = memory
-  ;
+    tst_int                int(11), --                              type: TST_FOO1.tst_int
+    tst_smallint           smallint(6), --                          type: TST_FOO1.tst_smallint
+    tst_mediumint          mediumint(9), --                         type: TST_FOO1.tst_mediumint
+    tst_tinyint            tinyint(4), --                           type: TST_FOO1.tst_tinyint
+    tst_bigint             bigint(20), --                           type: TST_FOO1.tst_bigint
+    tst_int_unsigned       int(10) unsigned, --                     type: TST_FOO1.tst_int_unsigned
+    tst_smallint_unsigned  smallint(5) unsigned, --                 type: TST_FOO1.tst_smallint_unsigned
+    tst_mediumint_unsigned mediumint(8) unsigned, --                type: TST_FOO1.tst_mediumint_unsigned
+    tst_tinyint_unsigned   tinyint(3) unsigned, --                  type: TST_FOO1.tst_tinyint_unsigned
+    tst_bigint_unsigned    bigint(20) unsigned, --                  type: TST_FOO1.tst_bigint_unsigned
+    tst_year               year(4), --                              type: TST_FOO1.tst_year
+    tst_decimal            decimal(10, 2), --                       type: TST_FOO1.tst_decimal
+    tst_decimal0           decimal(65, 0), --                       type: TST_FOO1.tst_decimal0
+    tst_float              float, --                                type: TST_FOO1.tst_float
+    tst_double             double, --                               type: TST_FOO1.tst_double
+    tst_binary             binary(10), --                           type: TST_FOO1.tst_binary
+    tst_varbinary          varbinary(10), --                        type: TST_FOO1.tst_varbinary
+    tst_char               char(10) character set utf8mb4, --       type: TST_FOO1.tst_char
+    tst_varchar            varchar(10) character set utf8mb4, --    type: TST_FOO1.tst_varchar
+    tst_time               time, --                                 type: TST_FOO1.tst_time
+    tst_timestamp          timestamp, --                            type: TST_FOO1.tst_timestamp
+    tst_date               date, --                                 type: TST_FOO1.tst_date
+    tst_datetime           datetime, --                             type: TST_FOO1.tst_datetime
+    tst_enum               enum('a', 'b') character set utf8mb4, -- type: TST_FOO1.tst_enum
+    tst_set                set('a', 'b') character set utf8mb4, --  type: TST_FOO1.tst_set
+    tst_bit                bit(8), --                               type: TST_FOO1.tst_bit
+    primary key (tst_int)
+  )
+  engine = memory;
 end
