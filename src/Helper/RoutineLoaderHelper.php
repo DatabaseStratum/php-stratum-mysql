@@ -9,6 +9,7 @@ use SetBased\Helper\InvalidCastException;
 use SetBased\Stratum\Backend\StratumStyle;
 use SetBased\Stratum\Common\DocBlock\DocBlockReflection;
 use SetBased\Stratum\Common\Exception\RoutineLoaderException;
+use SetBased\Stratum\Common\Helper\Util;
 use SetBased\Stratum\Middle\Exception\ResultException;
 use SetBased\Stratum\MySql\Exception\MySqlQueryErrorException;
 use SetBased\Stratum\MySql\MySqlMetaDataLayer;
@@ -127,25 +128,25 @@ class RoutineLoaderHelper
   private array $phpStratumOldMetadata;
 
   /**
+   * A map from all possible placeholders to their actual values.
+   *
+   * @var array
+   */
+  private array $placeholderPool;
+
+  /**
+   * A map from placeholders that are actually used in the stored routine to their values.
+   *
+   * @var array
+   */
+  private array $placeholders = [];
+
+  /**
    * The old metadata of the stored routine. Note: this data comes from information_schema.ROUTINES.
    *
    * @var array
    */
   private array $rdbmsOldRoutineMetadata;
-
-  /**
-   * The replace pairs (i.e. placeholders and their actual values, see strst).
-   *
-   * @var array
-   */
-  private array $replace = [];
-
-  /**
-   * A map from placeholders to their actual values.
-   *
-   * @var array
-   */
-  private array $replacePairs;
 
   /**
    * The return type of the stored routine (only if designation type singleton0, singleton1, or function).
@@ -203,7 +204,23 @@ class RoutineLoaderHelper
    */
   private int $syntax;
 
+  /**
+   * A map from all possible table and column names to their actual column type.
+   *
+   * @var array
+   */
+  private array $typeHintPool;
+
+  /**
+   * A map from the table and column names that are actually use as type hint in the stored routine to their actual
+   * column type.
+   *
+   * @var array
+   */
+  private array $typeHints = [];
+
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Object constructor.
    *
@@ -212,7 +229,8 @@ class RoutineLoaderHelper
    * @param SqlModeHelper      $sqlModeHelper
    * @param string             $routineFilename         The filename of the source of the stored routine.
    * @param array              $phpStratumMetadata      The metadata of the stored routine from PhpStratum.
-   * @param array              $replacePairs            A map from placeholders to their actual values.
+   * @param array              $placeholderPool         A map from placeholders to their actual values.
+   * @param array              $typeHintPool            A map from type hints to their actual types.
    * @param array              $rdbmsOldRoutineMetadata The old metadata of the stored routine from MySQL.
    * @param string             $characterSet            The default character set under which the stored routine will
    *                                                    be loaded and run.
@@ -224,7 +242,8 @@ class RoutineLoaderHelper
                               SqlModeHelper      $sqlModeHelper,
                               string             $routineFilename,
                               array              $phpStratumMetadata,
-                              array              $replacePairs,
+                              array              $placeholderPool,
+                              array              $typeHintPool,
                               array              $rdbmsOldRoutineMetadata,
                               string             $characterSet,
                               string             $collate)
@@ -234,7 +253,8 @@ class RoutineLoaderHelper
     $this->sqlModeHelper           = $sqlModeHelper;
     $this->sourceFilename          = $routineFilename;
     $this->phpStratumMetadata      = $phpStratumMetadata;
-    $this->replacePairs            = $replacePairs;
+    $this->placeholderPool         = $placeholderPool;
+    $this->typeHintPool            = $typeHintPool;
     $this->rdbmsOldRoutineMetadata = $rdbmsOldRoutineMetadata;
     $this->characterSet            = $characterSet;
     $this->collate                 = $collate;
@@ -382,15 +402,14 @@ class RoutineLoaderHelper
       $this->io->text(sprintf('Loading routine <dbo>%s</dbo>', OutputFormatter::escape($this->routineName)));
 
       $this->readSourceCode();
+      $this->updateSourceTypeHints();
       $this->extractPlaceholders();
       $this->extractDesignationType();
       $this->extractReturnType();
       $this->extractRoutineTypeAndName();
       $this->extractSyntax();
       $this->validateReturnType();
-
       $this->loadRoutineFile();
-
       $this->extractBulkInsertTableColumnsInfo();
       $this->extractParameters();
       $this->updateMetadata();
@@ -553,9 +572,9 @@ class RoutineLoaderHelper
     {
       foreach ($matches[0] as $placeholder)
       {
-        if (isset($this->replacePairs[strtoupper($placeholder)]))
+        if (isset($this->placeholderPool[strtoupper($placeholder)]))
         {
-          $this->replace[$placeholder] = $this->replacePairs[strtoupper($placeholder)];
+          $this->placeholders[$placeholder] = $this->placeholderPool[strtoupper($placeholder)];
         }
         else
         {
@@ -615,12 +634,12 @@ class RoutineLoaderHelper
     {
       if ($this->routineName!=$matches[2])
       {
-        throw new RoutineLoaderException("Stored routine name '%s' does not correspond with filename", $matches[2]);
+        throw new RoutineLoaderException("Stored routine name '%s' does not correspond with filename.", $matches[2]);
       }
     }
     else
     {
-      throw new RoutineLoaderException('Unable to find the stored routine name and type');
+      throw new RoutineLoaderException('Unable to find the stored routine name and type.');
     }
   }
 
@@ -670,8 +689,6 @@ class RoutineLoaderHelper
 
     return null;
   }
-
-  //--------------------------------------------------------------------------------------------------------------------
   /**
    * Loads the stored routine into the database.
    *
@@ -723,7 +740,7 @@ class RoutineLoaderHelper
 
     $this->io->text(explode(PHP_EOL, $code));
 
-    throw new RoutineLoaderException('Unknown placeholder(s) found');
+    throw new RoutineLoaderException('Unknown placeholder(s) found.');
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -747,9 +764,18 @@ class RoutineLoaderHelper
     }
 
     // If the value of a placeholder has changed the source file must be loaded.
-    foreach ($this->phpStratumOldMetadata['replace'] as $placeHolder => $oldValue)
+    foreach ($this->phpStratumOldMetadata['placeholders'] as $placeHolder => $oldValue)
     {
-      if (!isset($this->replacePairs[strtoupper($placeHolder)]) || $this->replacePairs[strtoupper($placeHolder)]!==$oldValue)
+      if (!isset($this->placeholderPool[strtoupper($placeHolder)]) || $this->placeholderPool[strtoupper($placeHolder)]!==$oldValue)
+      {
+        return true;
+      }
+    }
+
+    // If the value of a type has changed the source file must be loaded.
+    foreach ($this->phpStratumOldMetadata['type_hints'] as $typeHint => $oldValue)
+    {
+      if (!isset($this->typeHintPool[$typeHint]) || $this->typeHintPool[$typeHint]!==$oldValue)
       {
         return true;
       }
@@ -795,7 +821,7 @@ class RoutineLoaderHelper
 
     if ($this->routineSourceCodeLines===false)
     {
-      throw new RoutineLoaderException('Source file is empty');
+      throw new RoutineLoaderException('Source file is empty.');
     }
 
     $start = $this->findFirstMatchingLine('/^\s*\/\*\*\s*$/');
@@ -828,23 +854,23 @@ class RoutineLoaderHelper
   {
     $realpath = realpath($this->sourceFilename);
 
-    $this->replace['__FILE__']    = "'".$this->dl->realEscapeString($realpath)."'";
-    $this->replace['__ROUTINE__'] = "'".$this->routineName."'";
-    $this->replace['__DIR__']     = "'".$this->dl->realEscapeString(dirname($realpath))."'";
+    $this->placeholders['__FILE__']    = "'".$this->dl->realEscapeString($realpath)."'";
+    $this->placeholders['__ROUTINE__'] = "'".$this->routineName."'";
+    $this->placeholders['__DIR__']     = "'".$this->dl->realEscapeString(dirname($realpath))."'";
 
     $lines         = explode(PHP_EOL, $this->routineSourceCode);
     $routineSource = [];
     foreach ($lines as $i => $line)
     {
-      $this->replace['__LINE__'] = $i + 1;
-      $routineSource[$i]         = strtr($line, $this->replace);
+      $this->placeholders['__LINE__'] = $i + 1;
+      $routineSource[$i]              = strtr($line, $this->placeholders);
     }
     $routineSource = implode(PHP_EOL, $routineSource);
 
-    unset($this->replace['__FILE__']);
-    unset($this->replace['__ROUTINE__']);
-    unset($this->replace['__DIR__']);
-    unset($this->replace['__LINE__']);
+    unset($this->placeholders['__FILE__']);
+    unset($this->placeholders['__ROUTINE__']);
+    unset($this->placeholders['__DIR__']);
+    unset($this->placeholders['__LINE__']);
 
     return $routineSource;
   }
@@ -860,7 +886,8 @@ class RoutineLoaderHelper
     $this->phpStratumMetadata['return']       = $this->returnType;
     $this->phpStratumMetadata['parameters']   = $this->routineParameters->getParameters();
     $this->phpStratumMetadata['timestamp']    = $this->filemtime;
-    $this->phpStratumMetadata['replace']      = $this->replace;
+    $this->phpStratumMetadata['placeholders'] = $this->placeholders;
+    $this->phpStratumMetadata['type_hints']   = $this->typeHints;
     $this->phpStratumMetadata['phpdoc']       = $this->extractDocBlockPartsWrapper();
 
     if (in_array($this->designationType, ['rows_with_index', 'rows_with_key']))
@@ -873,6 +900,88 @@ class RoutineLoaderHelper
       $this->phpStratumMetadata['bulk_insert_table_name'] = $this->bulkInsertTableName;
       $this->phpStratumMetadata['bulk_insert_columns']    = $this->bulkInsertColumns;
       $this->phpStratumMetadata['bulk_insert_keys']       = $this->bulkInsertKeys;
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Updates the source of the stored routine based on the values of type hints.
+   *
+   * @throws RoutineLoaderException
+   */
+  private function updateSourceTypeHints(): void
+  {
+    $types   = ['int',
+                'smallint',
+                'tinyint',
+                'mediumint',
+                'bigint',
+                'decimal',
+                'float',
+                'double',
+                'bit',
+                'date',
+                'datetime',
+                'timestamp',
+                'time',
+                'year',
+                'char',
+                'varchar',
+                'binary',
+                'varbinary',
+                'enum',
+                'set',
+                'inet6',
+                'tinyblob',
+                'blob',
+                'mediumblob',
+                'longblob',
+                'tinytext',
+                'text',
+                'mediumtext',
+                'longtext'];
+    $parts   = ['whitespace'  => '(?<whitespace>\s+)',
+                'type_list'   => str_replace('type-list',
+                                             implode('|', $types),
+                                             '(?<datatype>(type-list).*)'),
+                'nullable'    => '(?<nullable>not\s+null)?',
+                'punctuation' => '(?<punctuation>\s*[,;])?',
+                'hint'        => '(?<hint>\s+--\s+type:\s+(\w+\.)?\w+\.\w+\s*)'];
+    $pattern = '/'.implode('', $parts).'$/i';
+
+    foreach ($this->routineSourceCodeLines as $index => $line)
+    {
+      if (preg_match('/'.$parts['hint'].'/i', $line))
+      {
+        $n = preg_match($pattern, $line, $matches);
+        if ($n===0)
+        {
+          throw new RoutineLoaderException("Found a type hint at line %d, but unable to find data type.", $index + 1);
+        }
+
+        $hint = trim(preg_replace('/\s+--\s+type:\s+/i', '', $matches['hint']));
+        if (!isset($this->typeHintPool[$hint]))
+        {
+          throw new RoutineLoaderException("Unknown type hint '%s' found at line %d.", $hint, $index + 1);
+        }
+
+        $actualType                           = $this->typeHintPool[$hint];
+        $this->routineSourceCodeLines[$index] = sprintf('%s%s%s%s%s%s',
+                                                        mb_substr($line, 0, -mb_strlen($matches[0])),
+                                                        $matches['whitespace'],
+                                                        $actualType, // <== the real replacement
+                                                        $matches['nullable'],
+                                                        $matches['punctuation'],
+                                                        $matches['hint']);
+        $this->typeHints[$hint]               = $actualType;
+      }
+    }
+
+    $routineSourceCode = implode(PHP_EOL, $this->routineSourceCodeLines);
+    if ($this->routineSourceCode!==$routineSourceCode)
+    {
+      $this->routineSourceCode = $routineSourceCode;
+      Util::writeTwoPhases($this->sourceFilename, $this->routineSourceCode, $this->io);
     }
   }
 
@@ -895,7 +1004,7 @@ class RoutineLoaderHelper
 
     if (!($this->returnType=='mixed' || $this->returnType=='bool' || empty($diff)))
     {
-      throw new RoutineLoaderException("Return type must be 'mixed', 'bool', or a combination of 'int', 'float', 'string', and 'null'");
+      throw new RoutineLoaderException("Return type must be 'mixed', 'bool', or a combination of 'int', 'float', 'string', and 'null'.");
     }
 
     // The following tests are applicable for singleton0 routines only.
@@ -915,7 +1024,7 @@ class RoutineLoaderHelper
     $key   = in_array('null', $parts);
     if ($key===false)
     {
-      throw new RoutineLoaderException("Return type must be 'mixed', 'bool', or contain 'null' (with a combination of 'int', 'float', and 'string')");
+      throw new RoutineLoaderException("Return type must be 'mixed', 'bool', or contain 'null' (with a combination of 'int', 'float', and 'string').");
     }
   }
 

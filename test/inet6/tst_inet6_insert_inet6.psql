@@ -5,10 +5,12 @@
  *
  * @type none
  */
-create procedure tst_inet6_insert_inet6(p_ip_ip @tst_ipv6.ip_ip%type@)
-modifies sql data
+create procedure tst_inet6_insert_inet6
+(
+  in p_ip_ip inet6 -- type: TST_IPV6.ip_ip
+)
+  modifies sql data
 begin
-  insert into TST_IPV6(ip_ip)
-  values( p_ip_ip )
-  ;
+  insert into TST_IPV6( ip_ip )
+  values ( p_ip_ip );
 end

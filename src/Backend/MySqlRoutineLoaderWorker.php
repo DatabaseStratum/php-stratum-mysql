@@ -73,18 +73,18 @@ class MySqlRoutineLoaderWorker extends MySqlWorker implements RoutineLoaderWorke
   private ?string $nameMangler;
 
   /**
+   * A map from placeholders that are actually used in the stored routine to their values.
+   *
+   * @var array
+   */
+  private array $placeholderPool = [];
+
+  /**
    * Old metadata of all stored routines. Note: this data comes from information_schema.ROUTINES.
    *
    * @var array
    */
   private array $rdbmsOldMetadata;
-
-  /**
-   * A map from placeholders to their actual values.
-   *
-   * @var array
-   */
-  private array $replacePairs = [];
 
   /**
    * Pattern where of the sources files.
@@ -118,6 +118,13 @@ class MySqlRoutineLoaderWorker extends MySqlWorker implements RoutineLoaderWorke
    * @var StratumMetadataHelper
    */
   private StratumMetadataHelper $stratumMetaData;
+
+  /**
+   * A map from all possible table and column names to their actual column type.
+   *
+   * @var array
+   */
+  private array $typeHintPool = [];
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -278,6 +285,177 @@ class MySqlRoutineLoaderWorker extends MySqlWorker implements RoutineLoaderWorke
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * Gathers all replace pairs.
+   *
+   * @throws MySqlQueryErrorException
+   * @throws \ReflectionException
+   */
+  private function gatherPlaceholdersAndTypeHints(): void
+  {
+    $this->gatherTypeHintsPlaceholdersColumnTypes();
+    $this->gatherPlaceholdersConstants();
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Gathers placeholders based on exact column types.
+   *
+   * @param array[] $columns The details of all table columns.
+   */
+  private function gatherPlaceholdersColumnTypesExact(array $columns): void
+  {
+    foreach ($columns as $column)
+    {
+      $key = mb_strtoupper('@'.$column['table_name'].'.'.$column['column_name'].'%type@');
+
+      $value = $column['column_type'];
+
+      // For VARCHAR and TEXT columns add character set.
+      if ($column['character_set_name']!==null)
+      {
+        $value .= ' character set '.$column['character_set_name'];
+      }
+
+      $this->placeholderPool[$key] = $value;
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Gathers placeholders based on column types with maximum length.
+   *
+   * @param array[] $columns The details of all table columns.
+   */
+  private function gatherPlaceholdersColumnTypesMaxLength(array $columns): void
+  {
+    foreach ($columns as $column)
+    {
+      $key = mb_strtoupper('@'.$column['table_name'].'.'.$column['column_name'].'%sort@');
+
+      switch ($column['data_type'])
+      {
+        case 'char':
+        case 'varchar':
+          $max = $this->maxCharacters($column['character_set_name']);
+          if ($max!==null)
+          {
+            $value = sprintf('%s(%d) character set %s',
+                             $column['data_type'],
+                             $max,
+                             $column['character_set_name']);
+          }
+          else
+          {
+            $value = null;
+          }
+          break;
+
+        case 'binary':
+        case 'varbinary':
+          $value = sprintf('%s(%d)', $column['data_type'], self::MAX_COLUMN_SIZE);
+          break;
+
+        default:
+          $value = null;
+      }
+
+      if ($value!==null)
+      {
+        $this->placeholderPool[$key] = $value;
+      }
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Reads constants set the PHP configuration file and adds them to the placeholder pool.
+   *
+   * @throws \ReflectionException
+   */
+  private function gatherPlaceholdersConstants(): void
+  {
+    if ($this->constantClassName===null)
+    {
+      return;
+    }
+
+    $reflection = new \ReflectionClass($this->constantClassName);
+
+    $constants = $reflection->getConstants();
+    foreach ($constants as $name => $value)
+    {
+      if (!is_numeric($value))
+      {
+        $value = "'".$value."'";
+      }
+
+      $this->placeholderPool['@'.$name.'@'] = $value;
+    }
+
+    $this->io->text(sprintf('Read %d constants for substitution from <fso>%s</fso>',
+                            sizeof($constants),
+                            OutputFormatter::escape($reflection->getFileName())));
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Gathers metadata of all columns types off all tables in the database.
+   *
+   * @return array[]
+   * @throws MySqlQueryErrorException
+   */
+  private function gatherTableColumns(): array
+  {
+    $columns = $this->dl->allTableColumns();
+    foreach ($columns as $index => $column)
+    {
+      $columns[$index]['column_type'] = str_replace(',', ', ', $column['column_type']);
+    }
+
+    return $columns;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Gathers type hints based on exact column types.
+   *
+   * @param array[] $columns The details of all table columns.
+   */
+  private function gatherTypeHintsColumnTypesExact(array $columns): void
+  {
+    foreach ($columns as $column)
+    {
+      $key   = $column['table_name'].'.'.$column['column_name'];
+      $value = $column['column_type'];
+
+      // For VARCHAR and TEXT columns add character set.
+      if ($column['character_set_name']!==null)
+      {
+        $value .= ' character set '.$column['character_set_name'];
+      }
+
+      $this->typeHintPool[$key] = $value;
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Gathers schema, table, column names and the column type from MySQL and saves them as placeholders.
+   *
+   * @throws MySqlQueryErrorException
+   */
+  private function gatherTypeHintsPlaceholdersColumnTypes(): void
+  {
+    $columns = $this->gatherTableColumns();
+    $this->gatherPlaceholdersColumnTypesExact($columns);
+    $this->gatherPlaceholdersColumnTypesMaxLength($columns);
+    $this->gatherTypeHintsColumnTypesExact($columns);
+
+    $this->io->text(sprintf('Selected %d column types for substitution', sizeof($columns)));
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
    * Returns all elements in {@link $sources} with duplicate method names.
    *
    * @return array[]
@@ -344,16 +522,11 @@ class MySqlRoutineLoaderWorker extends MySqlWorker implements RoutineLoaderWorke
   {
     $this->findSourceFiles();
     $this->detectNameConflicts();
-    $this->replacePairs();
+    $this->gatherPlaceholdersAndTypeHints();
     $this->getOldStoredRoutinesInfo();
-
     $this->loadStoredRoutines();
-
     $this->dropObsoleteRoutines();
     $this->removeObsoleteMetadata();
-
-    $this->io->writeln('');
-
     $this->writeStoredRoutineMetadata();
   }
 
@@ -366,18 +539,16 @@ class MySqlRoutineLoaderWorker extends MySqlWorker implements RoutineLoaderWorke
    * @throws InvalidCastException
    * @throws MySqlQueryErrorException
    * @throws \LogicException
-   * @throws \ReflectionException
    * @throws \RuntimeException
+   * @throws \ReflectionException
    */
   private function loadList(array $sources): void
   {
     $this->findSourceFilesFromList($sources);
     $this->detectNameConflicts();
-    $this->replacePairs();
+    $this->gatherPlaceholdersAndTypeHints();
     $this->getOldStoredRoutinesInfo();
-
     $this->loadStoredRoutines();
-
     $this->writeStoredRoutineMetadata();
   }
 
@@ -408,7 +579,8 @@ class MySqlRoutineLoaderWorker extends MySqlWorker implements RoutineLoaderWorke
                                         $sqlModeHelper,
                                         $filename['path_name'],
                                         $this->stratumMetaData->getMetadata($routineName),
-                                        $this->replacePairs,
+                                        $this->placeholderPool,
+                                        $this->typeHintPool,
                                         $this->rdbmsOldMetadata[$routineName] ?? [],
                                         $this->defaultCharacterSet,
                                         $this->defaultCollate);
@@ -513,136 +685,6 @@ class MySqlRoutineLoaderWorker extends MySqlWorker implements RoutineLoaderWorke
     }
 
     $this->stratumMetaData->purge($routines);
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Gathers all replace pairs.
-   *
-   * @throws MySqlQueryErrorException
-   * @throws \ReflectionException
-   */
-  private function replacePairs(): void
-  {
-    $this->replacePairsColumnTypes();
-    $this->replacePairsConstants();
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Selects schema, table, column names and the column type from MySQL and saves them as replace pairs.
-   *
-   * @throws MySqlQueryErrorException
-   */
-  private function replacePairsColumnTypes(): void
-  {
-    $columns = $this->dl->allTableColumns();
-
-    $this->replacePairsColumnTypesExact($columns);
-    $this->replacePairsColumnTypesMaxLength($columns);
-
-    $this->io->text(sprintf('Selected %d column types for substitution', sizeof($columns)));
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Gathers replace pairs based on exact column types.
-   *
-   * @param array[] $columns The details of all table columns.
-   */
-  private function replacePairsColumnTypesExact(array $columns): void
-  {
-    foreach ($columns as $column)
-    {
-      $key = mb_strtoupper('@'.$column['table_name'].'.'.$column['column_name'].'%type@');
-
-      $value = $column['column_type'];
-
-      // For VARCHAR and TEXT columns add character set.
-      if ($column['character_set_name']!==null)
-      {
-        $value .= ' character set '.$column['character_set_name'];
-      }
-
-      $this->replacePairs[$key] = $value;
-    }
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Gathers replace pairs based on column types with maximum length.
-   *
-   * @param array[] $columns The details of all table columns.
-   */
-  private function replacePairsColumnTypesMaxLength(array $columns): void
-  {
-    foreach ($columns as $column)
-    {
-      $key = mb_strtoupper('@'.$column['table_name'].'.'.$column['column_name'].'%sort@');
-
-      switch ($column['data_type'])
-      {
-        case 'char':
-        case 'varchar':
-          $max = $this->maxCharacters($column['character_set_name']);
-          if ($max!==null)
-          {
-            $value = sprintf('%s(%d) character set %s',
-                             $column['data_type'],
-                             $max,
-                             $column['character_set_name']);
-          }
-          else
-          {
-            $value = null;
-          }
-          break;
-
-        case 'binary':
-        case 'varbinary':
-          $value = sprintf('%s(%d)', $column['data_type'], self::MAX_COLUMN_SIZE);
-          break;
-
-        default:
-          $value = null;
-      }
-
-      if ($value!==null)
-      {
-        $this->replacePairs[$key] = $value;
-      }
-    }
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Reads constants set the PHP configuration file and  adds them to the replace pairs.
-   *
-   * @throws \ReflectionException
-   */
-  private function replacePairsConstants(): void
-  {
-    if ($this->constantClassName===null)
-    {
-      return;
-    }
-
-    $reflection = new \ReflectionClass($this->constantClassName);
-
-    $constants = $reflection->getConstants();
-    foreach ($constants as $name => $value)
-    {
-      if (!is_numeric($value))
-      {
-        $value = "'".$value."'";
-      }
-
-      $this->replacePairs['@'.$name.'@'] = $value;
-    }
-
-    $this->io->text(sprintf('Read %d constants for substitution from <fso>%s</fso>',
-                            sizeof($constants),
-                            OutputFormatter::escape($reflection->getFileName())));
   }
 
   //--------------------------------------------------------------------------------------------------------------------

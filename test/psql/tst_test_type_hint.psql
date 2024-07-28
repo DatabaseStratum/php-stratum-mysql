@@ -1,0 +1,116 @@
+/**
+ * Test for all possible types of parameters excluding LOB's.
+ *
+ * @param p_tst_int                Parameter of type int.
+ * @param p_tst_smallint           Parameter of type smallint.
+ * @param p_tst_tinyint            Parameter of type tinyint.
+ * @param p_tst_mediumint          Parameter of type mediumint.
+ * @param p_tst_bigint             Parameter of type bigint.
+ * @param p_tst_int_unsigned       Parameter of type int unsigned.
+ * @param p_tst_smallint_unsigned  Parameter of type smallint unsigned.
+ * @param p_tst_tinyint_unsigned   Parameter of type tinyint unsigned.
+ * @param p_tst_mediumint_unsigned Parameter of type mediumint unsigned.
+ * @param p_tst_bigint_unsigned    Parameter of type bigint unsigned.
+ * @param p_tst_decimal            Parameter of type decimal.
+ * @param p_tst_decimal0           Parameter of type decimal with 0 scale.
+ * @param p_tst_float              Parameter of type float.
+ * @param p_tst_double             Parameter of type double.
+ * @param p_tst_bit                Parameter of type bit.
+ * @param p_tst_date               Parameter of type date.
+ * @param p_tst_datetime           Parameter of type datetime.
+ * @param p_tst_timestamp          Parameter of type timestamp.
+ * @param p_tst_time               Parameter of type time.
+ * @param p_tst_year               Parameter of type year.
+ * @param p_tst_char               Parameter of type char.
+ * @param p_tst_varchar            Parameter of type varchar.
+ * @param p_tst_binary             Parameter of type binary.
+ * @param p_tst_varbinary          Parameter of type varbinary.
+ * @param p_tst_enum               Parameter of type enum.
+ * @param p_tst_set                Parameter of type set.
+ *
+ * @type none
+ */
+create procedure tst_test_type_hint
+(
+  in p_tst_int                int(11) --                              type: TST_FOO1.tst_int
+, in p_tst_smallint           smallint(6) --                          type: TST_FOO1.tst_smallint
+, in p_tst_tinyint            tinyint(4) --                           type: TST_FOO1.tst_tinyint
+, in p_tst_mediumint          mediumint(9) --                         type: TST_FOO1.tst_mediumint
+, in p_tst_bigint             bigint(20) --                           type: TST_FOO1.tst_bigint
+, in p_tst_int_unsigned       int(10) unsigned --                     type: TST_FOO1.tst_int_unsigned
+, in p_tst_smallint_unsigned  smallint(5) unsigned --                 type: TST_FOO1.tst_smallint_unsigned
+, in p_tst_tinyint_unsigned   tinyint(3) unsigned --                  type: TST_FOO1.tst_tinyint_unsigned
+, in p_tst_mediumint_unsigned mediumint(8) unsigned --                type: TST_FOO1.tst_mediumint_unsigned
+, in p_tst_bigint_unsigned    bigint(20) unsigned --                  type: TST_FOO1.tst_bigint_unsigned
+, in p_tst_decimal            decimal(10, 2) --                       type: TST_FOO1.tst_decimal
+, in p_tst_decimal0           decimal(65, 0) --                       type: TST_FOO1.tst_decimal0
+, in p_tst_float              float --                                type: TST_FOO1.tst_float
+, in p_tst_double             double --                               type: TST_FOO1.tst_double
+, in p_tst_bit                bit(8) --                               type: TST_FOO1.tst_bit
+, in p_tst_date               date --                                 type: TST_FOO1.tst_date
+, in p_tst_datetime           datetime --                             type: TST_FOO1.tst_datetime
+, in p_tst_timestamp          timestamp --                            type: TST_FOO1.tst_timestamp
+, in p_tst_time               time --                                 type: TST_FOO1.tst_time
+, in p_tst_year               year(4) --                              type: TST_FOO1.tst_year
+, in p_tst_char               char(10) character set utf8mb4 --       type: TST_FOO1.tst_char
+, in p_tst_varchar            varchar(10) character set utf8mb4 --    type: TST_FOO1.tst_varchar
+, in p_tst_binary             binary(10) --                           type: TST_FOO1.tst_binary
+, in p_tst_varbinary          varbinary(10) --                        type: TST_FOO1.tst_varbinary
+, in p_tst_enum               enum('a', 'b') character set utf8mb4 -- type: TST_FOO1.tst_enum
+, in p_tst_set                set('a', 'b') character set utf8mb4 --  type: TST_FOO1.tst_set
+)
+  modifies sql data
+begin
+  insert into TST_FOO1( tst_int
+                      , tst_smallint
+                      , tst_tinyint
+                      , tst_mediumint
+                      , tst_bigint
+                      , tst_int_unsigned
+                      , tst_smallint_unsigned
+                      , tst_tinyint_unsigned
+                      , tst_mediumint_unsigned
+                      , tst_bigint_unsigned
+                      , tst_decimal
+                      , tst_decimal0
+                      , tst_float
+                      , tst_double
+                      , tst_bit
+                      , tst_date
+                      , tst_datetime
+                      , tst_timestamp
+                      , tst_time
+                      , tst_year
+                      , tst_char
+                      , tst_varchar
+                      , tst_binary
+                      , tst_varbinary
+                      , tst_enum
+                      , tst_set )
+  values ( p_tst_int
+         , p_tst_smallint
+         , p_tst_tinyint
+         , p_tst_mediumint
+         , p_tst_bigint
+         , p_tst_int_unsigned
+         , p_tst_smallint_unsigned
+         , p_tst_tinyint_unsigned
+         , p_tst_mediumint_unsigned
+         , p_tst_bigint_unsigned
+         , p_tst_decimal
+         , p_tst_decimal0
+         , p_tst_float
+         , p_tst_double
+         , p_tst_bit
+         , p_tst_date
+         , p_tst_datetime
+         , p_tst_timestamp
+         , p_tst_time
+         , p_tst_year
+         , p_tst_char
+         , p_tst_varchar
+         , p_tst_binary
+         , p_tst_varbinary
+         , p_tst_enum
+         , p_tst_set );
+end

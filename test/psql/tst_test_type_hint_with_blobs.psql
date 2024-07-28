@@ -1,0 +1,128 @@
+/**
+ * Test for all possible types of parameters including LOB's.
+ *
+ * @param p_tst_int        Parameter of type int.
+ * @param p_tst_smallint   Parameter of type smallint.
+ * @param p_tst_tinyint    Parameter of type tinyint.
+ * @param p_tst_mediumint  Parameter of type mediumint.
+ * @param p_tst_bigint     Parameter of type bigint.
+ * @param p_tst_decimal    Parameter of type decimal.
+ * @param p_tst_decimal0   Parameter of type decimal with 0 scale.
+ * @param p_tst_float      Parameter of type float.
+ * @param p_tst_double     Parameter of type double.
+ * @param p_tst_bit        Parameter of type bit.
+ * @param p_tst_date       Parameter of type date.
+ * @param p_tst_datetime   Parameter of type datetime.
+ * @param p_tst_timestamp  Parameter of type timestamp.
+ * @param p_tst_time       Parameter of type time.
+ * @param p_tst_year       Parameter of type year.
+ * @param p_tst_char       Parameter of type char.
+ * @param p_tst_varchar    Parameter of type varchar.
+ * @param p_tst_binary     Parameter of type binary.
+ * @param p_tst_varbinary  Parameter of type varbinary.
+ * @param p_tst_tinyblob   Parameter of type tinyblob.
+ * @param p_tst_blob       Parameter of type blob.
+ * @param p_tst_mediumblob Parameter of type mediumblob.
+ * @param p_tst_longblob   Parameter of type longblob.
+ * @param p_tst_tinytext   Parameter of type tinytext.
+ * @param p_tst_text       Parameter of type text.
+ * @param p_tst_mediumtext Parameter of type mediumtext.
+ * @param p_tst_longtext   Parameter of type longtext.
+ * @param p_tst_enum       Parameter of type enum.
+ * @param p_tst_set        Parameter of type set.
+ *
+ * @type none
+ */
+create procedure tst_test_type_hint_with_blobs
+(
+  in p_tst_int        int(11) --                              type: TST_FOO1.tst_int
+, in p_tst_smallint   smallint(6) --                          type: TST_FOO1.tst_smallint
+, in p_tst_tinyint    tinyint(4) --                           type: TST_FOO1.tst_tinyint
+, in p_tst_mediumint  mediumint(9) --                         type: TST_FOO1.tst_mediumint
+, in p_tst_bigint     bigint(20) --                           type: TST_FOO1.tst_bigint
+, in p_tst_decimal    decimal(10, 2) --                       type: TST_FOO1.tst_decimal
+, in p_tst_decimal0   decimal(65, 0) --                       type: TST_FOO1.tst_decimal0
+, in p_tst_float      float --                                type: TST_FOO1.tst_float
+, in p_tst_double     double --                               type: TST_FOO1.tst_double
+, in p_tst_bit        bit(8) --                               type: TST_FOO1.tst_bit
+, in p_tst_date       date --                                 type: TST_FOO1.tst_date
+, in p_tst_datetime   datetime --                             type: TST_FOO1.tst_datetime
+, in p_tst_timestamp  timestamp --                            type: TST_FOO1.tst_timestamp
+, in p_tst_time       time --                                 type: TST_FOO1.tst_time
+, in p_tst_year       year(4) --                              type: TST_FOO1.tst_year
+, in p_tst_char       char(10) character set utf8mb4 --       type: TST_FOO1.tst_char
+, in p_tst_varchar    varchar(10) character set utf8mb4 --    type: TST_FOO1.tst_varchar
+, in p_tst_binary     binary(10) --                           type: TST_FOO1.tst_binary
+, in p_tst_varbinary  varbinary(10) --                        type: TST_FOO1.tst_varbinary
+, in p_tst_tinyblob   tinyblob --                             type: TST_FOO1.tst_tinyblob
+, in p_tst_blob       blob --                                 type: TST_FOO1.tst_blob
+, in p_tst_mediumblob mediumblob --                           type: TST_FOO1.tst_mediumblob
+, in p_tst_longblob   longblob --                             type: TST_FOO1.tst_longblob
+, in p_tst_tinytext   tinytext character set utf8mb4 --       type: TST_FOO1.tst_tinytext
+, in p_tst_text       text character set utf8mb4 --           type: TST_FOO1.tst_text
+, in p_tst_mediumtext mediumtext character set utf8mb4 --     type: TST_FOO1.tst_mediumtext
+, in p_tst_longtext   longtext character set utf8mb4 --       type: TST_FOO1.tst_longtext
+, in p_tst_enum       enum('a', 'b') character set utf8mb4 -- type: TST_FOO1.tst_enum
+, in p_tst_set        set('a', 'b') character set utf8mb4 --  type: TST_FOO1.tst_set
+)
+  modifies sql data
+begin
+  insert into TST_FOO1( tst_int
+                      , tst_smallint
+                      , tst_tinyint
+                      , tst_mediumint
+                      , tst_bigint
+                      , tst_decimal
+                      , tst_decimal0
+                      , tst_float
+                      , tst_double
+                      , tst_bit
+                      , tst_date
+                      , tst_datetime
+                      , tst_timestamp
+                      , tst_time
+                      , tst_year
+                      , tst_char
+                      , tst_varchar
+                      , tst_binary
+                      , tst_varbinary
+                      , tst_tinyblob
+                      , tst_blob
+                      , tst_mediumblob
+                      , tst_longblob
+                      , tst_tinytext
+                      , tst_text
+                      , tst_mediumtext
+                      , tst_longtext
+                      , tst_enum
+                      , tst_set )
+  values ( p_tst_int
+         , p_tst_smallint
+         , p_tst_tinyint
+         , p_tst_mediumint
+         , p_tst_bigint
+         , p_tst_decimal
+         , p_tst_decimal0
+         , p_tst_float
+         , p_tst_double
+         , p_tst_bit
+         , p_tst_date
+         , p_tst_datetime
+         , p_tst_timestamp
+         , p_tst_time
+         , p_tst_year
+         , p_tst_char
+         , p_tst_varchar
+         , p_tst_binary
+         , p_tst_varbinary
+         , p_tst_tinyblob
+         , p_tst_blob
+         , p_tst_mediumblob
+         , p_tst_longblob
+         , p_tst_tinytext
+         , p_tst_text
+         , p_tst_mediumtext
+         , p_tst_longtext
+         , p_tst_enum
+         , p_tst_set );
+end

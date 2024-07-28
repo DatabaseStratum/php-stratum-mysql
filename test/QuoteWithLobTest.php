@@ -3,89 +3,103 @@ declare(strict_types=1);
 
 namespace SetBased\Stratum\MySql\Test;
 
+use SetBased\Stratum\MySql\Exception\MySqlDataLayerException;
+use SetBased\Stratum\MySql\Exception\MySqlQueryErrorException;
+
 /**
  * Test cases for quoting variables with LOBs.
  */
 class QuoteWithLobTest extends DataLayerTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
-  public function genericInvalid($column, $value)
+  /**
+   * Test invoking a stored routine with an invalid value for a parameter/column type.
+   *
+   * @param string $column The column type.
+   * @param mixed  $value The invalid value.
+   */
+  public function genericInvalid(string $column, mixed $value): void
   {
     try
     {
-      $this->dataLayer->tstTest02(($column=='int') ? $value : null,
-                                  ($column=='smallint') ? $value : null,
-                                  ($column=='tinyint') ? $value : null,
-                                  ($column=='mediumint') ? $value : null,
-                                  ($column=='bigint') ? $value : null,
-                                  ($column=='decimal') ? $value : null,
-                                  ($column=='decimal0') ? $value : null,
-                                  ($column=='float') ? $value : null,
-                                  ($column=='double') ? $value : null,
-                                  ($column=='bit') ? $value : null,
-                                  ($column=='date') ? $value : null,
-                                  ($column=='datetime') ? $value : null,
-                                  ($column=='timestamp') ? $value : null,
-                                  ($column=='time') ? $value : null,
-                                  ($column=='year') ? $value : null,
-                                  ($column=='char') ? $value : null,
-                                  ($column=='varchar') ? $value : null,
-                                  ($column=='binary') ? $value : null,
-                                  ($column=='varbinary') ? $value : null,
-                                  ($column=='tinyblob') ? $value : null,
-                                  ($column=='blob') ? $value : null,
-                                  ($column=='mediumblob') ? $value : null,
-                                  ($column=='longblob') ? $value : null,
-                                  ($column=='tinytext') ? $value : null,
-                                  ($column=='text') ? $value : null,
-                                  ($column=='mediumtext') ? $value : null,
-                                  ($column=='longtext') ? $value : null,
-                                  ($column=='enum') ? $value : null,
-                                  ($column=='set') ? $value : null);
-      self::assertTrue(false, "column: $column, value: $value");
+      $this->dataLayer->tstTestTypeHintWithBlobs(($column=='int') ? $value : null,
+                                                 ($column=='smallint') ? $value : null,
+                                                 ($column=='tinyint') ? $value : null,
+                                                 ($column=='mediumint') ? $value : null,
+                                                 ($column=='bigint') ? $value : null,
+                                                 ($column=='decimal') ? $value : null,
+                                                 ($column=='decimal0') ? $value : null,
+                                                 ($column=='float') ? $value : null,
+                                                 ($column=='double') ? $value : null,
+                                                 ($column=='bit') ? $value : null,
+                                                 ($column=='date') ? $value : null,
+                                                 ($column=='datetime') ? $value : null,
+                                                 ($column=='timestamp') ? $value : null,
+                                                 ($column=='time') ? $value : null,
+                                                 ($column=='year') ? $value : null,
+                                                 ($column=='char') ? $value : null,
+                                                 ($column=='varchar') ? $value : null,
+                                                 ($column=='binary') ? $value : null,
+                                                 ($column=='varbinary') ? $value : null,
+                                                 ($column=='tinyblob') ? $value : null,
+                                                 ($column=='blob') ? $value : null,
+                                                 ($column=='mediumblob') ? $value : null,
+                                                 ($column=='longblob') ? $value : null,
+                                                 ($column=='tinytext') ? $value : null,
+                                                 ($column=='text') ? $value : null,
+                                                 ($column=='mediumtext') ? $value : null,
+                                                 ($column=='longtext') ? $value : null,
+                                                 ($column=='enum') ? $value : null,
+                                                 ($column=='set') ? $value : null);
+      self::fail("column: $column, value: $value");
     }
-    catch (\TypeError $e)
-    {
-      self::assertTrue(true);
-    }
-    catch (\RuntimeException $e)
+    catch (\TypeError|\RuntimeException $e)
     {
       self::assertTrue(true);
     }
   }
 
   //--------------------------------------------------------------------------------------------------------------------
-  public function genericValid($column, $value)
+  /**
+   * Test invoking a stored routine with a valid value for a parameter/column type.
+   *
+   * @param string $column The column type.
+   * @param mixed  $value  The invalid value.
+   *
+   * @throws MySqlDataLayerException
+   * @throws MySqlQueryErrorException
+   */
+  public function genericValid(string $column, mixed $value): void
   {
-    $n = $this->dataLayer->tstTest02(($column=='int') ? $value : null,
-                                     ($column=='smallint') ? $value : null,
-                                     ($column=='tinyint') ? $value : null,
-                                     ($column=='mediumint') ? $value : null,
-                                     ($column=='bigint') ? $value : null,
-                                     ($column=='decimal') ? $value : null,
-                                     ($column=='decimal0') ? $value : null,
-                                     ($column=='float') ? $value : null,
-                                     ($column=='double') ? $value : null,
-                                     ($column=='bit') ? $value : null,
-                                     ($column=='date') ? $value : null,
-                                     ($column=='datetime') ? $value : null,
-                                     ($column=='timestamp') ? $value : null,
-                                     ($column=='time') ? $value : null,
-                                     ($column=='year') ? $value : null,
-                                     ($column=='char') ? $value : null,
-                                     ($column=='varchar') ? $value : null,
-                                     ($column=='binary') ? $value : null,
-                                     ($column=='varbinary') ? $value : null,
-                                     ($column=='tinyblob') ? $value : null,
-                                     ($column=='blob') ? $value : null,
-                                     ($column=='mediumblob') ? $value : null,
-                                     ($column=='longblob') ? $value : null,
-                                     ($column=='tinytext') ? $value : null,
-                                     ($column=='text') ? $value : null,
-                                     ($column=='mediumtext') ? $value : null,
-                                     ($column=='longtext') ? $value : null,
-                                     ($column=='enum') ? $value : null,
-                                     ($column=='set') ? $value : null);
+    $n = $this->dataLayer->tstTestTypeHintWithBlobs(($column=='int') ? $value : null,
+                                                    ($column=='smallint') ? $value : null,
+                                                    ($column=='tinyint') ? $value : null,
+                                                    ($column=='mediumint') ? $value : null,
+                                                    ($column=='bigint') ? $value : null,
+                                                    ($column=='decimal') ? $value : null,
+                                                    ($column=='decimal0') ? $value : null,
+                                                    ($column=='float') ? $value : null,
+                                                    ($column=='double') ? $value : null,
+                                                    ($column=='bit') ? $value : null,
+                                                    ($column=='date') ? $value : null,
+                                                    ($column=='datetime') ? $value : null,
+                                                    ($column=='timestamp') ? $value : null,
+                                                    ($column=='time') ? $value : null,
+                                                    ($column=='year') ? $value : null,
+                                                    ($column=='char') ? $value : null,
+                                                    ($column=='varchar') ? $value : null,
+                                                    ($column=='binary') ? $value : null,
+                                                    ($column=='varbinary') ? $value : null,
+                                                    ($column=='tinyblob') ? $value : null,
+                                                    ($column=='blob') ? $value : null,
+                                                    ($column=='mediumblob') ? $value : null,
+                                                    ($column=='longblob') ? $value : null,
+                                                    ($column=='tinytext') ? $value : null,
+                                                    ($column=='text') ? $value : null,
+                                                    ($column=='mediumtext') ? $value : null,
+                                                    ($column=='longtext') ? $value : null,
+                                                    ($column=='enum') ? $value : null,
+                                                    ($column=='set') ? $value : null);
     self::assertEquals(1, $n);
   }
 
@@ -93,7 +107,7 @@ class QuoteWithLobTest extends DataLayerTestCase
   /**
    * Test illegal values will raise an exception.
    */
-  public function testInvalid()
+  public function testInvalid(): void
   {
     $tests = [];
 
@@ -128,8 +142,11 @@ class QuoteWithLobTest extends DataLayerTestCase
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Test all column types are quoted properly.
+   *
+   * @throws MySqlDataLayerException
+   * @throws MySqlQueryErrorException
    */
-  public function testValid()
+  public function testValid(): void
   {
     $tests = [];
 
