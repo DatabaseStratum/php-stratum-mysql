@@ -3,11 +3,10 @@
  *
  * @type rows
  */
-create procedure tst_inet6_get_all()
-modifies sql data
+create procedure tst_inet6_get_all ()
+  modifies sql data
 begin
   select ip_ip
-  from   TST_IPV6
-  order by ip_ip
-  ;
+  from TST_IPV6
+  order by ip_ip;
 end

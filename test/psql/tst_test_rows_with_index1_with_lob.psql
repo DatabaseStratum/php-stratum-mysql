@@ -6,12 +6,14 @@
  *
  * @type rows_with_index tst_c01,tst_c02
  */
-create procedure tst_test_rows_with_index1_with_lob( p_count int,
-                                                     p_blob  blob )
-reads sql data
+create procedure tst_test_rows_with_index1_with_lob
+(
+  p_count int
+, p_blob  blob
+)
+  reads sql data
 begin
   select *
-  from   TST_FOO2
-  where  tst_c00 <= p_count
-  ;
+  from TST_FOO2
+  where tst_c00 <= p_count;
 end

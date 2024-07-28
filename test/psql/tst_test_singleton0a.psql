@@ -7,14 +7,15 @@
  *                * 2 For a invalid test.
  *
  * @type singleton0
- *
  * @return int|null
  */
-create procedure tst_test_singleton0a( p_count int )
-reads sql data
+create procedure tst_test_singleton0a
+(
+  p_count int
+)
+  reads sql data
 begin
   select 1
-  from   TST_FOO2
-  where  tst_c00 <= p_count
-  ;
+  from TST_FOO2
+  where tst_c00 <= p_count;
 end

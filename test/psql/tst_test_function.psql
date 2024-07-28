@@ -5,13 +5,15 @@
  * @param p_b Parameter B.
  *
  * @type function
- *
  * @return int|null
  */
-create function tst_test_function(p_a int, p_b int)
-returns int
-deterministic
-reads sql data
+create function tst_test_function
+(
+  p_a int
+, p_b int
+) returns int
+  deterministic
+  reads sql data
 begin
   return p_a + p_b;
 end

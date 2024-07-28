@@ -9,12 +9,14 @@
  *
  * @type row0
  */
-create procedure tst_test_row0a_with_lob( p_count int,
-                                          p_blob  blob )
-reads sql data
+create procedure tst_test_row0a_with_lob
+(
+  p_count int
+, p_blob  blob
+)
+  reads sql data
 begin
   select *
-  from   TST_FOO2
-  where  tst_c00 <= p_count
-  ;
+  from TST_FOO2
+  where tst_c00 <= p_count;
 end

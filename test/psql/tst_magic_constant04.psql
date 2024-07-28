@@ -2,11 +2,10 @@
  * Test for magic constant.
  *
  * @type singleton1
- *
  * @return string
  */
-create procedure tst_magic_constant04()
-reads sql data
+create procedure tst_magic_constant04 ()
+  reads sql data
 begin
   select __DIR__;
 end

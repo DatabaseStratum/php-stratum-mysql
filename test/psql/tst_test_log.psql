@@ -3,10 +3,12 @@
  *
  * @type log
  */
-create procedure tst_test_log()
-reads sql data
+create procedure tst_test_log ()
+  reads sql data
 begin
- select 'Hello, world', 1;
+  select 'Hello, world'
+       , 1;
 
- select 'Hello, world', 2;
+  select 'Hello, world'
+       , 2;
 end

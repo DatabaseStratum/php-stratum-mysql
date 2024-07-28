@@ -4,13 +4,14 @@
  * @param p_ret The return value.
  *
  * @type function
- *
  * @return bool
  */
-create function tst_test_function_bool1(p_ret int)
-returns int
-deterministic
-reads sql data
+create function tst_test_function_bool1
+(
+  p_ret int
+) returns int
+  deterministic
+  reads sql data
 begin
   return p_ret;
 end

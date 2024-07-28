@@ -3,10 +3,9 @@
  *
  * @type table
  */
-create procedure tst_test_table()
-reads sql data
+create procedure tst_test_table ()
+  reads sql data
 begin
   select *
-  from   TST_TABLE
-  ;
+  from TST_TABLE;
 end

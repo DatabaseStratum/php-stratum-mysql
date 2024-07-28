@@ -5,10 +5,13 @@
  *
  * @type rows_with_key tst_id
  */
-create procedure tst_test_list_of_int( in p_ids varchar(255) )
-reads sql data
+create procedure tst_test_list_of_int
+(
+  in p_ids varchar(255)
+)
+  reads sql data
 begin
-  set @l_sql = CONCAT('select * from TST_LABEL where tst_id in (', ifnull(p_ids,'null'), ');');
+  set @l_sql = concat('select * from TST_LABEL where tst_id in (', ifnull(p_ids, 'null'), ');');
   prepare stmt from @l_sql;
   execute stmt;
 end

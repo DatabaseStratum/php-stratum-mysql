@@ -9,14 +9,17 @@
  * @param p_blob  The BLOB.
  *
  * @type singleton0
- *
  * @return bool
  */
-create procedure tst_test_singleton0b_with_lob(p_count int, p_value int, p_blob blob)
-reads sql data
+create procedure tst_test_singleton0b_with_lob
+(
+  p_count int
+, p_value int
+, p_blob  blob
+)
+  reads sql data
 begin
   select p_value
-  from   TST_FOO2
-  where  tst_c00 <= p_count
-  ;
+  from TST_FOO2
+  where tst_c00 <= p_count;
 end

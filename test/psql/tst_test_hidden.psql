@@ -3,8 +3,8 @@
  *
  * @type hidden
  */
-create procedure tst_test_hidden()
-reads sql data
+create procedure tst_test_hidden ()
+  reads sql data
 begin
   select 1;
 end

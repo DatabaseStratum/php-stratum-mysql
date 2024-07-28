@@ -4,13 +4,14 @@
  * @param p_ret The return value.
  *
  * @type function
- *
  * @return bool
  */
-create function tst_test_function_bool2(p_ret varchar(8))
-returns varchar(8)
-deterministic
-reads sql data
+create function tst_test_function_bool2
+(
+  p_ret varchar(8)
+) returns varchar(8)
+  deterministic
+  reads sql data
 begin
   return p_ret;
 end

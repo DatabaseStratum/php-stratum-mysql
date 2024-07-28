@@ -6,9 +6,12 @@
  *
  * @type none
  */
-create procedure tst_test_parameter_type(p_php_type1 decimal(10,2),
-                                         p_php_type2 decimal(65,0))
-reads sql data
+create procedure tst_test_parameter_type
+(
+  p_php_type1 decimal(10, 2)
+, p_php_type2 decimal(65, 0)
+)
+  reads sql data
 begin
   -- Nothing to do.
 end

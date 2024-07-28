@@ -3,10 +3,9 @@
  *
  * @type rows
  */
-create procedure tst_test_illegal_query()
-reads sql data
+create procedure tst_test_illegal_query ()
+  reads sql data
 begin
   select *
-  from   DOES_NOT_EXISTS
-  ;
+  from DOES_NOT_EXISTS;
 end

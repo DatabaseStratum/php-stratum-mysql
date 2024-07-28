@@ -8,11 +8,13 @@
  *
  * @type row1
  */
-create procedure tst_test_row1a( p_count int )
-reads sql data
+create procedure tst_test_row1a
+(
+  p_count int
+)
+  reads sql data
 begin
   select *
-  from   TST_FOO2
-  where  tst_c00 <= p_count
-  ;
+  from TST_FOO2
+  where tst_c00 <= p_count;
 end

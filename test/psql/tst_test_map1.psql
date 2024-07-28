@@ -5,12 +5,14 @@
  *
  * @type map
  */
-create procedure tst_test_map1(p_count int)
-reads sql data
+create procedure tst_test_map1
+(
+  p_count int
+)
+  reads sql data
 begin
   select tst_c03
-  ,      tst_c00
-  from   TST_FOO2
-  where  tst_c00 <= p_count
-  ;
+       , tst_c00
+  from TST_FOO2
+  where tst_c00 <= p_count;
 end
