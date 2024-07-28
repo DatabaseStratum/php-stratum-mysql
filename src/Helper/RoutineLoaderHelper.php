@@ -34,7 +34,7 @@ class RoutineLoaderHelper
   /**
    * The revision of the metadata of the stored routines.
    */
-  const METADATA_REVISION = '3';
+  const METADATA_REVISION = '4';
 
   /**
    * The metadata of the table columns of the table for bulk insert.
