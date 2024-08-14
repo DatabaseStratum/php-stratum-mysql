@@ -62,10 +62,9 @@ class BulkInsertWrapper extends Wrapper
   {
     $this->throws(MySqlQueryErrorException::class);
 
-    // Validate number of column names and number of column types are equal.
     $n1 = sizeof($this->routine['bulk_insert_keys']);
     $n2 = sizeof($this->routine['bulk_insert_columns']);
-    if ($n1!=$n2)
+    if ($n1!==$n2)
     {
       throw new LogicException("Number of fields %d and number of columns %d don't match.", $n1, $n2);
     }

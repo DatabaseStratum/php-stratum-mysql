@@ -444,16 +444,16 @@ class RoutineLoaderHelper
   private function extractBulkInsertTableColumnsInfo(): void
   {
     // Return immediately if designation type is not appropriate for this method.
-    if ($this->designationType!='bulk_insert')
+    if ($this->designationType!=='bulk_insert')
     {
       return;
     }
 
     // Check if table is a temporary table or a non-temporary table.
-    $tableIsNonTemporary = $this->dl->checkTableExists($this->bulkInsertTableName);
+    $isTemporaryTable = !$this->dl->checkTableExists($this->bulkInsertTableName);
 
-    // Create temporary table if table is non-temporary table.
-    if (!$tableIsNonTemporary)
+    // Create temporary table if table is a temporary table.
+    if ($isTemporaryTable)
     {
       $this->dl->callProcedure($this->routineName);
     }
@@ -461,8 +461,8 @@ class RoutineLoaderHelper
     // Get information about the columns of the table.
     $description = $this->dl->describeTable($this->bulkInsertTableName);
 
-    // Drop temporary table if table is non-temporary.
-    if (!$tableIsNonTemporary)
+    // Drop temporary table if table is temporary.
+    if ($isTemporaryTable)
     {
       $this->dl->dropTemporaryTable($this->bulkInsertTableName);
     }
@@ -689,6 +689,8 @@ class RoutineLoaderHelper
 
     return null;
   }
+
+  //--------------------------------------------------------------------------------------------------------------------
   /**
    * Loads the stored routine into the database.
    *
