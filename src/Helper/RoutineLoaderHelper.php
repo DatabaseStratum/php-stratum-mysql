@@ -993,6 +993,43 @@ class RoutineLoaderHelper
       }
     }
 
+    $blocks = [];
+    $start  = null;
+    $length = 0;
+    foreach ($this->routineSourceCodeLines as $index => $line)
+    {
+      $n = preg_match('/--\s+type:\s+.*$/', $line, $matches);
+      if ($n!==0)
+      {
+        if ($start===null)
+        {
+          $start = $index;
+        }
+        $length = max($length, mb_strlen($line) - mb_strlen($matches[0]) + 2);
+      }
+      else
+      {
+        if ($start!==null)
+        {
+          $blocks[] = ['first' => $start, 'last' => $index, 'length' => $length];
+          $start    = null;
+          $length   = 0;
+        }
+      }
+    }
+
+    foreach ($blocks as $block)
+    {
+      for ($index = $block['first']; $index<$block['last']; $index++)
+      {
+        preg_match('/\s+type:\s+.*$/', $this->routineSourceCodeLines[$index], $matches);
+        $leftPart = mb_substr($this->routineSourceCodeLines[$index], 0, -mb_strlen($matches[0]));
+        $leftPart = $leftPart.str_repeat(' ', $block['length'] - mb_strlen($leftPart) + 1);
+
+        $this->routineSourceCodeLines[$index] = $leftPart.ltrim($matches[0]);
+      }
+    }
+
     $routineSourceCode = implode(PHP_EOL, $this->routineSourceCodeLines);
     if ($this->routineSourceCode!==$routineSourceCode)
     {
