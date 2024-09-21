@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace SetBased\Stratum\MySql\Test;
 
 /**
- * Test case for bulk inserts.
+ * Test case for insert multiple.
  */
-class BulkInsertTest extends DataLayerTestCase
+class InsertMultipleTest extends DataLayerTestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -124,7 +124,7 @@ class BulkInsertTest extends DataLayerTestCase
                'field_set'                => 'a,b',
                'field_bit'                => '1010'];
 
-    $this->dataLayer->tstTestBulkInsert01($data);
+    $this->dataLayer->tstTestInsertMultiple01($data);
 
     $query = 'SELECT count(*) FROM `TST_TEMPO`';
     $ret   = $this->dataLayer->executeSingleton1($query);
@@ -143,7 +143,7 @@ class BulkInsertTest extends DataLayerTestCase
                'field4' => 1,
                'field5' => 1];
 
-    $this->dataLayer->tstTestBulkInsert02($data);
+    $this->dataLayer->tstTestInsertMultiple02($data);
 
     $query = 'SELECT count(*) FROM `TST_TEMPO`';
     $ret   = $this->dataLayer->executeSingleton1($query);

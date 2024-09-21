@@ -38,8 +38,6 @@ class MySqlQueryErrorException extends MySqlDataLayerException implements QueryE
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Returns whether this exception is caused by an invalid SQL statement.
-   *
-   * @return bool
    */
   public function isQueryError(): bool
   {
@@ -51,8 +49,6 @@ class MySqlQueryErrorException extends MySqlDataLayerException implements QueryE
    * Returns an array with the lines of the SQL statement. The line where the error occurred will be styled.
    *
    * @param string $style The style for highlighting the line with error.
-   *
-   * @return array The lines of the SQL statement.
    */
   public function styledQuery(string $style = 'error'): array
   {
@@ -92,8 +88,6 @@ class MySqlQueryErrorException extends MySqlDataLayerException implements QueryE
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Composes the message of this exception as array of lines.
-   *
-   * @return array
    */
   protected function composerMessage(): array
   {

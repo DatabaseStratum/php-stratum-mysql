@@ -37,7 +37,6 @@ class RowsWithKeyTest extends DataLayerTestCase
     $rows = $this->dataLayer->tstTestRowsWithKey1(0);
     self::assertIsArray($rows);
     self::assertCount(0, $rows);
-
   }
 
   //--------------------------------------------------------------------------------------------------------------------

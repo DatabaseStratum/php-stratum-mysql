@@ -30,13 +30,8 @@
             <arg value="test/unit-test.sh"/>
         </exec>
         <delete file="test/etc/routines.json" quiet="true"/>
-        <!-- Rename folder for \MagicConstantTest::test5 -->
         <move file="test/psql/rename" tofile="test/psql/ test_escape ' &quot; @ $ ! ." overwrite="true" haltonerror="false"/>
-        <!-- Run unit tests -->
-        <exec executable="bin/phpunit" passthru="true" checkreturn="true">
-            <arg value="--verbose"/>
-        </exec>
-        <!-- Rename folder back for \MagicConstantTest::test5 -->
+        <exec executable="bin/phpunit" passthru="true" checkreturn="true"/>
         <move file="test/psql/ test_escape ' &quot; @ $ ! ." tofile="test/psql/rename" overwrite="true"/>
     </target>
 </project>

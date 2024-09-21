@@ -1,9 +1,9 @@
 /**
- * Test for designation bulk_insert.
+ * Test for designation insert_multiple.
  *
- * @type bulk_insert TST_TEMPO field_int,field_smallint,field_mediumint,field_tinyint,field_bigint,field_int_unsigned,field_smallint_unsigned,field_mediumint_unsigned,field_tinyint_unsigned,field_bigint_unsigned,field_year,field_decimal,field_decimal0,field_float,field_double,field_binary,field_varbinary,field_char,field_varchar,field_time,field_timestamp,field_date,field_datetime,field_enum,field_set,field_bit
+ * @type insert_multiple TST_TEMPO field_int,field_smallint,field_mediumint,field_tinyint,field_bigint,field_int_unsigned,field_smallint_unsigned,field_mediumint_unsigned,field_tinyint_unsigned,field_bigint_unsigned,field_year,field_decimal,field_decimal0,field_float,field_double,field_binary,field_varbinary,field_char,field_varchar,field_time,field_timestamp,field_date,field_datetime,field_enum,field_set,field_bit
  */
-create procedure tst_test_bulk_insert01 ()
+create procedure tst_test_insert_multiple01 ()
   modifies sql data
 begin
   drop temporary table if exists TST_TEMPO;

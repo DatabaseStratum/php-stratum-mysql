@@ -51,9 +51,7 @@ class MySqlDataLayerException extends \RuntimeException implements DataLayerExce
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Returns the error code of the error
-   *
-   * @return int
+   * Returns the error code of the error.
    */
   public function getErrno(): int
   {
@@ -62,8 +60,6 @@ class MySqlDataLayerException extends \RuntimeException implements DataLayerExce
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Returns the description of the error.
-   *
-   * @return string
    */
   public function getError(): string
   {
@@ -82,8 +78,6 @@ class MySqlDataLayerException extends \RuntimeException implements DataLayerExce
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Composes the message of this exception as array of lines.
-   *
-   * @return array
    */
   protected function composerMessage(): array
   {
@@ -99,8 +93,6 @@ class MySqlDataLayerException extends \RuntimeException implements DataLayerExce
    *
    * @param string $header The header.
    * @param string $string The string possible with multiple lines.
-   *
-   * @return array
    */
   protected function splitIntoTwoColumns(string $header, string $string): array
   {
@@ -121,8 +113,6 @@ class MySqlDataLayerException extends \RuntimeException implements DataLayerExce
    * columns.
    *
    * @param array $lines The lines of the error message.
-   *
-   * @return string
    */
   private function implodeMessage(array $lines): string
   {

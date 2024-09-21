@@ -3,19 +3,71 @@ declare(strict_types=1);
 
 namespace SetBased\Stratum\MySql\Wrapper;
 
+use SetBased\Stratum\Common\Wrapper\Helper\WrapperContext;
 use SetBased\Stratum\MySql\Exception\MySqlDataLayerException;
 use SetBased\Stratum\MySql\Exception\MySqlQueryErrorException;
 
 /**
  * Class for generating a wrapper method for a stored procedure that selects 0, 1, or more rows.
  */
-class RowsWrapper extends Wrapper
+class RowsWrapper extends MysqlWrapper
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * @inheritdoc
    */
-  protected function getDocBlockReturnType(): string
+  protected function generateMethodBodyWithLobFetchData(WrapperContext $context): void
+  {
+    $this->throws(MySqlQueryErrorException::class);
+
+    $context->codeStore->append('$row = [];');
+    $context->codeStore->append('$this->bindAssoc($stmt, $row);');
+    $context->codeStore->append('');
+    $context->codeStore->append('$tmp = [];');
+    $context->codeStore->append('while (($b = $stmt->fetch()))');
+    $context->codeStore->append('{');
+    $context->codeStore->append('$new = [];');
+    $context->codeStore->append('foreach($row as $key => $value)');
+    $context->codeStore->append('{');
+    $context->codeStore->append('$new[$key] = $value;');
+    $context->codeStore->append('}');
+    $context->codeStore->append(' $tmp[] = $new;');
+    $context->codeStore->append('}');
+    $context->codeStore->append('');
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * @inheritdoc
+   */
+  protected function generateMethodBodyWithLobReturnData(WrapperContext $context): void
+  {
+    $this->throws(MySqlDataLayerException::class);
+    $this->throws(MySqlQueryErrorException::class);
+
+    $context->codeStore->append('if ($b===false) throw $this->dataLayerError(\'mysqli_stmt::fetch\');');
+    $context->codeStore->append('');
+    $context->codeStore->append('return $tmp;');
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * @inheritdoc
+   */
+  protected function generateMethodBodyWithoutLob(WrapperContext $context): void
+  {
+    $this->throws(MySqlQueryErrorException::class);
+
+    $context->codeStore->append(sprintf("return \$this->executeRows('call %s(%s)');",
+                                        $context->phpStratumMetadata['routine_name'],
+                                        $this->getRoutineArgs($context)));
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * @inheritdoc
+   */
+  protected function getDocBlockReturnType(WrapperContext $context): string
   {
     return 'array[]';
   }
@@ -24,59 +76,9 @@ class RowsWrapper extends Wrapper
   /**
    * @inheritdoc
    */
-  protected function getReturnTypeDeclaration(): string
+  protected function getReturnTypeDeclaration(WrapperContext $context): string
   {
     return ': array';
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * @inheritdoc
-   */
-  protected function writeResultHandler(): void
-  {
-    $this->throws(MySqlQueryErrorException::class);
-
-    $routineArgs = $this->getRoutineArgs();
-    $this->codeStore->append('return $this->executeRows(\'call '.$this->routine['routine_name'].'('.$routineArgs.')\');');
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * @inheritdoc
-   */
-  protected function writeRoutineFunctionLobFetchData(): void
-  {
-    $this->throws(MySqlQueryErrorException::class);
-
-    $this->codeStore->append('$row = [];');
-    $this->codeStore->append('$this->bindAssoc($stmt, $row);');
-    $this->codeStore->append('');
-    $this->codeStore->append('$tmp = [];');
-    $this->codeStore->append('while (($b = $stmt->fetch()))');
-    $this->codeStore->append('{');
-    $this->codeStore->append('$new = [];');
-    $this->codeStore->append('foreach($row as $key => $value)');
-    $this->codeStore->append('{');
-    $this->codeStore->append('$new[$key] = $value;');
-    $this->codeStore->append('}');
-    $this->codeStore->append(' $tmp[] = $new;');
-    $this->codeStore->append('}');
-    $this->codeStore->append('');
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * @inheritdoc
-   */
-  protected function writeRoutineFunctionLobReturnData(): void
-  {
-    $this->throws(MySqlDataLayerException::class);
-    $this->throws(MySqlQueryErrorException::class);
-
-    $this->codeStore->append('if ($b===false) throw $this->dataLayerError(\'mysqli_stmt::fetch\');');
-    $this->codeStore->append('');
-    $this->codeStore->append('return $tmp;');
   }
 
   //--------------------------------------------------------------------------------------------------------------------

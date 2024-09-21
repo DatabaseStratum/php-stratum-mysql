@@ -4,12 +4,11 @@
  * @param p_count The number of rows selected.
  *                * 0 For a valid test.
  *                * 1 For a valid test.
- *                * 2 For a invalid test.
+ *                * 2 For an invalid test.
  * @param p_value The selected value.
  * @param p_blob  The BLOB.
  *
- * @type singleton0
- * @return bool
+ * @type singleton0 bool
  */
 create procedure tst_test_singleton0b_with_lob
 (

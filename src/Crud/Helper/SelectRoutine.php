@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace SetBased\Stratum\MySql\Helper\Crud;
+namespace SetBased\Stratum\MySql\Crud\Helper;
 
 /**
  * Generates the code for a stored routine that selects a row.

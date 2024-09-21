@@ -10,7 +10,7 @@ use SetBased\Stratum\MySql\Exception\MySqlQueryErrorException;
 /**
  * Data layer for retrieving metadata and loading stored routines.
  */
-class MySqlMetaDataLayer
+class MySqlMetadataLayer
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -29,7 +29,7 @@ class MySqlMetaDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * MySqlMetaDataLayer constructor.
+   * MySqlMetadataLayer constructor.
    *
    * @param MySqlDataLayer $dl The connection to the MySQL instance.
    * @param StratumStyle   $io The Output decorator.
@@ -420,8 +420,8 @@ and   table_name   = %s',
   public function labelsFromTable(string $tableName, string $idColumnName, string $labelColumnName): array
   {
     $sql = "
-select `%s`  id
-,      `%s`  label
+select `%s`  as id
+,      `%s`  as label
 from   `%s`
 where   nullif(`%s`,'') is not null";
 
@@ -432,22 +432,9 @@ where   nullif(`%s`,'') is not null";
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Loads a stored routine.
-   *
-   * @param string $routineSource The source of the routine.
-   *
-   * @throws MySqlQueryErrorException
-   */
-  public function loadRoutine(string $routineSource): void
-  {
-    $this->executeNone($routineSource);
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
    * Escapes special characters in a string such that it can be safely used in SQL statements.
    *
-   * Wrapper around [mysqli::real_escape_string](http://php.net/manual/mysqli.real-escape-string.php).
+   * MysqlWrapper around [mysqli::real_escape_string](http://php.net/manual/mysqli.real-escape-string.php).
    *
    * @param string $string The string.
    *

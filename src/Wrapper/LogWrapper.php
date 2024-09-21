@@ -3,18 +3,50 @@ declare(strict_types=1);
 
 namespace SetBased\Stratum\MySql\Wrapper;
 
+use SetBased\Stratum\Common\Wrapper\Helper\WrapperContext;
 use SetBased\Stratum\MySql\Exception\MySqlDataLayerException;
 
 /**
  * Class for generating a wrapper method for a stored procedure 'selecting' rows for logging.
  */
-class LogWrapper extends Wrapper
+class LogWrapper extends MysqlWrapper
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * @inheritdoc
    */
-  protected function getDocBlockReturnType(): string
+  protected function generateMethodBodyWithLobFetchData(WrapperContext $context): void
+  {
+    // Nothing to do.
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * @inheritdoc
+   */
+  protected function generateMethodBodyWithLobReturnData(WrapperContext $context): void
+  {
+    // Nothing to do.
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * @inheritdoc
+   */
+  protected function generateMethodBodyWithoutLob(WrapperContext $context): void
+  {
+    $this->throws(MySqlDataLayerException::class);
+
+    $context->codeStore->append(sprintf("return \$this->executeLog('call %s(%s)');",
+                                        $context->phpStratumMetadata['routine_name'],
+                                        $this->getRoutineArgs($context)));
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * @inheritdoc
+   */
+  protected function getDocBlockReturnType(WrapperContext $context): string
   {
     return 'int';
   }
@@ -23,39 +55,9 @@ class LogWrapper extends Wrapper
   /**
    * @inheritdoc
    */
-  protected function getReturnTypeDeclaration(): string
+  protected function getReturnTypeDeclaration(WrapperContext $context): string
   {
     return ': int';
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * @inheritdoc
-   */
-  protected function writeResultHandler(): void
-  {
-    $this->throws(MySqlDataLayerException::class);
-
-    $routineArgs = $this->getRoutineArgs();
-    $this->codeStore->append('return $this->executeLog(\'call '.$this->routine['routine_name'].'('.$routineArgs.')\');');
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * @inheritdoc
-   */
-  protected function writeRoutineFunctionLobFetchData(): void
-  {
-    // Nothing to do.
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * @inheritdoc
-   */
-  protected function writeRoutineFunctionLobReturnData(): void
-  {
-    // Nothing to do.
   }
 
   //--------------------------------------------------------------------------------------------------------------------

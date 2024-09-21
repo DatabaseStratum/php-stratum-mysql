@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace SetBased\Stratum\MySql\Helper;
+namespace SetBased\Stratum\MySql\Loader\Helper;
 
 use SetBased\Stratum\MySql\Exception\MySqlQueryErrorException;
-use SetBased\Stratum\MySql\MySqlMetaDataLayer;
+use SetBased\Stratum\MySql\MySqlMetadataLayer;
 
 /**
  * Helper class for handling the SQL mode of the MySQL instance.
@@ -36,20 +36,18 @@ class SqlModeHelper
   /**
    * The metadata layer.
    *
-   * @var MySqlMetaDataLayer
+   * @var MySqlMetadataLayer
    */
-  private MySqlMetaDataLayer $dl;
+  private MySqlMetadataLayer $dl;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Object constructor.
    *
-   * @param MySqlMetaDataLayer $dl      The metadata layer.
+   * @param MySqlMetadataLayer $dl      The metadata layer.
    * @param string             $sqlMode The SQL mode.
-   *
-   * @throws MySqlQueryErrorException
    */
-  public function __construct(MySqlMetaDataLayer $dl, string $sqlMode)
+  public function __construct(MySqlMetadataLayer $dl, string $sqlMode)
   {
     $this->dl = $dl;
 
@@ -83,8 +81,6 @@ class SqlModeHelper
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Adds ORACLE to the current SQL_MODE if the initial SQL_MODE did not include ORACLE.
-   *
-   * @throws MySqlQueryErrorException
    */
   public function addIfRequiredOracleMode(): void
   {
@@ -100,8 +96,6 @@ class SqlModeHelper
    * Compares a SQL mode with the current SQL mode with or without ORACLE when appropriate.
    *
    * @param string $sqlMode The SQL mode.
-   *
-   * @return bool
    */
   public function compare(string $sqlMode): bool
   {
@@ -116,9 +110,16 @@ class SqlModeHelper
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * Returns the SQL mode in canonical  order.
+   */
+  public function getCanonicalSqlMode(): string
+  {
+    return $this->canonicalSqlMode;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
    * Returns whether the MySQL instance has ORACLE SQL mode.
-   *
-   * @return bool
    */
   public function hasOracleMode(): bool
   {
@@ -128,8 +129,6 @@ class SqlModeHelper
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Removes ORACLE from the current SQL_MODE if the initial SQL_MODE did not include ORACLE.
-   *
-   * @throws MySqlQueryErrorException
    */
   public function removeIfRequiredOracleMode(): void
   {

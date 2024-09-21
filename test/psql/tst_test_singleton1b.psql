@@ -2,13 +2,12 @@
  * Test for designation type singleton1 with return type bool.
  *
  * @param p_count The number of rows selected.
- *                * 0 For a invalid test.
+ *                * 0 For an invalid test.
  *                * 1 For a valid test.
- *                * 2 For a invalid test.
+ *                * 2 For an invalid test.
  * @param p_value The selected value.
  *
- * @type singleton1
- * @return bool
+ * @type singleton1 bool
  */
 create procedure tst_test_singleton1b
 (

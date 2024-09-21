@@ -10,5 +10,6 @@
 /test/psql/inet4
 /test/psql/inet6
 /test/psql/oracle
+/test/psql/uuid
 /test/report/
 /vendor/

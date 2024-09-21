@@ -5,13 +5,10 @@ namespace SetBased\Stratum\MySql\Backend;
 
 use SetBased\Exception\FallenException;
 use SetBased\Stratum\Backend\CrudWorker;
-use SetBased\Stratum\MySql\Exception\MySqlConnectFailedException;
-use SetBased\Stratum\MySql\Exception\MySqlDataLayerException;
-use SetBased\Stratum\MySql\Exception\MySqlQueryErrorException;
-use SetBased\Stratum\MySql\Helper\Crud\DeleteRoutine;
-use SetBased\Stratum\MySql\Helper\Crud\InsertRoutine;
-use SetBased\Stratum\MySql\Helper\Crud\SelectRoutine;
-use SetBased\Stratum\MySql\Helper\Crud\UpdateRoutine;
+use SetBased\Stratum\MySql\Crud\Helper\DeleteRoutine;
+use SetBased\Stratum\MySql\Crud\Helper\InsertRoutine;
+use SetBased\Stratum\MySql\Crud\Helper\SelectRoutine;
+use SetBased\Stratum\MySql\Crud\Helper\UpdateRoutine;
 
 /**
  * Creates stored procedures for CRUD operations.
@@ -25,11 +22,6 @@ class MySqlCrudWorker extends MySqlWorker implements CrudWorker
    * @param string $tableName   The name of the table.
    * @param string $operation   The operation {insert|update|delete|select}.
    * @param string $routineName The name of the generated routine.
-   *
-   * @return string
-   *
-   * @throws MySqlConnectFailedException
-   * @throws MySqlDataLayerException
    */
   public function generateRoutine(string $tableName, string $operation, string $routineName): string
   {
@@ -70,8 +62,6 @@ class MySqlCrudWorker extends MySqlWorker implements CrudWorker
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Returns a list of all supported operations by the worker.
-   *
-   * @return string[]
    */
   public function operations(): array
   {
@@ -81,12 +71,6 @@ class MySqlCrudWorker extends MySqlWorker implements CrudWorker
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Returns a list of all tables in de database of the backend.
-   *
-   * @return array
-   *
-   * @throws MySqlConnectFailedException
-   * @throws MySqlDataLayerException
-   * @throws MySqlQueryErrorException
    */
   public function tables(): array
   {

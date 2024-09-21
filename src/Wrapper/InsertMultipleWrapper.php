@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace SetBased\Stratum\MySql\Wrapper;
 
+use SetBased\Exception\LogicException;
 use SetBased\Stratum\Common\Wrapper\Helper\WrapperContext;
-use SetBased\Stratum\Middle\BulkHandler;
 use SetBased\Stratum\MySql\Exception\MySqlQueryErrorException;
 
 /**
- * Class for generating a wrapper method for a stored procedure selecting a large amount of rows.
+ * Class for generating a wrapper method for a stored procedure that prepares a table to be used with a multiple insert
+ * SQL statement.
  */
-class BulkWrapper extends MysqlWrapper
+class InsertMultipleWrapper extends MysqlWrapper
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -18,11 +19,9 @@ class BulkWrapper extends MysqlWrapper
    */
   protected function enhancePhpDocBlockParameters(array &$parameters): void
   {
-    $this->imports[] = BulkHandler::class;
-
-    $parameter = ['php_name'       => '$bulkHandler',
-                  'description'    => ['The bulk row handler'],
-                  'php_type'       => 'BulkHandler',
+    $parameter = ['php_name'       => '$rows',
+                  'description'    => 'The rows that must be inserted.',
+                  'php_type'       => 'array[]',
                   'dtd_identifier' => null];
 
     $parameters = array_merge([$parameter], $parameters);
@@ -54,9 +53,47 @@ class BulkWrapper extends MysqlWrapper
   {
     $this->throws(MySqlQueryErrorException::class);
 
-    $context->codeStore->append(sprintf("\$this->executeBulk(\$bulkHandler, 'call %s(%s)');",
+    $tableName = $context->phpStratumMetadata['designation']['table_name'];
+    $keys      = $context->phpStratumMetadata['designation']['keys'];
+    $columns   = $context->phpStratumMetadata['insert_multiple_table_columns'];
+    $n1        = sizeof($keys);
+    $n2        = sizeof($columns);
+    if ($n1!==$n2)
+    {
+      throw new LogicException("Number of fields %d and number of columns %d don't match.", $n1, $n2);
+    }
+
+    $context->codeStore->append(sprintf("\$this->realQuery('call %s(%s)');",
                                         $context->phpStratumMetadata['routine_name'],
                                         $this->getRoutineArgs($context)));
+
+    $columnNames = [];
+    $values      = [];
+    foreach ($keys as $i => $key)
+    {
+      if ($key!='_')
+      {
+        $columnNames[] = '`'.$columns[$i]['column_name'].'`';
+        $values[]      = $context->dataType->escapePhpExpression($columns[$i], '$row[\''.$key.'\']');
+      }
+    }
+
+    $context->codeStore->append('if (is_array($rows) && !empty($rows))');
+    $context->codeStore->append('{');
+    $context->codeStore->append(sprintf('$sql = "INSERT INTO `%s`(%s)".PHP_EOL;',
+                                        $tableName,
+                                        implode(', ', $columnNames)));
+    $context->codeStore->append('$first = true;');
+    $context->codeStore->append('foreach($rows as $row)');
+    $context->codeStore->append('{');
+
+    $context->codeStore->append(sprintf("\$sql .= ((\$first) ? 'values' : ',     ').'(%s)'.PHP_EOL;",
+                                        implode(', ', $values)));
+
+    $context->codeStore->append('$first = false;');
+    $context->codeStore->append('}');
+    $context->codeStore->append('$this->realQuery($sql);');
+    $context->codeStore->append('}');
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -75,6 +112,15 @@ class BulkWrapper extends MysqlWrapper
   protected function getReturnTypeDeclaration(WrapperContext $context): string
   {
     return ': void';
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * @inheritdoc
+   */
+  protected function getWrapperArgs(WrapperContext $context): string
+  {
+    return '?array $rows';
   }
 
   //--------------------------------------------------------------------------------------------------------------------

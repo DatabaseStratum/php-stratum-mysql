@@ -7,10 +7,7 @@ use SetBased\Exception\RuntimeException;
 use SetBased\Stratum\Backend\ConstantWorker;
 use SetBased\Stratum\Common\Helper\ClassReflectionHelper;
 use SetBased\Stratum\Common\Helper\Util;
-use SetBased\Stratum\MySql\Exception\MySqlConnectFailedException;
-use SetBased\Stratum\MySql\Exception\MySqlDataLayerException;
-use SetBased\Stratum\MySql\Exception\MySqlQueryErrorException;
-use SetBased\Stratum\MySql\Helper\DataTypeHelper;
+use SetBased\Stratum\MySql\Loader\Helper\MySqlDataTypeHelper;
 
 /**
  * Command for creating PHP constants based on column widths, auto increment columns and labels.
@@ -62,10 +59,6 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * @inheritdoc
-   *
-   * @throws MySqlConnectFailedException
-   * @throws MySqlDataLayerException
-   * @throws RuntimeException
    */
   public function execute(): int
   {
@@ -74,12 +67,10 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
 
     if ($this->constantsFilename!==null || $this->className!==null)
     {
-      $this->io->title('PhpStratum: MySql Constants');
+      $this->io->title('PhpStratum: Constants');
 
       $this->connect();
-
       $this->executeEnabled();
-
       $this->disconnect();
     }
     else
@@ -122,45 +113,30 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Gathers constants based on column widths.
-   *
-   * @throws RuntimeException
-   * @throws MySqlQueryErrorException
    */
   private function executeColumnWidths(): void
   {
     $this->loadOldColumns();
-
     $this->loadColumns();
-
     $this->enhanceColumns();
-
     $this->mergeColumns();
-
     $this->writeColumns();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Creates constants declarations in a class.
-   *
-   * @throws MySqlQueryErrorException
-   * @throws RuntimeException
    */
   private function executeCreateConstants(): void
   {
     $this->loadLabels();
-
     $this->fillConstants();
-
     $this->writeConstantClass();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Executes the enabled functionalities.
-   *
-   * @throws RuntimeException
-   * @throws MySqlQueryErrorException
    */
   private function executeEnabled(): void
   {
@@ -186,8 +162,6 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
    * If one of these line can not be found the line number will be set to null.
    *
    * @param string $source The source code of the constant class.
-   *
-   * @return array With the 3 line number as described
    */
   private function extractLines(string $source): array
   {
@@ -277,8 +251,6 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
       }
     }
 
-    // @todo get indent based on indent of the doc block.
-
     return [$line1, $line2, $line3];
   }
 
@@ -310,15 +282,13 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Loads the width of all columns in the MySQL schema into $columns.
-   *
-   * @throws MySqlQueryErrorException
    */
   private function loadColumns(): void
   {
     $rows = $this->dl->allTableColumns();
     foreach ($rows as $row)
     {
-      $row['length']                                          = DataTypeHelper::deriveFieldLength($row);
+      $row['length']                                          = MySqlDataTypeHelper::deriveFieldLength($row);
       $this->columns[$row['table_name']][$row['column_name']] = $row;
     }
   }
@@ -326,8 +296,6 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Loads all primary key labels from the MySQL database.
-   *
-   * @throws MySqlQueryErrorException
    */
   private function loadLabels(): void
   {
@@ -346,29 +314,22 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
   /**
    * Loads from file $constantsFilename the previous table and column names, the width of the column,
    * and the constant name (if assigned) and stores this data in $oldColumns.
-   *
-   * @throws RuntimeException
    */
   private function loadOldColumns(): void
   {
     if (file_exists($this->constantsFilename))
     {
-      $handle = fopen($this->constantsFilename, 'r');
-
-      $lineNumber = 0;
-      while (($line = fgets($handle)))
+      $lines = explode(PHP_EOL, file_get_contents($this->constantsFilename));
+      foreach ($lines as $index => $line)
       {
-        $lineNumber++;
-        if ($line!="\n")
+        if ($line!=='')
         {
           $n = preg_match('/^\s*(([a-zA-Z0-9_]+)\.)?([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+)\s+(\d+)\s*(\*|[a-zA-Z0-9_]+)?\s*$/',
                           $line,
                           $matches);
           if ($n===0)
           {
-            throw new RuntimeException("Illegal format at line %d in file '%s'.",
-                                       $lineNumber,
-                                       $this->constantsFilename);
+            throw new RuntimeException("Illegal format at line %d in file '%s'.", $index + 1, $this->constantsFilename);
           }
 
           if (isset($matches[6]))
@@ -391,16 +352,6 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
           }
         }
       }
-      if (!feof($handle))
-      {
-        throw new RuntimeException("Error reading from file '%s'.", $this->constantsFilename);
-      }
-
-      $ok = fclose($handle);
-      if ($ok===false)
-      {
-        throw new RuntimeException("Error closing file '%s'.", $this->constantsFilename);
-      }
     }
   }
 
@@ -421,8 +372,6 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Generates PHP code with constant declarations.
-   *
-   * @return array The generated PHP code, lines are stored as rows in the array.
    */
   private function makeConstantStatements(): array
   {
@@ -517,8 +466,6 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Inserts new and replace old (if any) constant declaration statements in a PHP source file.
-   *
-   * @throws RuntimeException
    */
   private function writeConstantClass(): void
   {
@@ -526,7 +473,7 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
     // MySqlRoutineLoaderWorker::replacePairsConstants.
     $fileName    = ClassReflectionHelper::getFileName($this->className);
     $source      = file_get_contents($fileName);
-    $sourceLines = explode("\n", $source);
+    $sourceLines = explode(PHP_EOL, $source);
 
     // Search for the lines where to insert and replace constant declaration statements.
     $lineNumbers = $this->extractLines($source);
@@ -539,12 +486,20 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
     $constants = $this->makeConstantStatements();
 
     // Insert new and replace old (if any) constant declaration statements.
-    $tmp1        = array_splice($sourceLines, 0, $lineNumbers[1]);
-    $tmp2        = array_splice($sourceLines, (isset($lineNumbers[2])) ? $lineNumbers[2] - $lineNumbers[1] : 0);
+    if ($lineNumbers[2]===null)
+    {
+      $tmp1 = array_slice($sourceLines, 0, $lineNumbers[1]);
+      $tmp2 = array_slice($sourceLines, $lineNumbers[1] + 0);
+    }
+    else
+    {
+      $tmp1 = array_slice($sourceLines, 0, $lineNumbers[1]);
+      $tmp2 = array_slice($sourceLines, $lineNumbers[2] + 0);
+    }
     $sourceLines = array_merge($tmp1, $constants, $tmp2);
 
     // Save the configuration file.
-    Util::writeTwoPhases($fileName, implode("\n", $sourceLines), $this->io);
+    Util::writeTwoPhases($fileName, implode(PHP_EOL, $sourceLines), $this->io);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

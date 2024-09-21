@@ -59,20 +59,20 @@ insert into TST_FOO2( tst_c00
                     , tst_c03
                     , tst_c04 )
 values ( 1
-  , 'a'
-  , 'b'
-  , 'c1'
-  , 'd' )
+       , 'a'
+       , 'b'
+       , 'c1'
+       , 'd' )
      , ( 2
-  , 'a'
-  , 'b'
-  , 'c2'
-  , 'd' )
+       , 'a'
+       , 'b'
+       , 'c2'
+       , 'd' )
      , ( 3
-  , 'a'
-  , 'b'
-  , 'c3'
-  , 'd' );
+       , 'a'
+       , 'b'
+       , 'c3'
+       , 'd' );
 
 -- ---------------------------------------------------------------------------------------------------------------------
 drop table if exists TST_TABLE;
@@ -97,19 +97,19 @@ insert into TST_TABLE( tst_c00
                      , t
                      , s )
 values ( 'Hello'
-  , 1
-  , '0.543'
-  , '1.2345'
-  , '2014-03-27 00:00:00'
-  , '4444'
-  , '1' )
+       , 1
+       , '0.543'
+       , '1.2345'
+       , '2014-03-27 00:00:00'
+       , '4444'
+       , '1' )
      , ( 'World'
-  , 3
-  , '3E-05'
-  , 0
-  , '2014-03-28 00:00:00'
-  , null
-  , 1   );
+       , 3
+       , '3E-05'
+       , 0
+       , '2014-03-28 00:00:00'
+       , null
+       , 1 );
 
 -- ---------------------------------------------------------------------------------------------------------------------
 drop table if exists TST_LABEL;
@@ -126,15 +126,15 @@ engine = myisam;
 insert into TST_LABEL( tst_test
                      , tst_label )
 values ( 'spam'
-  , 'TST_ID_SPAM'     )
+       , 'TST_ID_SPAM' )
      , ( 'eggs'
-  , 'TST_ID_EGGS'     )
+       , 'TST_ID_EGGS' )
      , ( 'bunny'
-  , 'TST_ID_BUNNY'    )
+       , 'TST_ID_BUNNY' )
      , ( 'cat'
-  , 'TST_ID_CAT'      )
+       , 'TST_ID_CAT' )
      , ( 'elephant'
-  , 'TST_ID_ELEPHANT' );
+       , 'TST_ID_ELEPHANT' );
 
 -- ---------------------------------------------------------------------------------------------------------------------
 drop table if exists TST_SORT;
@@ -153,16 +153,16 @@ insert into TST_SORT( tst_last_name
                     , tst_first_name
                     , tst_instrument )
 values ( 'Morrison'
-  , 'Jim'
-  , 'vocals'    )
+       , 'Jim'
+       , 'vocals' )
      , ( 'Manzarek'
-  , 'Ray'
-  , 'keyboards' )
+       , 'Ray'
+       , 'keyboards' )
      , ( 'Krieger'
-  , 'Robby'
-  , 'guitar'    )
+       , 'Robby'
+       , 'guitar' )
      , ( 'Densmore'
-  , 'John'
-  , 'drums'     );
+       , 'John'
+       , 'drums' );
 
 -- ---------------------------------------------------------------------------------------------------------------------

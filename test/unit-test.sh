@@ -30,7 +30,7 @@ if [[ -L test/psql/inet4 ]]; then
   rm test/psql/inet4
 fi
 
-mysql -utest -ptest -h127.0.0.1 test -e "create temporary table IPv4(ip inet4)" 2>&1 > /dev/null
+mysql -utest -ptest -h127.0.0.1 test -e "create temporary table TST_IPV4(ip inet4)" 2>&1 > /dev/null
 if [[ $? -eq 0 ]]; then
   ln -s ../inet4 test/psql/inet4
 
@@ -42,7 +42,7 @@ if [[ -L test/psql/inet6 ]]; then
   rm test/psql/inet6
 fi
 
-mysql -utest -ptest -h127.0.0.1 test -e "create temporary table IPv6(ip inet6)" 2>&1 > /dev/null
+mysql -utest -ptest -h127.0.0.1 test -e "create temporary table TST_IPV6(ip inet6)" 2>&1 > /dev/null
 if [[ $? -eq 0 ]]; then
   ln -s ../inet6 test/psql/inet6
 

@@ -5,24 +5,22 @@ namespace SetBased\Stratum\MySql\Backend;
 
 use SetBased\Stratum\Backend\Config;
 use SetBased\Stratum\Backend\StratumStyle;
-use SetBased\Stratum\MySql\Exception\MySqlConnectFailedException;
-use SetBased\Stratum\MySql\Exception\MySqlDataLayerException;
 use SetBased\Stratum\MySql\MySqlDataLayer;
 use SetBased\Stratum\MySql\MySqlDefaultConnector;
-use SetBased\Stratum\MySql\MySqlMetaDataLayer;
+use SetBased\Stratum\MySql\MySqlMetadataLayer;
 
 /**
- * Base class for commands which needs a connection to a MySQL instance.
+ * Base class for commands which needs a connection to a MySQL or MariaDB instance.
  */
 class MySqlWorker
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * The meta data layer.
+   * The metadata layer.
    *
-   * @var MySqlMetaDataLayer|null
+   * @var MySqlMetadataLayer|null
    */
-  protected ?MySqlMetaDataLayer $dl;
+  protected ?MySqlMetadataLayer $dl;
 
   /**
    * The output object.
@@ -67,9 +65,6 @@ class MySqlWorker
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Connects to a MySQL instance.
-   *
-   * @throws MySqlConnectFailedException
-   * @throws MySqlDataLayerException
    */
   protected function connect(): void
   {
@@ -83,7 +78,7 @@ class MySqlWorker
     $dataLayer = new MySqlDataLayer($connector);
     $dataLayer->connect();
 
-    $this->dl = new MySqlMetaDataLayer($dataLayer, $this->io);
+    $this->dl = new MySqlMetadataLayer($dataLayer, $this->io);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

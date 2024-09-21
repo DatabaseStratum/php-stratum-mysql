@@ -1,8 +1,7 @@
 /**
  * Test for magic constant.
  *
- * @type singleton1
- * @return int
+ * @type singleton1 int
  */
 create procedure tst_magic_constant02 ()
   reads sql data

@@ -14,7 +14,7 @@ class ParameterSortTest extends DataLayerTestCase
    */
   public function test1()
   {
-    $row = $this->dataLayer->tstTestParameterSort('Manzarek', null, null);
+    $row = $this->dataLayer->tstTestParameterMax('Manzarek', null, null);
     self::assertIsArray($row);
   }
 
@@ -24,7 +24,7 @@ class ParameterSortTest extends DataLayerTestCase
    */
   public function test2()
   {
-    $row = $this->dataLayer->tstTestParameterSort(str_repeat('x', 2048), null, null);
+    $row = $this->dataLayer->tstTestParameterMax(str_repeat('x', 2048), null, null);
     self::assertNull($row);
   }
 

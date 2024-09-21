@@ -120,8 +120,8 @@ class MySqlDataLayer
   /**
    * Starts a transaction.
    *
-   * Wrapper around [mysqli::autocommit](http://php.net/manual/mysqli.autocommit.php), however on failure an exception
-   * is thrown.
+   * MysqlWrapper around [mysqli::autocommit](http://php.net/manual/mysqli.autocommit.php), however on failure an
+   * exception is thrown.
    *
    * @throws MySqlDataLayerException
    *
@@ -173,7 +173,7 @@ class MySqlDataLayer
   /**
    * Commits the current transaction (and starts a new transaction).
    *
-   * Wrapper around [mysqli::commit](http://php.net/manual/mysqli.commit.php), however on failure an exception is
+   * MysqlWrapper around [mysqli::commit](http://php.net/manual/mysqli.commit.php), however on failure an exception is
    * thrown.
    *
    * @throws MySqlDataLayerException
@@ -712,7 +712,7 @@ class MySqlDataLayer
       $this->chunkSize = (int)min($this->maxAllowedPacket - 8, 1024 * 1024);
     }
 
-    return (int)$this->maxAllowedPacket;
+    return $this->maxAllowedPacket;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -787,11 +787,11 @@ class MySqlDataLayer
   /**
    * Returns a literal for a decimal value that can be safely used in SQL statements.
    *
-   * @param float|int|string|null $value The value.
+   * @param int|float|string|null $value The value.
    *
    * @return string
    */
-  public function quoteDecimal(mixed $value): string
+  public function quoteDecimal(int|float|string|null $value): string
   {
     if ($value===null || $value==='')
     {
@@ -847,7 +847,7 @@ class MySqlDataLayer
    * Returns a literal for an expression with a separated list of integers that can be safely used in SQL
    * statements. Throws an exception if the value is a list of integers.
    *
-   * @param string|array|null $list      The list of integers.
+   * @param array|string|null $list      The list of integers.
    * @param string            $delimiter The field delimiter (one character only).
    * @param string            $enclosure The field enclosure character (one character only).
    * @param string            $escape    The escape character (one character only)
@@ -856,21 +856,16 @@ class MySqlDataLayer
    *
    * @throws LogicException
    */
-  public function quoteListOfInt(mixed $list, string $delimiter, string $enclosure, string $escape): string
+  public function quoteListOfInt(array|string|null $list, string $delimiter, string $enclosure, string $escape): string
   {
-    if ($list===null || $list===false || $list==='' || $list===[])
+    if ($list===null || $list==='' || $list===[])
     {
       return 'null';
     }
 
-    $ret = '';
-    if (is_scalar($list))
+    if (is_string($list))
     {
       $list = str_getcsv($list, $delimiter, $enclosure, $escape);
-    }
-    elseif (!is_array($list))
-    {
-      throw new LogicException("Unexpected parameter type '%s'. Array or scalar expected.", gettype($list));
     }
 
     foreach ($list as $number)
@@ -879,15 +874,9 @@ class MySqlDataLayer
       {
         throw new LogicException("Value '%s' is not a number.", (is_scalar($number)) ? $number : gettype($number));
       }
-
-      if ($ret)
-      {
-        $ret .= ',';
-      }
-      $ret .= $number;
     }
 
-    return $this->quoteString($ret);
+    return $this->quoteString(implode(',', $list));
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -912,7 +901,7 @@ class MySqlDataLayer
   /**
    * Escapes special characters in a string such that it can be safely used in SQL statements.
    *
-   * Wrapper around [mysqli::real_escape_string](http://php.net/manual/mysqli.real-escape-string.php).
+   * MysqlWrapper around [mysqli::real_escape_string](http://php.net/manual/mysqli.real-escape-string.php).
    *
    * @param string $string The string.
    *
@@ -927,8 +916,8 @@ class MySqlDataLayer
   /**
    * Rollbacks the current transaction (and starts a new transaction).
    *
-   * Wrapper around [mysqli::rollback](http://php.net/manual/en/mysqli.rollback.php), however on failure an exception
-   * is thrown.
+   * MysqlWrapper around [mysqli::rollback](http://php.net/manual/en/mysqli.rollback.php), however on failure an
+   * exception is thrown.
    *
    * @throws MySqlDataLayerException
    *
@@ -964,7 +953,7 @@ class MySqlDataLayer
   /**
    * Logs the warnings of the last executed SQL statement.
    *
-   * Wrapper around the SQL statement [show warnings](https://dev.mysql.com/doc/refman/5.6/en/show-warnings.html).
+   * MysqlWrapper around the SQL statement [show warnings](https://dev.mysql.com/doc/refman/5.6/en/show-warnings.html).
    *
    * @throws MySqlDataLayerException
    *
@@ -993,8 +982,8 @@ class MySqlDataLayer
   /**
    * Executes multiple SQL statements.
    *
-   * Wrapper around [multi_mysqli::query](http://php.net/manual/mysqli.multi-query.php), however on failure an exception
-   * is thrown.
+   * MysqlWrapper around [multi_mysqli::query](http://php.net/manual/mysqli.multi-query.php), however on failure an
+   * exception is thrown.
    *
    * @param string $queries The SQL statements.
    *
@@ -1030,7 +1019,8 @@ class MySqlDataLayer
   /**
    * Executes a query (i.e. SELECT, SHOW, DESCRIBE or EXPLAIN) with a result set.
    *
-   * Wrapper around [mysqli::query](http://php.net/manual/mysqli.query.php), however on failure an exception is thrown.
+   * MysqlWrapper around [mysqli::query](http://php.net/manual/mysqli.query.php), however on failure an exception is
+   * thrown.
    *
    * For other SQL statements, see @realQuery.
    *
@@ -1086,7 +1076,7 @@ class MySqlDataLayer
   /**
    * Execute a query without a result set.
    *
-   * Wrapper around [mysqli::real_query](http://php.net/manual/en/mysqli.real-query.php), however on failure an
+   * MysqlWrapper around [mysqli::real_query](http://php.net/manual/en/mysqli.real-query.php), however on failure an
    * exception is thrown.
    *
    * For SELECT, SHOW, DESCRIBE or EXPLAIN queries, see @query.
@@ -1126,7 +1116,7 @@ class MySqlDataLayer
   /**
    * Send data in blocks to the MySQL server.
    *
-   * Wrapper around [mysqli_stmt::send_long_data](http://php.net/manual/mysqli-stmt.send-long-data.php).
+   * MysqlWrapper around [mysqli_stmt::send_long_data](http://php.net/manual/mysqli-stmt.send-long-data.php).
    *
    * @param \mysqli_stmt $statement The prepared statement.
    * @param int          $paramNr   The 0-indexed parameter number.

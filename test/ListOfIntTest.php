@@ -93,10 +93,6 @@ class ListOfIntTest extends DataLayerTestCase
     $ret = $this->dataLayer->tstTestListOfInt($ids);
     self::assertCount(0, $ret);
 
-    $ids = false;
-    $ret = $this->dataLayer->tstTestListOfInt($ids);
-    self::assertCount(0, $ret);
-
     $ids = '';
     $ret = $this->dataLayer->tstTestListOfInt($ids);
     self::assertCount(0, $ret);

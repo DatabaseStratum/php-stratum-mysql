@@ -1,5 +1,5 @@
 /**
- * Test for stored routine with a inet6 argument.
+ * Test for stored routine with an inet6 argument.
  *
  * @param p_ip_ip The IPv6 address.
  *

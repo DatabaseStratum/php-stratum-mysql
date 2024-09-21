@@ -4,9 +4,7 @@
  * @param p_left  The left operand.
  * @param p_right The right operand.
  *
- * @type singleton1
- *
- * @return int
+ * @type singleton1 int
  */
 create procedure tst_oracle_add_procedure(p_left int, p_right int)
 as

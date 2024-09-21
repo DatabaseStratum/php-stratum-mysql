@@ -4,8 +4,7 @@
  * @param p_a Parameter A.
  * @param p_b Parameter B.
  *
- * @type function
- * @return int|null
+ * @type function int|null
  */
 create function tst_test_function
 (

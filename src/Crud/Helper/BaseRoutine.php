@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace SetBased\Stratum\MySql\Helper\Crud;
+namespace SetBased\Stratum\MySql\Crud\Helper;
 
 use SetBased\Helper\CodeStore\MySqlCompoundSyntaxCodeStore;
 use SetBased\Stratum\Middle\Helper\RowSetHelper;
@@ -89,8 +89,6 @@ abstract class BaseRoutine
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Returns the generated code of the stored routine.
-   *
-   * @return string
    */
   public function getCode(): string
   {
@@ -104,8 +102,6 @@ abstract class BaseRoutine
    * Returns tre if and only if the table has an auto_increment column.
    *
    * @param array[] $columns Columns from table.
-   *
-   * @return bool
    */
   protected function checkAutoIncrement(array $columns): bool
   {
@@ -339,8 +335,6 @@ abstract class BaseRoutine
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Returns all columns that are in one or more keys. If the table does not have any keys all columns are returned.
-   *
-   * @return array[]
    */
   protected function keyColumns(): array
   {
@@ -369,7 +363,6 @@ abstract class BaseRoutine
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * @return array
    */
   protected function keyList(): array
   {
@@ -388,8 +381,6 @@ abstract class BaseRoutine
    * Returns the length the longest column name in a list of columns.
    *
    * @param array[] $columns The list of columns.
-   *
-   * @return int
    */
   protected function maxColumnNameLength(array $columns): int
   {
@@ -405,8 +396,6 @@ abstract class BaseRoutine
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Returns all keys (primary and unique indexes) on the table as nested array.
-   *
-   * @return array[]
    */
   protected function nestedKeys(): array
   {
@@ -430,8 +419,6 @@ abstract class BaseRoutine
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Returns all columns of the table except any auto increment column.
-   *
-   * @return array[]
    */
   protected function tableColumnsWithoutAutoIncrement(): array
   {

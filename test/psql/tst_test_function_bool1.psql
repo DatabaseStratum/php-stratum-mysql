@@ -3,8 +3,7 @@
  *
  * @param p_ret The return value.
  *
- * @type function
- * @return bool
+ * @type function bool
  */
 create function tst_test_function_bool1
 (

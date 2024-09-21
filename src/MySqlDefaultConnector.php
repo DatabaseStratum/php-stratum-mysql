@@ -12,7 +12,7 @@ class MySqlDefaultConnector implements MySqlConnector
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * The connection between PHP and the MySQL instance.
+   * The connection between PHP and the MySQL ot MariaDB instance.
    *
    * @var \mysqli|null
    */
@@ -90,8 +90,6 @@ class MySqlDefaultConnector implements MySqlConnector
   /**
    * Connects to the MySQL or MariaDB instance.
    *
-   * @return \mysqli
-   *
    * @throws MySqlConnectFailedException
    *
    * @since 5.0.0
@@ -143,8 +141,6 @@ class MySqlDefaultConnector implements MySqlConnector
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Returns true if PHP is (still) connected to a MySQL or MariaDB instance.
-   *
-   * @return bool
    *
    * @since 5.0.0
    * @api

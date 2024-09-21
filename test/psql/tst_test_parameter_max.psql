@@ -1,0 +1,23 @@
+/**
+ * Test for type hint with %max.
+ *
+ * @param p_tst_last_name  Can be a long string.
+ * @param p_tst_first_name Can be a long string.
+ * @param p_tst_instrument Can be a long string.
+ *
+ * @type row0
+ */
+create procedure tst_test_parameter_max
+(
+  p_tst_last_name  varchar(16383) character set utf8mb4, -- type: TST_SORT.tst_last_name%max
+  p_tst_first_name varchar(21844) character set utf8mb3, -- type: TST_SORT.tst_first_name%max
+  p_tst_instrument varchar(65532) character set ascii --    type: TST_SORT.tst_instrument%max
+)
+  reads sql data
+begin
+  select *
+  from TST_SORT
+  where tst_last_name = ifnull(p_tst_last_name, tst_last_name)
+    and tst_first_name = ifnull(p_tst_first_name, tst_first_name)
+    and tst_instrument = ifnull(p_tst_instrument, tst_instrument);
+end

@@ -1,5 +1,5 @@
 /**
- * Test for stored routine with a inet4 argument.
+ * Test for stored routine with an inet4 argument.
  *
  * @param p_ip_ip The IPv4 address.
  *

@@ -3,9 +3,7 @@
  *
  * @param p_message The message to be echoed.
  *
- * @type singleton1
- *
- * @return string
+ * @type singleton1 varchar
  */
 create procedure tst_oracle_echo(p_message varchar)
 as

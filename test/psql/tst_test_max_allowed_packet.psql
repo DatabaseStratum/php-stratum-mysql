@@ -3,8 +3,7 @@
  *
  * @param p_tmp_blob The BLOB larger than max_allowed_packet.
  *
- * @type singleton1
- * @return int
+ * @type singleton1 int
  */
 create procedure tst_test_max_allowed_packet
 (

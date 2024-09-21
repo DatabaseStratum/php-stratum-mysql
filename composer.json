@@ -18,16 +18,13 @@
     "ext-mysqli": "*",
     "setbased/exception": "^2.3.0",
     "setbased/helper-code-store-mysql": "^2.2.0",
-    "setbased/helper-code-store-php": "^2.6.0",
-    "setbased/php-stratum-backend": "^6.0.0",
-    "setbased/php-stratum-common": "^6.3.1",
-    "setbased/php-stratum-middle": "^5.11.0"
+    "setbased/php-stratum-backend": "^6.1.0",
+    "setbased/php-stratum-common": "^7.0.0",
+    "setbased/php-stratum-middle": "^5.12.0"
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "require-dev": {
-    "phing/phing": "^3.0.0-RC4",
-    "phpunit/phpunit": "^9.5.28",
+    "phing/phing": "^3.0.0",
+    "phpunit/phpunit": "^10.5.35",
     "setbased/php-stratum": "^6.3.1"
   },
   "autoload": {

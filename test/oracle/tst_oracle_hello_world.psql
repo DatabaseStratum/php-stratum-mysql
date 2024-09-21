@@ -1,9 +1,7 @@
 /**
  * Selects Hello, World!
  *
- * @type singleton1
- *
- * @return string
+ * @type singleton1 varchar
  */
 create procedure tst_oracle_hello_world()
 as

@@ -14,8 +14,6 @@ interface MySqlConnector
   /**
    * Connects to a MySQL or MariaDB instance.
    *
-   * @return \mysqli
-   *
    * @throws MySqlConnectFailedException
    *
    * @since 5.0.0
@@ -39,8 +37,6 @@ interface MySqlConnector
    * Returns whether PHP is (still) connected to a MySQL or MariaDB instance.
    *
    * This method will never throw an exception.
-   *
-   * @return bool
    *
    * @since 5.0.0
    * @api

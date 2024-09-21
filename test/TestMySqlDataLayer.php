@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace SetBased\Stratum\MySql\Test;
 
-use SetBased\Stratum\MySql\Exception\MySqlQueryErrorException;
-use SetBased\Stratum\MySql\Exception\MySqlDataLayerException;
 use SetBased\Stratum\Middle\Exception\ResultException;
+use SetBased\Stratum\MySql\Exception\MySqlDataLayerException;
+use SetBased\Stratum\MySql\Exception\MySqlQueryErrorException;
 use SetBased\Stratum\MySql\MySqlDataLayer;
 
 /**
@@ -28,7 +28,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Test for stored routine with a inet4 argument.
+   * Test for stored routine with an inet4 argument.
    *
    * @param string|null $pIpIp The IPv4 address.
    *                           inet4
@@ -57,7 +57,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Test for stored routine with a inet6 argument.
+   * Test for stored routine with an inet6 argument.
    *
    * @param string|null $pIpIp The IPv6 address.
    *                           inet6
@@ -291,15 +291,21 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @throws MySqlQueryErrorException
    * @throws ResultException
    */
-  public function tstOracleProcedureWithDataTypeColumns(?string $pParam01, ?int $pParam02, ?int $pParam03, ?int $pParam04, ?int $pParam05, ?int $pParam06, ?int $pParam07, ?int $pParam08, ?int $pParam09, ?int $pParam10, ?int $pParam11, $pParam12, $pParam13, ?float $pParam14, ?float $pParam15, ?string $pParam16, ?string $pParam17, ?string $pParam18, ?string $pParam19, ?string $pParam20, ?int $pParam21, ?string $pParam22, ?string $pParam23, ?string $pParam24, ?string $pParam25, ?string $pParam26, ?string $pParam27, ?string $pParam28, ?string $pParam29, ?string $pParam30, ?string $pParam31, ?string $pParam32, ?string $pParam33, ?string $pParam34, ?string $pParam35): int
+  public function tstOracleProcedureWithDataTypeColumns(?string $pParam01, ?int $pParam02, ?int $pParam03, ?int $pParam04, ?int $pParam05, ?int $pParam06, ?int $pParam07, ?int $pParam08, ?int $pParam09, ?int $pParam10, ?int $pParam11, int|float|string|null $pParam12, int|float|string|null $pParam13, ?float $pParam14, ?float $pParam15, ?string $pParam16, ?string $pParam17, ?string $pParam18, ?string $pParam19, ?string $pParam20, ?int $pParam21, ?string $pParam22, ?string $pParam23, ?string $pParam24, ?string $pParam25, ?string $pParam26, ?string $pParam27, ?string $pParam28, ?string $pParam29, ?string $pParam30, ?string $pParam31, ?string $pParam32, ?string $pParam33, ?string $pParam34, ?string $pParam35): int
   {
     $query = 'call tst_oracle_procedure_with_data_type_columns('.$this->quoteString($pParam01).','.$this->quoteInt($pParam02).','.$this->quoteInt($pParam03).','.$this->quoteInt($pParam04).','.$this->quoteInt($pParam05).','.$this->quoteInt($pParam06).','.$this->quoteInt($pParam07).','.$this->quoteInt($pParam08).','.$this->quoteInt($pParam09).','.$this->quoteInt($pParam10).','.$this->quoteInt($pParam11).','.$this->quoteDecimal($pParam12).','.$this->quoteDecimal($pParam13).','.$this->quoteFloat($pParam14).','.$this->quoteFloat($pParam15).','.$this->quoteBit($pParam16).','.$this->quoteString($pParam17).','.$this->quoteString($pParam18).','.$this->quoteString($pParam19).','.$this->quoteString($pParam20).','.$this->quoteInt($pParam21).','.$this->quoteString($pParam22).','.$this->quoteString($pParam23).','.$this->quoteBinary($pParam24).','.$this->quoteBinary($pParam25).',?,?,?,?,?,?,?,?,'.$this->quoteString($pParam34).','.$this->quoteString($pParam35).')';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('bbbbbbbb', $null, $null, $null, $null, $null, $null, $null, $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -339,7 +345,10 @@ class TestMySqlDataLayer extends MySqlDataLayer
     $ret = $this->mysqli->affected_rows;
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     return $ret;
   }
@@ -355,58 +364,6 @@ class TestMySqlDataLayer extends MySqlDataLayer
   public function tstOracleSqlPsm(): int
   {
     return $this->executeNone('call tst_oracle_sql_psm()');
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Test for designation bulk_insert.
-   *
-   * @param array[] $rows The rows that must be inserted.
-   *
-   * @return void
-   *
-   * @throws MySqlQueryErrorException
-   */
-  public function tstTestBulkInsert01(?array $rows): void
-  {
-    $this->realQuery('call tst_test_bulk_insert01()');
-    if (is_array($rows) && !empty($rows))
-    {
-      $sql = "INSERT INTO `TST_TEMPO`(`tst_int`,`tst_smallint`,`tst_mediumint`,`tst_tinyint`,`tst_bigint`,`tst_int_unsigned`,`tst_smallint_unsigned`,`tst_mediumint_unsigned`,`tst_tinyint_unsigned`,`tst_bigint_unsigned`,`tst_year`,`tst_decimal`,`tst_decimal0`,`tst_float`,`tst_double`,`tst_binary`,`tst_varbinary`,`tst_char`,`tst_varchar`,`tst_time`,`tst_timestamp`,`tst_date`,`tst_datetime`,`tst_enum`,`tst_set`,`tst_bit`)".PHP_EOL;
-      $first = true;
-      foreach($rows as $row)
-      {
-        $sql .= (($first) ? 'values' : ',     ').'('.$this->quoteInt($row['field_int']).','.$this->quoteInt($row['field_smallint']).','.$this->quoteInt($row['field_mediumint']).','.$this->quoteInt($row['field_tinyint']).','.$this->quoteInt($row['field_bigint']).','.$this->quoteInt($row['field_int_unsigned']).','.$this->quoteInt($row['field_smallint_unsigned']).','.$this->quoteInt($row['field_mediumint_unsigned']).','.$this->quoteInt($row['field_tinyint_unsigned']).','.$this->quoteInt($row['field_bigint_unsigned']).','.$this->quoteInt($row['field_year']).','.$this->quoteDecimal($row['field_decimal']).','.$this->quoteDecimal($row['field_decimal0']).','.$this->quoteFloat($row['field_float']).','.$this->quoteFloat($row['field_double']).','.$this->quoteBinary($row['field_binary']).','.$this->quoteBinary($row['field_varbinary']).','.$this->quoteString($row['field_char']).','.$this->quoteString($row['field_varchar']).','.$this->quoteString($row['field_time']).','.$this->quoteString($row['field_timestamp']).','.$this->quoteString($row['field_date']).','.$this->quoteString($row['field_datetime']).','.$this->quoteString($row['field_enum']).','.$this->quoteString($row['field_set']).','.$this->quoteBit($row['field_bit']).')'.PHP_EOL;
-        $first = false;
-      }
-      $this->realQuery($sql);
-    }
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Test for designation bulk_insert.
-   *
-   * @param array[] $rows The rows that must be inserted.
-   *
-   * @return void
-   *
-   * @throws MySqlQueryErrorException
-   */
-  public function tstTestBulkInsert02(?array $rows): void
-  {
-    $this->realQuery('call tst_test_bulk_insert02()');
-    if (is_array($rows) && !empty($rows))
-    {
-      $sql = "INSERT INTO `TST_TEMPO`(`tst_col1`,`tst_col4`,`tst_col5`)".PHP_EOL;
-      $first = true;
-      foreach($rows as $row)
-      {
-        $sql .= (($first) ? 'values' : ',     ').'('.$this->quoteInt($row['field1']).','.$this->quoteInt($row['field4']).','.$this->quoteInt($row['field5']).')'.PHP_EOL;
-        $first = false;
-      }
-      $this->realQuery($sql);
-    }
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -477,21 +434,79 @@ class TestMySqlDataLayer extends MySqlDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * Test for designation insert_multiple.
    *
-   * @param string|int[]|null $pIds The id's in CSV format.
+   * @param array[] $rows The rows that must be inserted.
+   *
+   * @return void
+   *
+   * @throws MySqlQueryErrorException
+   */
+  public function tstTestInsertMultiple01(?array $rows): void
+  {
+    $this->realQuery('call tst_test_insert_multiple01()');
+    if (is_array($rows) && !empty($rows))
+    {
+      $sql = "INSERT INTO `TST_TEMPO`(`tst_int`, `tst_smallint`, `tst_mediumint`, `tst_tinyint`, `tst_bigint`, `tst_int_unsigned`, `tst_smallint_unsigned`, `tst_mediumint_unsigned`, `tst_tinyint_unsigned`, `tst_bigint_unsigned`, `tst_year`, `tst_decimal`, `tst_decimal0`, `tst_float`, `tst_double`, `tst_binary`, `tst_varbinary`, `tst_char`, `tst_varchar`, `tst_time`, `tst_timestamp`, `tst_date`, `tst_datetime`, `tst_enum`, `tst_set`, `tst_bit`)".PHP_EOL;
+      $first = true;
+      foreach($rows as $row)
+      {
+        $sql .= (($first) ? 'values' : ',     ').'('.$this->quoteInt($row['field_int']).', '.$this->quoteInt($row['field_smallint']).', '.$this->quoteInt($row['field_mediumint']).', '.$this->quoteInt($row['field_tinyint']).', '.$this->quoteInt($row['field_bigint']).', '.$this->quoteInt($row['field_int_unsigned']).', '.$this->quoteInt($row['field_smallint_unsigned']).', '.$this->quoteInt($row['field_mediumint_unsigned']).', '.$this->quoteInt($row['field_tinyint_unsigned']).', '.$this->quoteInt($row['field_bigint_unsigned']).', '.$this->quoteInt($row['field_year']).', '.$this->quoteDecimal($row['field_decimal']).', '.$this->quoteDecimal($row['field_decimal0']).', '.$this->quoteFloat($row['field_float']).', '.$this->quoteFloat($row['field_double']).', '.$this->quoteBinary($row['field_binary']).', '.$this->quoteBinary($row['field_varbinary']).', '.$this->quoteString($row['field_char']).', '.$this->quoteString($row['field_varchar']).', '.$this->quoteString($row['field_time']).', '.$this->quoteString($row['field_timestamp']).', '.$this->quoteString($row['field_date']).', '.$this->quoteString($row['field_datetime']).', '.$this->quoteString($row['field_enum']).', '.$this->quoteString($row['field_set']).', '.$this->quoteBit($row['field_bit']).')'.PHP_EOL;
+        $first = false;
+      }
+      $this->realQuery($sql);
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Test for designation insert_multiple.
+   *
+   * @param array[] $rows The rows that must be inserted.
+   *
+   * @return void
+   *
+   * @throws MySqlQueryErrorException
+   */
+  public function tstTestInsertMultiple02(?array $rows): void
+  {
+    $this->realQuery('call tst_test_insert_multiple02()');
+    if (is_array($rows) && !empty($rows))
+    {
+      $sql = "INSERT INTO `TST_TEMPO`(`tst_col1`, `tst_col4`, `tst_col5`)".PHP_EOL;
+      $first = true;
+      foreach($rows as $row)
+      {
+        $sql .= (($first) ? 'values' : ',     ').'('.$this->quoteInt($row['field1']).', '.$this->quoteInt($row['field4']).', '.$this->quoteInt($row['field5']).')'.PHP_EOL;
+        $first = false;
+      }
+      $this->realQuery($sql);
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   *
+   * @param array|string|null $pIds The id's in CSV format.
    *                                varchar(255) character set utf8mb4 collation utf8mb4_general_ci
    *
    * @return array[]
    *
    * @throws MySqlQueryErrorException
    */
-  public function tstTestListOfInt($pIds): array
+  public function tstTestListOfInt(array|string|null $pIds): array
   {
     $result = $this->query('call tst_test_list_of_int('.$this->quoteListOfInt($pIds, ',', '\"', '\\').')');
     $ret = [];
-    while (($row = $result->fetch_array(MYSQLI_ASSOC))) $ret[$row['tst_id']] = $row;
+    while (($row = $result->fetch_array(MYSQLI_ASSOC)))
+    {
+      $ret[$row['tst_id']] = $row;
+    }
     $result->free();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     return $ret;
   }
@@ -524,9 +539,15 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $result = $this->query('call tst_test_map1('.$this->quoteInt($pCount).')');
     $ret = [];
-    while (($row = $result->fetch_array(MYSQLI_NUM))) $ret[$row[0]] = $row[1];
+    while (($row = $result->fetch_array(MYSQLI_NUM)))
+    {
+      $ret[$row[0]] = $row[1];
+    }
     $result->free();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     return $ret;
   }
@@ -550,11 +571,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $query = 'call tst_test_map1_with_lob('.$this->quoteInt($pCount).',?)';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('b', $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -586,11 +613,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
 
     $result = $stmt->get_result();
     $ret = [];
-    while (($row = $result->fetch_array(MYSQLI_NUM))) $ret[$row[0]] = $row[1];
+    while (($row = $result->fetch_array(MYSQLI_NUM)))
+    {
+      $ret[$row[0]] = $row[1];
+    }
     $result->free();
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     return $ret;
   }
@@ -612,11 +645,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $query = 'call tst_test_max_allowed_packet(?)';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('b', $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -661,10 +700,19 @@ class TestMySqlDataLayer extends MySqlDataLayer
     }
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
-    if ($b===false) throw $this->dataLayerError('mysqli_stmt::fetch');
-    if (sizeof($tmp)!=1) throw new ResultException([1], sizeof($tmp), $query);
+    if ($b===false)
+    {
+      throw $this->dataLayerError('mysqli_stmt::fetch');
+    }
+    if (sizeof($tmp)!==1)
+    {
+      throw new ResultException([1], sizeof($tmp), $query);
+    }
 
     return $tmp[0][0];
   }
@@ -704,11 +752,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $query = 'call tst_test_none_with_lob('.$this->quoteInt($pCount).',?)';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('b', $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -741,14 +795,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
     $ret = $this->mysqli->affected_rows;
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     return $ret;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Test for column%sort v.s. column%type.
+   * Test for type hint with %max.
    *
    * @param string|null $pTstLastName   Can be a long string.
    *                                    varchar(16383) character set utf8mb4 collation utf8mb4_general_ci
@@ -762,9 +819,9 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @throws MySqlQueryErrorException
    * @throws ResultException
    */
-  public function tstTestParameterSort(?string $pTstLastName, ?string $pTstFirstName, ?string $pTstInstrument): ?array
+  public function tstTestParameterMax(?string $pTstLastName, ?string $pTstFirstName, ?string $pTstInstrument): ?array
   {
-    return $this->executeRow0('call tst_test_parameter_sort('.$this->quoteString($pTstLastName).','.$this->quoteString($pTstFirstName).','.$this->quoteString($pTstInstrument).')');
+    return $this->executeRow0('call tst_test_parameter_max('.$this->quoteString($pTstLastName).','.$this->quoteString($pTstFirstName).','.$this->quoteString($pTstInstrument).')');
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -780,7 +837,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
    *
    * @throws MySqlQueryErrorException
    */
-  public function tstTestParameterType($pPhpType1, $pPhpType2): int
+  public function tstTestParameterType(int|float|string|null $pPhpType1, int|float|string|null $pPhpType2): int
   {
     return $this->executeNone('call tst_test_parameter_type('.$this->quoteDecimal($pPhpType1).','.$this->quoteDecimal($pPhpType2).')');
   }
@@ -792,7 +849,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @param int|null $pCount The number of rows selected.
    *                         * 0 For a valid test.
    *                         * 1 For a valid test.
-   *                         * 2 For a invalid test.
+   *                         * 2 For an invalid test.
    *                         int(11)
    *
    * @return array|null
@@ -812,7 +869,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @param int|null    $pCount The number of rows selected.
    *                            * 0 For a valid test.
    *                            * 1 For a valid test.
-   *                            * 2 For a invalid test.
+   *                            * 2 For an invalid test.
    *                            int(11)
    * @param string|null $pBlob  The BLOB.
    *                            blob
@@ -827,11 +884,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $query = 'call tst_test_row0a_with_lob('.$this->quoteInt($pCount).',?)';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('b', $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -876,10 +939,19 @@ class TestMySqlDataLayer extends MySqlDataLayer
     }
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
-    if ($b===false) throw $this->dataLayerError('mysqli_stmt::fetch');
-    if (sizeof($tmp)>1) throw new ResultException([0, 1], sizeof($tmp), $query);
+    if ($b===false)
+    {
+      throw $this->dataLayerError('mysqli_stmt::fetch');
+    }
+    if (sizeof($tmp)>1)
+    {
+      throw new ResultException([0, 1], sizeof($tmp), $query);
+    }
 
     return ($tmp) ? $tmp[0] : null;
   }
@@ -889,9 +961,9 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * Test for designation type row1.
    *
    * @param int|null $pCount The number of rows selected.
-   *                         * 0 For a invalid test.
+   *                         * 0 For an invalid test.
    *                         * 1 For a valid test.
-   *                         * 2 For a invalid test.
+   *                         * 2 For an invalid test.
    *                         int(11)
    *
    * @return array
@@ -909,9 +981,9 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * Test for designation type row1 with BLOB.
    *
    * @param int|null    $pCount The number of rows selected.
-   *                            * 0 For a invalid test.
+   *                            * 0 For an invalid test.
    *                            * 1 For a valid test.
-   *                            * 2 For a invalid test.
+   *                            * 2 For an invalid test.
    *                            int(11)
    * @param string|null $pBlob  The BLOB.
    *                            blob
@@ -926,11 +998,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $query = 'call tst_test_row1a_with_lob('.$this->quoteInt($pCount).',?)';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('b', $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -975,10 +1053,19 @@ class TestMySqlDataLayer extends MySqlDataLayer
     }
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
-    if ($b===false) throw $this->dataLayerError('mysqli_stmt::fetch');
-    if (sizeof($tmp)!=1) throw new ResultException([1], sizeof($tmp), $query);
+    if ($b===false)
+    {
+      throw $this->dataLayerError('mysqli_stmt::fetch');
+    }
+    if (sizeof($tmp)!=1)
+    {
+      throw new ResultException([1], sizeof($tmp), $query);
+    }
 
     return $row;
   }
@@ -1018,11 +1105,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $query = 'call tst_test_rows1_with_lob('.$this->quoteInt($pCount).',?)';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('b', $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -1067,7 +1160,10 @@ class TestMySqlDataLayer extends MySqlDataLayer
     }
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     if ($b===false) throw $this->dataLayerError('mysqli_stmt::fetch');
 
@@ -1089,9 +1185,15 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $result = $this->query('call tst_test_rows_with_index1('.$this->quoteInt($pCount).')');
     $ret = [];
-    while (($row = $result->fetch_array(MYSQLI_ASSOC))) $ret[$row['tst_c01']][$row['tst_c02']][] = $row;
+    while (($row = $result->fetch_array(MYSQLI_ASSOC)))
+    {
+      $ret[$row['tst_c01']][$row['tst_c02']][] = $row;
+    }
     $result->free();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     return $ret;
   }
@@ -1115,11 +1217,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $query = 'call tst_test_rows_with_index1_with_lob('.$this->quoteInt($pCount).',?)';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('b', $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -1164,9 +1272,15 @@ class TestMySqlDataLayer extends MySqlDataLayer
     }
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
-    if ($b===false) throw $this->dataLayerError('mysqli_stmt::fetch');
+    if ($b===false)
+    {
+      throw $this->dataLayerError('mysqli_stmt::fetch');
+    }
 
     return $ret;
   }
@@ -1186,9 +1300,15 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $result = $this->query('call tst_test_rows_with_key1('.$this->quoteInt($pCount).')');
     $ret = [];
-    while (($row = $result->fetch_array(MYSQLI_ASSOC))) $ret[$row['tst_c01']][$row['tst_c02']][$row['tst_c03']] = $row;
+    while (($row = $result->fetch_array(MYSQLI_ASSOC)))
+    {
+      $ret[$row['tst_c01']][$row['tst_c02']][$row['tst_c03']] = $row;
+    }
     $result->free();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     return $ret;
   }
@@ -1212,11 +1332,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $query = 'call tst_test_rows_with_key1_with_lob('.$this->quoteInt($pCount).',?)';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('b', $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -1261,9 +1387,15 @@ class TestMySqlDataLayer extends MySqlDataLayer
     }
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
-    if ($b===false) throw $this->dataLayerError('mysqli_stmt::fetch');
+    if ($b===false)
+    {
+      throw $this->dataLayerError('mysqli_stmt::fetch');
+    }
 
     return $ret;
   }
@@ -1275,7 +1407,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @param int|null $pCount The number of rows selected.
    *                         * 0 For a valid test.
    *                         * 1 For a valid test.
-   *                         * 2 For a invalid test.
+   *                         * 2 For an invalid test.
    *                         int(11)
    *
    * @return int|null
@@ -1290,12 +1422,12 @@ class TestMySqlDataLayer extends MySqlDataLayer
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Test for designation type singleton0 with BLOB..
+   * Test for designation type singleton0 with BLOB.
    *
    * @param int|null    $pCount The number of rows selected.
    *                            * 0 For a valid test.
    *                            * 1 For a valid test.
-   *                            * 2 For a invalid test.
+   *                            * 2 For an invalid test.
    *                            int(11)
    * @param string|null $pBlob  The BLOB.
    *                            blob
@@ -1310,11 +1442,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $query = 'call tst_test_singleton0a_with_lob('.$this->quoteInt($pCount).',?)';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('b', $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -1359,10 +1497,19 @@ class TestMySqlDataLayer extends MySqlDataLayer
     }
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
-    if ($b===false) throw $this->dataLayerError('mysqli_stmt::fetch');
-    if (sizeof($tmp)>1) throw new ResultException([0, 1], sizeof($tmp), $query);
+    if ($b===false)
+    {
+      throw $this->dataLayerError('mysqli_stmt::fetch');
+    }
+    if (sizeof($tmp)>1)
+    {
+      throw new ResultException([0, 1], sizeof($tmp), $query);
+    }
 
     return $tmp[0][0] ?? null;
   }
@@ -1374,7 +1521,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @param int|null $pCount The number of rows selected.
    *                         * 0 For a valid test.
    *                         * 1 For a valid test.
-   *                         * 2 For a invalid test.
+   *                         * 2 For an invalid test.
    *                         int(11)
    * @param int|null $pValue The selected value.
    *                         int(11)
@@ -1396,7 +1543,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @param int|null    $pCount The number of rows selected.
    *                            * 0 For a valid test.
    *                            * 1 For a valid test.
-   *                            * 2 For a invalid test.
+   *                            * 2 For an invalid test.
    *                            int(11)
    * @param int|null    $pValue The selected value.
    *                            int(11)
@@ -1413,11 +1560,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $query = 'call tst_test_singleton0b_with_lob('.$this->quoteInt($pCount).','.$this->quoteInt($pValue).',?)';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('b', $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -1462,10 +1615,19 @@ class TestMySqlDataLayer extends MySqlDataLayer
     }
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
-    if ($b===false) throw $this->dataLayerError('mysqli_stmt::fetch');
-    if (sizeof($tmp)>1) throw new ResultException([0, 1], sizeof($tmp), $query);
+    if ($b===false)
+    {
+      throw $this->dataLayerError('mysqli_stmt::fetch');
+    }
+    if (sizeof($tmp)>1)
+    {
+      throw new ResultException([0, 1], sizeof($tmp), $query);
+    }
 
     return !empty($tmp[0][0]);
   }
@@ -1475,9 +1637,9 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * Test for designation type singleton1.
    *
    * @param int|null $pCount The number of rows selected.
-   *                         * 0 For a invalid test.
+   *                         * 0 For an invalid test.
    *                         * 1 For a valid test.
-   *                         * 2 For a invalid test.
+   *                         * 2 For an invalid test.
    *                         int(11)
    *
    * @return int
@@ -1495,9 +1657,9 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * Test for designation type singleton1 with BLOB.
    *
    * @param int|null    $pCount The number of rows selected.
-   *                            * 0 For a invalid test.
+   *                            * 0 For an invalid test.
    *                            * 1 For a valid test.
-   *                            * 2 For a invalid test.
+   *                            * 2 For an invalid test.
    *                            int(11)
    * @param string|null $pBlob  The BLOB.
    *                            blob
@@ -1512,11 +1674,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $query = 'call tst_test_singleton1a_with_lob('.$this->quoteInt($pCount).',?)';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('b', $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -1561,10 +1729,19 @@ class TestMySqlDataLayer extends MySqlDataLayer
     }
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
-    if ($b===false) throw $this->dataLayerError('mysqli_stmt::fetch');
-    if (sizeof($tmp)!=1) throw new ResultException([1], sizeof($tmp), $query);
+    if ($b===false)
+    {
+      throw $this->dataLayerError('mysqli_stmt::fetch');
+    }
+    if (sizeof($tmp)!==1)
+    {
+      throw new ResultException([1], sizeof($tmp), $query);
+    }
 
     return $tmp[0][0];
   }
@@ -1574,9 +1751,9 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * Test for designation type singleton1 with return type bool.
    *
    * @param int|null $pCount The number of rows selected.
-   *                         * 0 For a invalid test.
+   *                         * 0 For an invalid test.
    *                         * 1 For a valid test.
-   *                         * 2 For a invalid test.
+   *                         * 2 For an invalid test.
    *                         int(11)
    * @param int|null $pValue The selected value.
    *                         int(11)
@@ -1596,9 +1773,9 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * Test for designation type singleton1 with BLOB.
    *
    * @param int|null    $pCount The number of rows selected.
-   *                            * 0 For a invalid test.
+   *                            * 0 For an invalid test.
    *                            * 1 For a valid test.
-   *                            * 2 For a invalid test.
+   *                            * 2 For an invalid test.
    *                            int(11)
    * @param int|null    $pValue The selected value.
    *                            int(11)
@@ -1615,11 +1792,17 @@ class TestMySqlDataLayer extends MySqlDataLayer
   {
     $query = 'call tst_test_singleton1b_with_lob('.$this->quoteInt($pCount).','.$this->quoteInt($pValue).',?)';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('b', $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -1664,10 +1847,19 @@ class TestMySqlDataLayer extends MySqlDataLayer
     }
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
-    if ($b===false) throw $this->dataLayerError('mysqli_stmt::fetch');
-    if (sizeof($tmp)!=1) throw new ResultException([1], sizeof($tmp), $query);
+    if ($b===false)
+    {
+      throw $this->dataLayerError('mysqli_stmt::fetch');
+    }
+    if (sizeof($tmp)!==1)
+    {
+      throw new ResultException([1], sizeof($tmp), $query);
+    }
 
     return !empty($tmp[0][0]);
   }
@@ -1746,7 +1938,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
    *
    * @throws MySqlQueryErrorException
    */
-  public function tstTestTypeHint(?int $pTstInt, ?int $pTstSmallint, ?int $pTstTinyint, ?int $pTstMediumint, ?int $pTstBigint, ?int $pTstIntUnsigned, ?int $pTstSmallintUnsigned, ?int $pTstTinyintUnsigned, ?int $pTstMediumintUnsigned, ?int $pTstBigintUnsigned, $pTstDecimal, $pTstDecimal0, ?float $pTstFloat, ?float $pTstDouble, ?string $pTstBit, ?string $pTstDate, ?string $pTstDatetime, ?string $pTstTimestamp, ?string $pTstTime, ?int $pTstYear, ?string $pTstChar, ?string $pTstVarchar, ?string $pTstBinary, ?string $pTstVarbinary, ?string $pTstEnum, ?string $pTstSet): int
+  public function tstTestTypeHint(?int $pTstInt, ?int $pTstSmallint, ?int $pTstTinyint, ?int $pTstMediumint, ?int $pTstBigint, ?int $pTstIntUnsigned, ?int $pTstSmallintUnsigned, ?int $pTstTinyintUnsigned, ?int $pTstMediumintUnsigned, ?int $pTstBigintUnsigned, int|float|string|null $pTstDecimal, int|float|string|null $pTstDecimal0, ?float $pTstFloat, ?float $pTstDouble, ?string $pTstBit, ?string $pTstDate, ?string $pTstDatetime, ?string $pTstTimestamp, ?string $pTstTime, ?int $pTstYear, ?string $pTstChar, ?string $pTstVarchar, ?string $pTstBinary, ?string $pTstVarbinary, ?string $pTstEnum, ?string $pTstSet): int
   {
     return $this->executeNone('call tst_test_type_hint('.$this->quoteInt($pTstInt).','.$this->quoteInt($pTstSmallint).','.$this->quoteInt($pTstTinyint).','.$this->quoteInt($pTstMediumint).','.$this->quoteInt($pTstBigint).','.$this->quoteInt($pTstIntUnsigned).','.$this->quoteInt($pTstSmallintUnsigned).','.$this->quoteInt($pTstTinyintUnsigned).','.$this->quoteInt($pTstMediumintUnsigned).','.$this->quoteInt($pTstBigintUnsigned).','.$this->quoteDecimal($pTstDecimal).','.$this->quoteDecimal($pTstDecimal0).','.$this->quoteFloat($pTstFloat).','.$this->quoteFloat($pTstDouble).','.$this->quoteBit($pTstBit).','.$this->quoteString($pTstDate).','.$this->quoteString($pTstDatetime).','.$this->quoteString($pTstTimestamp).','.$this->quoteString($pTstTime).','.$this->quoteInt($pTstYear).','.$this->quoteString($pTstChar).','.$this->quoteString($pTstVarchar).','.$this->quoteBinary($pTstBinary).','.$this->quoteBinary($pTstVarbinary).','.$this->quoteString($pTstEnum).','.$this->quoteString($pTstSet).')');
   }
@@ -1833,15 +2025,21 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @throws MySqlQueryErrorException
    * @throws ResultException
    */
-  public function tstTestTypeHintWithBlobs(?int $pTstInt, ?int $pTstSmallint, ?int $pTstTinyint, ?int $pTstMediumint, ?int $pTstBigint, $pTstDecimal, $pTstDecimal0, ?float $pTstFloat, ?float $pTstDouble, ?string $pTstBit, ?string $pTstDate, ?string $pTstDatetime, ?string $pTstTimestamp, ?string $pTstTime, ?int $pTstYear, ?string $pTstChar, ?string $pTstVarchar, ?string $pTstBinary, ?string $pTstVarbinary, ?string $pTstTinyblob, ?string $pTstBlob, ?string $pTstMediumblob, ?string $pTstLongblob, ?string $pTstTinytext, ?string $pTstText, ?string $pTstMediumtext, ?string $pTstLongtext, ?string $pTstEnum, ?string $pTstSet): int
+  public function tstTestTypeHintWithBlobs(?int $pTstInt, ?int $pTstSmallint, ?int $pTstTinyint, ?int $pTstMediumint, ?int $pTstBigint, int|float|string|null $pTstDecimal, int|float|string|null $pTstDecimal0, ?float $pTstFloat, ?float $pTstDouble, ?string $pTstBit, ?string $pTstDate, ?string $pTstDatetime, ?string $pTstTimestamp, ?string $pTstTime, ?int $pTstYear, ?string $pTstChar, ?string $pTstVarchar, ?string $pTstBinary, ?string $pTstVarbinary, ?string $pTstTinyblob, ?string $pTstBlob, ?string $pTstMediumblob, ?string $pTstLongblob, ?string $pTstTinytext, ?string $pTstText, ?string $pTstMediumtext, ?string $pTstLongtext, ?string $pTstEnum, ?string $pTstSet): int
   {
     $query = 'call tst_test_type_hint_with_blobs('.$this->quoteInt($pTstInt).','.$this->quoteInt($pTstSmallint).','.$this->quoteInt($pTstTinyint).','.$this->quoteInt($pTstMediumint).','.$this->quoteInt($pTstBigint).','.$this->quoteDecimal($pTstDecimal).','.$this->quoteDecimal($pTstDecimal0).','.$this->quoteFloat($pTstFloat).','.$this->quoteFloat($pTstDouble).','.$this->quoteBit($pTstBit).','.$this->quoteString($pTstDate).','.$this->quoteString($pTstDatetime).','.$this->quoteString($pTstTimestamp).','.$this->quoteString($pTstTime).','.$this->quoteInt($pTstYear).','.$this->quoteString($pTstChar).','.$this->quoteString($pTstVarchar).','.$this->quoteBinary($pTstBinary).','.$this->quoteBinary($pTstVarbinary).',?,?,?,?,?,?,?,?,'.$this->quoteString($pTstEnum).','.$this->quoteString($pTstSet).')';
     $stmt  = @$this->mysqli->prepare($query);
-    if (!$stmt) throw $this->dataLayerError('mysqli::prepare');
+    if (!$stmt)
+    {
+      throw $this->dataLayerError('mysqli::prepare');
+    }
 
     $null = null;
     $success = @$stmt->bind_param('bbbbbbbb', $null, $null, $null, $null, $null, $null, $null, $null);
-    if (!$success) throw $this->dataLayerError('mysqli_stmt::bind_param');
+    if (!$success)
+    {
+      throw $this->dataLayerError('mysqli_stmt::bind_param');
+    }
 
     $this->getMaxAllowedPacket();
 
@@ -1881,7 +2079,10 @@ class TestMySqlDataLayer extends MySqlDataLayer
     $ret = $this->mysqli->affected_rows;
 
     $stmt->close();
-    if ($this->mysqli->more_results()) $this->mysqli->next_result();
+    if ($this->mysqli->more_results())
+    {
+      $this->mysqli->next_result();
+    }
 
     return $ret;
   }
@@ -1947,7 +2148,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
    *
    * @throws MySqlQueryErrorException
    */
-  public function tstTestTypeHintWithSchema(?int $pTstInt, ?int $pTstSmallint, ?int $pTstTinyint, ?int $pTstMediumint, ?int $pTstBigint, ?int $pTstIntUnsigned, ?int $pTstSmallintUnsigned, ?int $pTstTinyintUnsigned, ?int $pTstMediumintUnsigned, ?int $pTstBigintUnsigned, $pTstDecimal, $pTstDecimal0, ?float $pTstFloat, ?float $pTstDouble, ?string $pTstBit, ?string $pTstDate, ?string $pTstDatetime, ?string $pTstTimestamp, ?string $pTstTime, ?int $pTstYear, ?string $pTstChar, ?string $pTstVarchar, ?string $pTstBinary, ?string $pTstVarbinary, ?string $pTstEnum, ?string $pTstSet): int
+  public function tstTestTypeHintWithSchema(?int $pTstInt, ?int $pTstSmallint, ?int $pTstTinyint, ?int $pTstMediumint, ?int $pTstBigint, ?int $pTstIntUnsigned, ?int $pTstSmallintUnsigned, ?int $pTstTinyintUnsigned, ?int $pTstMediumintUnsigned, ?int $pTstBigintUnsigned, int|float|string|null $pTstDecimal, int|float|string|null $pTstDecimal0, ?float $pTstFloat, ?float $pTstDouble, ?string $pTstBit, ?string $pTstDate, ?string $pTstDatetime, ?string $pTstTimestamp, ?string $pTstTime, ?int $pTstYear, ?string $pTstChar, ?string $pTstVarchar, ?string $pTstBinary, ?string $pTstVarbinary, ?string $pTstEnum, ?string $pTstSet): int
   {
     return $this->executeNone('call tst_test_type_hint_with_schema('.$this->quoteInt($pTstInt).','.$this->quoteInt($pTstSmallint).','.$this->quoteInt($pTstTinyint).','.$this->quoteInt($pTstMediumint).','.$this->quoteInt($pTstBigint).','.$this->quoteInt($pTstIntUnsigned).','.$this->quoteInt($pTstSmallintUnsigned).','.$this->quoteInt($pTstTinyintUnsigned).','.$this->quoteInt($pTstMediumintUnsigned).','.$this->quoteInt($pTstBigintUnsigned).','.$this->quoteDecimal($pTstDecimal).','.$this->quoteDecimal($pTstDecimal0).','.$this->quoteFloat($pTstFloat).','.$this->quoteFloat($pTstDouble).','.$this->quoteBit($pTstBit).','.$this->quoteString($pTstDate).','.$this->quoteString($pTstDatetime).','.$this->quoteString($pTstTimestamp).','.$this->quoteString($pTstTime).','.$this->quoteInt($pTstYear).','.$this->quoteString($pTstChar).','.$this->quoteString($pTstVarchar).','.$this->quoteBinary($pTstBinary).','.$this->quoteBinary($pTstVarbinary).','.$this->quoteString($pTstEnum).','.$this->quoteString($pTstSet).')');
   }

@@ -1,9 +1,9 @@
 /**
- *  Test for designation bulk_insert.
+ *  Test for designation insert_multiple.
  *
- * @type bulk_insert TST_TEMPO field1,_,_,field4,field5
+ * @type insert_multiple TST_TEMPO field1,_,_,field4,field5
  */
-create procedure tst_test_bulk_insert02 ()
+create procedure tst_test_insert_multiple02 ()
   modifies sql data
 begin
   drop temporary table if exists TST_TEMPO;
