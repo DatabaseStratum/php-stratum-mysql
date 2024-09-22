@@ -1,9 +1,7 @@
 /.idea/
-/.phpunit.result.cache
+/.phpunit.cache/
 /bin/
 /composer.lock
-/custom.task.properties
-/custom.type.properties
 /docs/_build/
 /test/coverage.xml
 /test/etc/routines.json
