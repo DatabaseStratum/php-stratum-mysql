@@ -21,7 +21,7 @@ class BulkWrapper extends MysqlWrapper
     $this->imports[] = BulkHandler::class;
 
     $parameter = ['php_name'       => '$bulkHandler',
-                  'description'    => ['The bulk row handler'],
+                  'description'    => 'The bulk row handler',
                   'php_type'       => 'BulkHandler',
                   'dtd_identifier' => null];
 
