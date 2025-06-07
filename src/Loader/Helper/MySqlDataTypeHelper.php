@@ -420,7 +420,7 @@ class MySqlDataTypeHelper implements CommonDataTypeHelper
         break;
 
       case 'list_of_int':
-        $ret = "'.\$this->quoteListOfInt(".$expression.", '".addslashes($dataTypeInfo['delimiter'])."', '".addslashes($dataTypeInfo['enclosure'])."', '".addslashes($dataTypeInfo['escape'])."').'";
+        $ret = "'.\$this->quoteListOfInt(".$expression.", \"".addslashes($dataTypeInfo['delimiter'])."\", \"".addslashes($dataTypeInfo['enclosure'])."\", \"".addslashes($dataTypeInfo['escape'])."\").'";
         break;
 
       default:

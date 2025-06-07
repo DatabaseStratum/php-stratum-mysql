@@ -27,27 +27,27 @@ class MySqlRoutineLoaderWorker extends CommonRoutineLoaderWorker implements Rout
   /**
    * The maximum column size in bytes.
    */
-  const MAX_COLUMN_SIZE = 65532;
+  const int MAX_COLUMN_SIZE = 65532;
 
   /**
    * Maximum length of a char.
    */
-  const MAX_LENGTH_CHAR = 255;
+  const int MAX_LENGTH_CHAR = 255;
 
   /**
    * Maximum length of a varchar.
    */
-  const MAX_LENGTH_VARCHAR = 4096;
+  const int MAX_LENGTH_VARCHAR = 4096;
 
   /**
    * Maximum length of a binary.
    */
-  const MAX_LENGTH_BINARY = 255;
+  const int MAX_LENGTH_BINARY = 255;
 
   /**
    * Maximum length of a varbinary.
    */
-  const MAX_LENGTH_VARBINARY = 4096;
+  const int MAX_LENGTH_VARBINARY = 4096;
 
   /**
    * The metadata layer.

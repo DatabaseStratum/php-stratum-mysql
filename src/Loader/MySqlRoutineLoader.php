@@ -22,12 +22,12 @@ class MySqlRoutineLoader extends CommonRoutineLoader
   /**
    * MySQL's and MariaDB's SQL/PSM syntax.
    */
-  const SQL_PSM_SYNTAX = 1;
+  const int SQL_PSM_SYNTAX = 1;
 
   /**
    * Oracle PL/SQL syntax.
    */
-  const PL_SQL_SYNTAX = 2;
+  const int PL_SQL_SYNTAX = 2;
 
   /**
    * The default character set under which the stored routine will be loaded and run.

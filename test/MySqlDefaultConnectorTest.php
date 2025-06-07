@@ -35,7 +35,7 @@ class MySqlDefaultConnectorTest extends TestCase
     {
       $connector->connect();
     }
-    catch (MySqlConnectFailedException $exception)
+    catch (MySqlConnectFailedException)
     {
       // Ignore error.
     }
@@ -70,12 +70,12 @@ class MySqlDefaultConnectorTest extends TestCase
     $connector = new MySqlDefaultConnector('127.0.0.1', 'test', 'test', 'test');
     $connector->connect();
 
-    exec('sudo systemctl stop mysqld || sudo service mysql stop');
+    exec('sudo systemctl stop mariadb');
 
     $connector->disconnect();
     self::assertTrue(true);
 
-    exec('sudo systemctl start mysqld || sudo service mysql start');
+    exec('sudo systemctl start mariadb');
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -130,12 +130,13 @@ class MySqlDefaultConnectorTest extends TestCase
     $connector = new MySqlDefaultConnector('127.0.0.1', 'test', 'test', 'test');
     $connector->connect();
 
-    exec('sudo systemctl stop mysqld || sudo service mysql stop', $output, $code);
+    exec('sudo systemctl stop mariadb');
+
 
     $isAlive = $connector->isAlive();
     self::assertFalse($isAlive);
 
-    exec('sudo systemctl start mysqld || sudo service mysql start');
+    exec('sudo systemctl start mariadb');
   }
 
   //--------------------------------------------------------------------------------------------------------------------

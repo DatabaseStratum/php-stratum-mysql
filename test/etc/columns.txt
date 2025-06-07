@@ -727,7 +727,7 @@ information_schema.STATISTICS.TABLE_NAME      64
 information_schema.STATISTICS.NON_UNIQUE      19
 information_schema.STATISTICS.INDEX_SCHEMA    64
 information_schema.STATISTICS.INDEX_NAME      64
-information_schema.STATISTICS.SEQ_IN_INDEX    19
+information_schema.STATISTICS.SEQ_IN_INDEX    10
 information_schema.STATISTICS.COLUMN_NAME     64
 information_schema.STATISTICS.COLLATION        1
 information_schema.STATISTICS.CARDINALITY     19

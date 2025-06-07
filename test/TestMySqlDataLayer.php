@@ -496,7 +496,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
    */
   public function tstTestListOfInt(array|string|null $pIds): array
   {
-    $result = $this->query('call tst_test_list_of_int('.$this->quoteListOfInt($pIds, ',', '\"', '\\').')');
+    $result = $this->query('call tst_test_list_of_int('.$this->quoteListOfInt($pIds, ",", "\"", "\\").')');
     $ret = [];
     while (($row = $result->fetch_array(MYSQLI_ASSOC)))
     {

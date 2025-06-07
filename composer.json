@@ -13,19 +13,19 @@
   ],
   "license": "MIT",
   "require": {
-    "php": ">=8.1",
+    "php": ">=8.3",
     "ext-json": "*",
     "ext-mysqli": "*",
-    "setbased/exception": "^2.3.0",
-    "setbased/helper-code-store-mysql": "^2.2.0",
-    "setbased/php-stratum-backend": "^6.1.0",
-    "setbased/php-stratum-common": "^7.0.0",
-    "setbased/php-stratum-middle": "^5.12.0"
+    "setbased/exception": "^2.5.0",
+    "setbased/helper-code-store-mysql": "^2.3.0",
+    "setbased/php-stratum-backend": "^6.2.0",
+    "setbased/php-stratum-common": "^7.2.0",
+    "setbased/php-stratum-middle": "^5.13.0"
   },
   "require-dev": {
-    "phing/phing": "^3.0.0",
-    "phpunit/phpunit": "^10.5.35",
-    "setbased/php-stratum": "^6.3.1"
+    "phing/phing": "^3.0.1",
+    "phpunit/phpunit": "^11.5.22",
+    "setbased/php-stratum": "^6.4.0"
   },
   "autoload": {
     "psr-4": {
