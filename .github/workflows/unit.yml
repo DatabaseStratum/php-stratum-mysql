@@ -16,9 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
-          - "8.1"
-          - "8.2"
           - "8.3"
+          - "8.4"
         mysql-version:
           - "mysql-5.7"
           - "mysql-8.0"
@@ -39,7 +38,7 @@ jobs:
           extensions:  "xdebug"
 
       - name: "Cache dependencies installed with Composer"
-        uses: "actions/cache@v3"
+        uses: "actions/cache@v4"
         with:
           path:         "~/.composer/cache"
           key:          "php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}"
