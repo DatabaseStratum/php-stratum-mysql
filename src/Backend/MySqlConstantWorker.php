@@ -125,7 +125,7 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Creates constants declarations in a class.
+   * Creates constant declarations in a class.
    */
   private function executeCreateConstants(): void
   {
@@ -159,94 +159,64 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
    * * The first line of the doc block with the annotation '@setbased.stratum.constants'.
    * * The last line of this doc block.
    * * The last line of continuous constant declarations directly after the doc block.
-   * If one of these line can not be found the line number will be set to null.
+   * If one of these lines cannot be found, the line number will be set to null.
    *
    * @param string $source The source code of the constant class.
    */
   private function extractLines(string $source): array
   {
-    $tokens = token_get_all($source);
+    $lines = explode("\n", $source);
 
     $line1 = null;
     $line2 = null;
     $line3 = null;
 
-    // Find annotation @constants
     $step = 1;
-    foreach ($tokens as $token)
+    foreach ($lines as $index => $line)
     {
       switch ($step)
       {
         case 1:
           // Step 1: Find doc comment with annotation.
-          if (is_array($token) && $token[0]==T_DOC_COMMENT)
+          if (str_contains($line, '@setbased.stratum.constants'))
           {
-            if (str_contains($token[1], '@setbased.stratum.constants'))
-            {
-              $line1 = $token[2];
-              $step  = 2;
-            }
+            $line1 = $index;
+            $step  = 2;
           }
           break;
 
         case 2:
           // Step 2: Find end of doc block.
-          if (is_array($token))
+          if (trim($line)==='*/')
           {
-            if ($token[0]==T_WHITESPACE)
-            {
-              $line2 = $token[2];
-              if (substr_count($token[1], "\n")>1)
-              {
-                // Whitespace contains new line: end doc block without constants.
-                $step = 4;
-              }
-            }
-            else
-            {
-              if ($token[0]==T_CONST)
-              {
-                $line3 = $token[2];
-                $step  = 3;
-              }
-              else
-              {
-                $step = 4;
-              }
-            }
+            $step  = 3;
           }
           break;
 
         case 3:
-          // Step 4: Find en of constants declarations.
-          if (is_array($token))
+          // Step 3: Start of the constant declarations or not.
+          $line2 = $index;
+          if (preg_match('/^\s*(public\s+)?const/', $line))
           {
-            if ($token[0]==T_WHITESPACE)
-            {
-              if (substr_count($token[1], "\n")<=1)
-              {
-                // Ignore whitespace.
-                $line3 = $token[2];
-              }
-              else
-              {
-                // Whitespace contains new line: end of const declarations.
-                $step = 4;
-              }
-            }
-            elseif ($token[0]==T_CONST || $token[2]==$line3)
-            {
-              $line3 = $token[2];
-            }
-            else
-            {
-              $step = 4;
-            }
+            $step  = 4;
+          }
+          else
+          {
+            $step  = 5;
           }
           break;
 
         case 4:
-          // Leave loop.
+          // Step 4: Find the end of the constant declarations.
+          if (!preg_match('/^\s*(public\s+)?const/', $line))
+          {
+            $line3 = $index;
+            $step  = 5;
+          }
+          break;
+
+        case 5:
+          // Leave the loop.
           break;
       }
     }
@@ -385,7 +355,7 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
       $width2 = max(mb_strlen((string)$value), $width2);
     }
 
-    $format = sprintf('  const %%-%ds = %%%dd;', $width1, $width2);
+    $format = sprintf('  public const int %%-%ds = %%%dd;', $width1, $width2);
     foreach ($this->constants as $constant => $value)
     {
       $constants[] = sprintf($format, $constant, $value);

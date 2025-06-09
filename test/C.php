@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace SetBased\Stratum\MySql\Test;
 
 /**
@@ -10,12 +11,11 @@ class C
   /**
    * @setbased.stratum.constants
    *
-   * Below this doc block constants will be inserted by PhpStratum.
+   * PhpStratum will insert below this doc block constants.
    */
-  const TST_ID_BUNNY    = 3;
-  const TST_ID_CAT      = 4;
-  const TST_ID_EGGS     = 2;
-  const TST_ID_ELEPHANT = 5;
-  const TST_ID_SPAM     = 1;
-
+  public const int TST_ID_BUNNY    = 3;
+  public const int TST_ID_CAT      = 4;
+  public const int TST_ID_EGGS     = 2;
+  public const int TST_ID_ELEPHANT = 5;
+  public const int TST_ID_SPAM     = 1;
 }
