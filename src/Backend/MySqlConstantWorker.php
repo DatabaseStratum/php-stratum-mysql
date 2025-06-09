@@ -57,6 +57,7 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
   private array $oldColumns = [];
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * @inheritdoc
    */
@@ -189,7 +190,7 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
           // Step 2: Find end of doc block.
           if (trim($line)==='*/')
           {
-            $step  = 3;
+            $step = 3;
           }
           break;
 
@@ -198,11 +199,11 @@ class MySqlConstantWorker extends MySqlWorker implements ConstantWorker
           $line2 = $index;
           if (preg_match('/^\s*(public\s+)?const/', $line))
           {
-            $step  = 4;
+            $step = 4;
           }
           else
           {
-            $step  = 5;
+            $step = 5;
           }
           break;
 
