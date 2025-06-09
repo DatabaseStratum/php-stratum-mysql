@@ -9,7 +9,6 @@ The backend of PhpStratum for MySQL and MariaDB.
 <th>Legal</th>
 <th>Release</th>
 <th>Tests</th>
-<th>Code</th>
 </tr>
 </thead>
 <tbody>
@@ -26,9 +25,6 @@ The backend of PhpStratum for MySQL and MariaDB.
 <td>
 <a href="https://github.com/DatabaseStratum/php-stratum-mysql/actions/workflows/unit.yml"><img src="https://github.com/DatabaseStratum/php-stratum-mysql/actions/workflows/unit.yml/badge.svg" alt="Build Status"/></a><br/>
 <a href="https://codecov.io/gh/DatabaseStratum/php-stratum-mysql"><img src="https://codecov.io/gh/DatabaseStratum/php-stratum-mysql/branch/master/graph/badge.svg" alt="Code Coverage"/></a>
-</td>
-<td>
-<a href="https://scrutinizer-ci.com/g/DatabaseStratum/php-stratum-mysql/?branch=master"><img src="https://scrutinizer-ci.com/g/DatabaseStratum/php-stratum-mysql/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"/></a>
 </td>
 </tr>
 </tbody>
