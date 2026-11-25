@@ -18,14 +18,15 @@ jobs:
         php-version:
           - "8.3"
           - "8.4"
+          - "8.5"
+          - "8.6"
         mysql-version:
           - "mysql-5.7"
           - "mysql-8.0"
-          - "mariadb-10.4"
-          - "mariadb-10.5"
-          - "mariadb-10.6"
           - "mariadb-10.11"
           - "mariadb-11.4"
+          - "mariadb-11.8"
+          - "mariadb-12.3"
 
     steps:
       - name: "Checkout"
