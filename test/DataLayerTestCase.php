@@ -43,7 +43,7 @@ class DataLayerTestCase extends TestCase
       return true;
     }
 
-    if (preg_match('/^11\.4.*MariaDB$/', $row['Value'])===1)
+    if (preg_match('/^1[12]\..*MariaDB$/', $row['Value'])===1)
     {
       return true;
     }
