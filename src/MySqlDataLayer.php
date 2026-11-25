@@ -787,11 +787,11 @@ class MySqlDataLayer
   /**
    * Returns a literal for a decimal value that can be safely used in SQL statements.
    *
-   * @param int|float|string|null $value The value.
+   * @param mixed $value The value.
    *
    * @return string
    */
-  public function quoteDecimal(int|float|string|null $value): string
+  public function quoteDecimal(mixed $value): string
   {
     if ($value===null || $value==='')
     {
@@ -803,7 +803,22 @@ class MySqlDataLayer
       return (string)$value;
     }
 
-    return "'".$this->mysqli->real_escape_string($value)."'";
+    if (is_string($value))
+    {
+      return "'".$this->mysqli->real_escape_string($value)."'";
+    }
+
+    if (method_exists($value, 'toString'))
+    {
+      return "'".$this->mysqli->real_escape_string($value->toString())."'";
+    }
+
+    if (method_exists($value, '__toString'))
+    {
+      return "'".$this->mysqli->real_escape_string($value->__toString())."'";
+    }
+
+    throw new LogicException("Object '%s' is not a decimal.", gettype($value));
   }
 
   //--------------------------------------------------------------------------------------------------------------------

@@ -214,76 +214,76 @@ class TestMySqlDataLayer extends MySqlDataLayer
   /**
    * Test parameters with data type from a table column.
    *
-   * @param string|null           $pParam01 Data type from (other) schema, table, and column.
-   *                                        varchar(64) character set utf8mb3 collation utf8mb3_general_ci
-   * @param int|null              $pParam02 Data type int.
-   *                                        int(11)
-   * @param int|null              $pParam03 Data type smallint.
-   *                                        smallint(6)
-   * @param int|null              $pParam04 Data type tinyint.
-   *                                        tinyint(4)
-   * @param int|null              $pParam05 Data type mediumint.
-   *                                        mediumint(9)
-   * @param int|null              $pParam06 Data type bigint.
-   *                                        bigint(20)
-   * @param int|null              $pParam07 Data type int unsigned.
-   *                                        int(10) unsigned
-   * @param int|null              $pParam08 Data type smallint unsigned.
-   *                                        smallint(5) unsigned
-   * @param int|null              $pParam09 Data type tinyint unsigned.
-   *                                        tinyint(3) unsigned
-   * @param int|null              $pParam10 Data type mediumint unsigned.
-   *                                        mediumint(8) unsigned
-   * @param int|null              $pParam11 Data type bigint unsigned.
-   *                                        bigint(20) unsigned
-   * @param int|float|string|null $pParam12 Data type decimal(10,2).
-   *                                        decimal(10,2)
-   * @param int|float|string|null $pParam13 Data type decimal(65).
-   *                                        decimal(65,0)
-   * @param float|null            $pParam14 Data type float.
-   *                                        float
-   * @param float|null            $pParam15 Data type double.
-   *                                        double
-   * @param string|null           $pParam16 Data type bit(8).
-   *                                        bit(8)
-   * @param string|null           $pParam17 Data type date.
-   *                                        date
-   * @param string|null           $pParam18 Data type datetime.
-   *                                        datetime
-   * @param string|null           $pParam19 Data type timestamp.
-   *                                        timestamp
-   * @param string|null           $pParam20 Data type time.
-   *                                        time
-   * @param int|null              $pParam21 Data type year.
-   *                                        year(4)
-   * @param string|null           $pParam22 Data type char(10).
-   *                                        char(10) character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pParam23 Data type varchar(10).
-   *                                        varchar(10) character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pParam24 Data type binary(10).
-   *                                        binary(10)
-   * @param string|null           $pParam25 Data type varbinary(10).
-   *                                        varbinary(10)
-   * @param string|null           $pParam26 Data type tinyblob.
-   *                                        tinyblob
-   * @param string|null           $pParam27 Data type blob.
-   *                                        blob(65535)
-   * @param string|null           $pParam28 Data type mediumblob.
-   *                                        mediumblob
-   * @param string|null           $pParam29 Data type longblob.
-   *                                        longblob
-   * @param string|null           $pParam30 Data type tinytext.
-   *                                        tinytext character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pParam31 Data type text.
-   *                                        text character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pParam32 Data type mediumtext.
-   *                                        mediumtext character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pParam33 Data type longtext.
-   *                                        longtext character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pParam34 Data type enum('a','b').
-   *                                        enum('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pParam35 Data type set('a','b').
-   *                                        set('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pParam01 Data type from (other) schema, table, and column.
+   *                              varchar(64) character set utf8mb3 collation utf8mb3_general_ci
+   * @param int|null    $pParam02 Data type int.
+   *                              int(11)
+   * @param int|null    $pParam03 Data type smallint.
+   *                              smallint(6)
+   * @param int|null    $pParam04 Data type tinyint.
+   *                              tinyint(4)
+   * @param int|null    $pParam05 Data type mediumint.
+   *                              mediumint(9)
+   * @param int|null    $pParam06 Data type bigint.
+   *                              bigint(20)
+   * @param int|null    $pParam07 Data type int unsigned.
+   *                              int(10) unsigned
+   * @param int|null    $pParam08 Data type smallint unsigned.
+   *                              smallint(5) unsigned
+   * @param int|null    $pParam09 Data type tinyint unsigned.
+   *                              tinyint(3) unsigned
+   * @param int|null    $pParam10 Data type mediumint unsigned.
+   *                              mediumint(8) unsigned
+   * @param int|null    $pParam11 Data type bigint unsigned.
+   *                              bigint(20) unsigned
+   * @param mixed       $pParam12 Data type decimal(10,2).
+   *                              decimal(10,2)
+   * @param mixed       $pParam13 Data type decimal(65).
+   *                              decimal(65,0)
+   * @param float|null  $pParam14 Data type float.
+   *                              float
+   * @param float|null  $pParam15 Data type double.
+   *                              double
+   * @param string|null $pParam16 Data type bit(8).
+   *                              bit(8)
+   * @param string|null $pParam17 Data type date.
+   *                              date
+   * @param string|null $pParam18 Data type datetime.
+   *                              datetime
+   * @param string|null $pParam19 Data type timestamp.
+   *                              timestamp
+   * @param string|null $pParam20 Data type time.
+   *                              time
+   * @param int|null    $pParam21 Data type year.
+   *                              year(4)
+   * @param string|null $pParam22 Data type char(10).
+   *                              char(10) character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pParam23 Data type varchar(10).
+   *                              varchar(10) character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pParam24 Data type binary(10).
+   *                              binary(10)
+   * @param string|null $pParam25 Data type varbinary(10).
+   *                              varbinary(10)
+   * @param string|null $pParam26 Data type tinyblob.
+   *                              tinyblob
+   * @param string|null $pParam27 Data type blob.
+   *                              blob(65535)
+   * @param string|null $pParam28 Data type mediumblob.
+   *                              mediumblob
+   * @param string|null $pParam29 Data type longblob.
+   *                              longblob
+   * @param string|null $pParam30 Data type tinytext.
+   *                              tinytext character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pParam31 Data type text.
+   *                              text character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pParam32 Data type mediumtext.
+   *                              mediumtext character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pParam33 Data type longtext.
+   *                              longtext character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pParam34 Data type enum('a','b').
+   *                              enum('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pParam35 Data type set('a','b').
+   *                              set('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
    *
    * @return int
    *
@@ -291,7 +291,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @throws MySqlQueryErrorException
    * @throws ResultException
    */
-  public function tstOracleProcedureWithDataTypeColumns(?string $pParam01, ?int $pParam02, ?int $pParam03, ?int $pParam04, ?int $pParam05, ?int $pParam06, ?int $pParam07, ?int $pParam08, ?int $pParam09, ?int $pParam10, ?int $pParam11, int|float|string|null $pParam12, int|float|string|null $pParam13, ?float $pParam14, ?float $pParam15, ?string $pParam16, ?string $pParam17, ?string $pParam18, ?string $pParam19, ?string $pParam20, ?int $pParam21, ?string $pParam22, ?string $pParam23, ?string $pParam24, ?string $pParam25, ?string $pParam26, ?string $pParam27, ?string $pParam28, ?string $pParam29, ?string $pParam30, ?string $pParam31, ?string $pParam32, ?string $pParam33, ?string $pParam34, ?string $pParam35): int
+  public function tstOracleProcedureWithDataTypeColumns(?string $pParam01, ?int $pParam02, ?int $pParam03, ?int $pParam04, ?int $pParam05, ?int $pParam06, ?int $pParam07, ?int $pParam08, ?int $pParam09, ?int $pParam10, ?int $pParam11, mixed $pParam12, mixed $pParam13, ?float $pParam14, ?float $pParam15, ?string $pParam16, ?string $pParam17, ?string $pParam18, ?string $pParam19, ?string $pParam20, ?int $pParam21, ?string $pParam22, ?string $pParam23, ?string $pParam24, ?string $pParam25, ?string $pParam26, ?string $pParam27, ?string $pParam28, ?string $pParam29, ?string $pParam30, ?string $pParam31, ?string $pParam32, ?string $pParam33, ?string $pParam34, ?string $pParam35): int
   {
     $query = 'call tst_oracle_procedure_with_data_type_columns('.$this->quoteString($pParam01).','.$this->quoteInt($pParam02).','.$this->quoteInt($pParam03).','.$this->quoteInt($pParam04).','.$this->quoteInt($pParam05).','.$this->quoteInt($pParam06).','.$this->quoteInt($pParam07).','.$this->quoteInt($pParam08).','.$this->quoteInt($pParam09).','.$this->quoteInt($pParam10).','.$this->quoteInt($pParam11).','.$this->quoteDecimal($pParam12).','.$this->quoteDecimal($pParam13).','.$this->quoteFloat($pParam14).','.$this->quoteFloat($pParam15).','.$this->quoteBit($pParam16).','.$this->quoteString($pParam17).','.$this->quoteString($pParam18).','.$this->quoteString($pParam19).','.$this->quoteString($pParam20).','.$this->quoteInt($pParam21).','.$this->quoteString($pParam22).','.$this->quoteString($pParam23).','.$this->quoteBinary($pParam24).','.$this->quoteBinary($pParam25).',?,?,?,?,?,?,?,?,'.$this->quoteString($pParam34).','.$this->quoteString($pParam35).')';
     $stmt  = @$this->mysqli->prepare($query);
@@ -417,6 +417,23 @@ class TestMySqlDataLayer extends MySqlDataLayer
   public function tstTestFunctionBool2(?string $pRet): bool
   {
     return !empty($this->executeSingleton0('select tst_test_function_bool2('.$this->quoteString($pRet).')'));
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Test for stored function with return type decimal wrapper.
+   *
+   * @param mixed $pRet The return value.
+   *                    decimal(10,2)
+   *
+   * @return mixed
+   *
+   * @throws MySqlDataLayerException
+   * @throws ResultException
+   */
+  public function tstTestFunctionDecimal(mixed $pRet)
+  {
+    return $this->executeSingleton0('select tst_test_function_decimal('.$this->quoteDecimal($pRet).')');
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -808,9 +825,9 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * Test for type hint with %max.
    *
    * @param string|null $pTstLastName   Can be a long string.
-   *                                    varchar(16383) character set utf8mb4 collation utf8mb4_general_ci
+   *                                    varchar(16383) character set utf8mb4 collation utf8mb4_uca1400_ai_ci
    * @param string|null $pTstFirstName  Can be a long string.
-   *                                    varchar(21844) character set utf8mb3 collation utf8mb3_general_ci
+   *                                    varchar(21844) character set utf8mb3 collation utf8mb3_uca1400_ai_ci
    * @param string|null $pTstInstrument Can be a long string.
    *                                    varchar(65532) character set ascii collation ascii_general_ci
    *
@@ -828,16 +845,16 @@ class TestMySqlDataLayer extends MySqlDataLayer
   /**
    * Test for conversion of MySQL types to PHP types.
    *
-   * @param int|float|string|null $pPhpType1 Must be converted to PHP type string in the TestMySqlDataLayer.
-   *                                         decimal(10,2)
-   * @param int|float|string|null $pPhpType2 Must be converted to PHP type string in the TestMySqlDataLayer.
-   *                                         decimal(65,0)
+   * @param mixed $pPhpType1 Must be converted to PHP type string in the TestMySqlDataLayer.
+   *                         decimal(10,2)
+   * @param mixed $pPhpType2 Must be converted to PHP type string in the TestMySqlDataLayer.
+   *                         decimal(65,0)
    *
    * @return int
    *
    * @throws MySqlQueryErrorException
    */
-  public function tstTestParameterType(int|float|string|null $pPhpType1, int|float|string|null $pPhpType2): int
+  public function tstTestParameterType(mixed $pPhpType1, mixed $pPhpType2): int
   {
     return $this->executeNone('call tst_test_parameter_type('.$this->quoteDecimal($pPhpType1).','.$this->quoteDecimal($pPhpType2).')');
   }
@@ -1881,64 +1898,64 @@ class TestMySqlDataLayer extends MySqlDataLayer
   /**
    * Test for all possible types of parameters excluding LOB's.
    *
-   * @param int|null              $pTstInt               Parameter of type int.
-   *                                                     int(11)
-   * @param int|null              $pTstSmallint          Parameter of type smallint.
-   *                                                     smallint(6)
-   * @param int|null              $pTstTinyint           Parameter of type tinyint.
-   *                                                     tinyint(4)
-   * @param int|null              $pTstMediumint         Parameter of type mediumint.
-   *                                                     mediumint(9)
-   * @param int|null              $pTstBigint            Parameter of type bigint.
-   *                                                     bigint(20)
-   * @param int|null              $pTstIntUnsigned       Parameter of type int unsigned.
-   *                                                     int(10) unsigned
-   * @param int|null              $pTstSmallintUnsigned  Parameter of type smallint unsigned.
-   *                                                     smallint(5) unsigned
-   * @param int|null              $pTstTinyintUnsigned   Parameter of type tinyint unsigned.
-   *                                                     tinyint(3) unsigned
-   * @param int|null              $pTstMediumintUnsigned Parameter of type mediumint unsigned.
-   *                                                     mediumint(8) unsigned
-   * @param int|null              $pTstBigintUnsigned    Parameter of type bigint unsigned.
-   *                                                     bigint(20) unsigned
-   * @param int|float|string|null $pTstDecimal           Parameter of type decimal.
-   *                                                     decimal(10,2)
-   * @param int|float|string|null $pTstDecimal0          Parameter of type decimal with 0 scale.
-   *                                                     decimal(65,0)
-   * @param float|null            $pTstFloat             Parameter of type float.
-   *                                                     float
-   * @param float|null            $pTstDouble            Parameter of type double.
-   *                                                     double
-   * @param string|null           $pTstBit               Parameter of type bit.
-   *                                                     bit(8)
-   * @param string|null           $pTstDate              Parameter of type date.
-   *                                                     date
-   * @param string|null           $pTstDatetime          Parameter of type datetime.
-   *                                                     datetime
-   * @param string|null           $pTstTimestamp         Parameter of type timestamp.
-   *                                                     timestamp
-   * @param string|null           $pTstTime              Parameter of type time.
-   *                                                     time
-   * @param int|null              $pTstYear              Parameter of type year.
-   *                                                     year(4)
-   * @param string|null           $pTstChar              Parameter of type char.
-   *                                                     char(10) character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pTstVarchar           Parameter of type varchar.
-   *                                                     varchar(10) character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pTstBinary            Parameter of type binary.
-   *                                                     binary(10)
-   * @param string|null           $pTstVarbinary         Parameter of type varbinary.
-   *                                                     varbinary(10)
-   * @param string|null           $pTstEnum              Parameter of type enum.
-   *                                                     enum('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pTstSet               Parameter of type set.
-   *                                                     set('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
+   * @param int|null    $pTstInt               Parameter of type int.
+   *                                           int(11)
+   * @param int|null    $pTstSmallint          Parameter of type smallint.
+   *                                           smallint(6)
+   * @param int|null    $pTstTinyint           Parameter of type tinyint.
+   *                                           tinyint(4)
+   * @param int|null    $pTstMediumint         Parameter of type mediumint.
+   *                                           mediumint(9)
+   * @param int|null    $pTstBigint            Parameter of type bigint.
+   *                                           bigint(20)
+   * @param int|null    $pTstIntUnsigned       Parameter of type int unsigned.
+   *                                           int(10) unsigned
+   * @param int|null    $pTstSmallintUnsigned  Parameter of type smallint unsigned.
+   *                                           smallint(5) unsigned
+   * @param int|null    $pTstTinyintUnsigned   Parameter of type tinyint unsigned.
+   *                                           tinyint(3) unsigned
+   * @param int|null    $pTstMediumintUnsigned Parameter of type mediumint unsigned.
+   *                                           mediumint(8) unsigned
+   * @param int|null    $pTstBigintUnsigned    Parameter of type bigint unsigned.
+   *                                           bigint(20) unsigned
+   * @param mixed       $pTstDecimal           Parameter of type decimal.
+   *                                           decimal(10,2)
+   * @param mixed       $pTstDecimal0          Parameter of type decimal with 0 scale.
+   *                                           decimal(65,0)
+   * @param float|null  $pTstFloat             Parameter of type float.
+   *                                           float
+   * @param float|null  $pTstDouble            Parameter of type double.
+   *                                           double
+   * @param string|null $pTstBit               Parameter of type bit.
+   *                                           bit(8)
+   * @param string|null $pTstDate              Parameter of type date.
+   *                                           date
+   * @param string|null $pTstDatetime          Parameter of type datetime.
+   *                                           datetime
+   * @param string|null $pTstTimestamp         Parameter of type timestamp.
+   *                                           timestamp
+   * @param string|null $pTstTime              Parameter of type time.
+   *                                           time
+   * @param int|null    $pTstYear              Parameter of type year.
+   *                                           year(4)
+   * @param string|null $pTstChar              Parameter of type char.
+   *                                           char(10) character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pTstVarchar           Parameter of type varchar.
+   *                                           varchar(10) character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pTstBinary            Parameter of type binary.
+   *                                           binary(10)
+   * @param string|null $pTstVarbinary         Parameter of type varbinary.
+   *                                           varbinary(10)
+   * @param string|null $pTstEnum              Parameter of type enum.
+   *                                           enum('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pTstSet               Parameter of type set.
+   *                                           set('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
    *
    * @return int
    *
    * @throws MySqlQueryErrorException
    */
-  public function tstTestTypeHint(?int $pTstInt, ?int $pTstSmallint, ?int $pTstTinyint, ?int $pTstMediumint, ?int $pTstBigint, ?int $pTstIntUnsigned, ?int $pTstSmallintUnsigned, ?int $pTstTinyintUnsigned, ?int $pTstMediumintUnsigned, ?int $pTstBigintUnsigned, int|float|string|null $pTstDecimal, int|float|string|null $pTstDecimal0, ?float $pTstFloat, ?float $pTstDouble, ?string $pTstBit, ?string $pTstDate, ?string $pTstDatetime, ?string $pTstTimestamp, ?string $pTstTime, ?int $pTstYear, ?string $pTstChar, ?string $pTstVarchar, ?string $pTstBinary, ?string $pTstVarbinary, ?string $pTstEnum, ?string $pTstSet): int
+  public function tstTestTypeHint(?int $pTstInt, ?int $pTstSmallint, ?int $pTstTinyint, ?int $pTstMediumint, ?int $pTstBigint, ?int $pTstIntUnsigned, ?int $pTstSmallintUnsigned, ?int $pTstTinyintUnsigned, ?int $pTstMediumintUnsigned, ?int $pTstBigintUnsigned, mixed $pTstDecimal, mixed $pTstDecimal0, ?float $pTstFloat, ?float $pTstDouble, ?string $pTstBit, ?string $pTstDate, ?string $pTstDatetime, ?string $pTstTimestamp, ?string $pTstTime, ?int $pTstYear, ?string $pTstChar, ?string $pTstVarchar, ?string $pTstBinary, ?string $pTstVarbinary, ?string $pTstEnum, ?string $pTstSet): int
   {
     return $this->executeNone('call tst_test_type_hint('.$this->quoteInt($pTstInt).','.$this->quoteInt($pTstSmallint).','.$this->quoteInt($pTstTinyint).','.$this->quoteInt($pTstMediumint).','.$this->quoteInt($pTstBigint).','.$this->quoteInt($pTstIntUnsigned).','.$this->quoteInt($pTstSmallintUnsigned).','.$this->quoteInt($pTstTinyintUnsigned).','.$this->quoteInt($pTstMediumintUnsigned).','.$this->quoteInt($pTstBigintUnsigned).','.$this->quoteDecimal($pTstDecimal).','.$this->quoteDecimal($pTstDecimal0).','.$this->quoteFloat($pTstFloat).','.$this->quoteFloat($pTstDouble).','.$this->quoteBit($pTstBit).','.$this->quoteString($pTstDate).','.$this->quoteString($pTstDatetime).','.$this->quoteString($pTstTimestamp).','.$this->quoteString($pTstTime).','.$this->quoteInt($pTstYear).','.$this->quoteString($pTstChar).','.$this->quoteString($pTstVarchar).','.$this->quoteBinary($pTstBinary).','.$this->quoteBinary($pTstVarbinary).','.$this->quoteString($pTstEnum).','.$this->quoteString($pTstSet).')');
   }
@@ -1960,64 +1977,64 @@ class TestMySqlDataLayer extends MySqlDataLayer
   /**
    * Test for all possible types of parameters including LOB's.
    *
-   * @param int|null              $pTstInt        Parameter of type int.
-   *                                              int(11)
-   * @param int|null              $pTstSmallint   Parameter of type smallint.
-   *                                              smallint(6)
-   * @param int|null              $pTstTinyint    Parameter of type tinyint.
-   *                                              tinyint(4)
-   * @param int|null              $pTstMediumint  Parameter of type mediumint.
-   *                                              mediumint(9)
-   * @param int|null              $pTstBigint     Parameter of type bigint.
-   *                                              bigint(20)
-   * @param int|float|string|null $pTstDecimal    Parameter of type decimal.
-   *                                              decimal(10,2)
-   * @param int|float|string|null $pTstDecimal0   Parameter of type decimal with 0 scale.
-   *                                              decimal(65,0)
-   * @param float|null            $pTstFloat      Parameter of type float.
-   *                                              float
-   * @param float|null            $pTstDouble     Parameter of type double.
-   *                                              double
-   * @param string|null           $pTstBit        Parameter of type bit.
-   *                                              bit(8)
-   * @param string|null           $pTstDate       Parameter of type date.
-   *                                              date
-   * @param string|null           $pTstDatetime   Parameter of type datetime.
-   *                                              datetime
-   * @param string|null           $pTstTimestamp  Parameter of type timestamp.
-   *                                              timestamp
-   * @param string|null           $pTstTime       Parameter of type time.
-   *                                              time
-   * @param int|null              $pTstYear       Parameter of type year.
-   *                                              year(4)
-   * @param string|null           $pTstChar       Parameter of type char.
-   *                                              char(10) character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pTstVarchar    Parameter of type varchar.
-   *                                              varchar(10) character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pTstBinary     Parameter of type binary.
-   *                                              binary(10)
-   * @param string|null           $pTstVarbinary  Parameter of type varbinary.
-   *                                              varbinary(10)
-   * @param string|null           $pTstTinyblob   Parameter of type tinyblob.
-   *                                              tinyblob
-   * @param string|null           $pTstBlob       Parameter of type blob.
-   *                                              blob
-   * @param string|null           $pTstMediumblob Parameter of type mediumblob.
-   *                                              mediumblob
-   * @param string|null           $pTstLongblob   Parameter of type longblob.
-   *                                              longblob
-   * @param string|null           $pTstTinytext   Parameter of type tinytext.
-   *                                              tinytext character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pTstText       Parameter of type text.
-   *                                              text character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pTstMediumtext Parameter of type mediumtext.
-   *                                              mediumtext character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pTstLongtext   Parameter of type longtext.
-   *                                              longtext character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pTstEnum       Parameter of type enum.
-   *                                              enum('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pTstSet        Parameter of type set.
-   *                                              set('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
+   * @param int|null    $pTstInt        Parameter of type int.
+   *                                    int(11)
+   * @param int|null    $pTstSmallint   Parameter of type smallint.
+   *                                    smallint(6)
+   * @param int|null    $pTstTinyint    Parameter of type tinyint.
+   *                                    tinyint(4)
+   * @param int|null    $pTstMediumint  Parameter of type mediumint.
+   *                                    mediumint(9)
+   * @param int|null    $pTstBigint     Parameter of type bigint.
+   *                                    bigint(20)
+   * @param mixed       $pTstDecimal    Parameter of type decimal.
+   *                                    decimal(10,2)
+   * @param mixed       $pTstDecimal0   Parameter of type decimal with 0 scale.
+   *                                    decimal(65,0)
+   * @param float|null  $pTstFloat      Parameter of type float.
+   *                                    float
+   * @param float|null  $pTstDouble     Parameter of type double.
+   *                                    double
+   * @param string|null $pTstBit        Parameter of type bit.
+   *                                    bit(8)
+   * @param string|null $pTstDate       Parameter of type date.
+   *                                    date
+   * @param string|null $pTstDatetime   Parameter of type datetime.
+   *                                    datetime
+   * @param string|null $pTstTimestamp  Parameter of type timestamp.
+   *                                    timestamp
+   * @param string|null $pTstTime       Parameter of type time.
+   *                                    time
+   * @param int|null    $pTstYear       Parameter of type year.
+   *                                    year(4)
+   * @param string|null $pTstChar       Parameter of type char.
+   *                                    char(10) character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pTstVarchar    Parameter of type varchar.
+   *                                    varchar(10) character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pTstBinary     Parameter of type binary.
+   *                                    binary(10)
+   * @param string|null $pTstVarbinary  Parameter of type varbinary.
+   *                                    varbinary(10)
+   * @param string|null $pTstTinyblob   Parameter of type tinyblob.
+   *                                    tinyblob
+   * @param string|null $pTstBlob       Parameter of type blob.
+   *                                    blob
+   * @param string|null $pTstMediumblob Parameter of type mediumblob.
+   *                                    mediumblob
+   * @param string|null $pTstLongblob   Parameter of type longblob.
+   *                                    longblob
+   * @param string|null $pTstTinytext   Parameter of type tinytext.
+   *                                    tinytext character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pTstText       Parameter of type text.
+   *                                    text character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pTstMediumtext Parameter of type mediumtext.
+   *                                    mediumtext character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pTstLongtext   Parameter of type longtext.
+   *                                    longtext character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pTstEnum       Parameter of type enum.
+   *                                    enum('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pTstSet        Parameter of type set.
+   *                                    set('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
    *
    * @return int
    *
@@ -2025,7 +2042,7 @@ class TestMySqlDataLayer extends MySqlDataLayer
    * @throws MySqlQueryErrorException
    * @throws ResultException
    */
-  public function tstTestTypeHintWithBlobs(?int $pTstInt, ?int $pTstSmallint, ?int $pTstTinyint, ?int $pTstMediumint, ?int $pTstBigint, int|float|string|null $pTstDecimal, int|float|string|null $pTstDecimal0, ?float $pTstFloat, ?float $pTstDouble, ?string $pTstBit, ?string $pTstDate, ?string $pTstDatetime, ?string $pTstTimestamp, ?string $pTstTime, ?int $pTstYear, ?string $pTstChar, ?string $pTstVarchar, ?string $pTstBinary, ?string $pTstVarbinary, ?string $pTstTinyblob, ?string $pTstBlob, ?string $pTstMediumblob, ?string $pTstLongblob, ?string $pTstTinytext, ?string $pTstText, ?string $pTstMediumtext, ?string $pTstLongtext, ?string $pTstEnum, ?string $pTstSet): int
+  public function tstTestTypeHintWithBlobs(?int $pTstInt, ?int $pTstSmallint, ?int $pTstTinyint, ?int $pTstMediumint, ?int $pTstBigint, mixed $pTstDecimal, mixed $pTstDecimal0, ?float $pTstFloat, ?float $pTstDouble, ?string $pTstBit, ?string $pTstDate, ?string $pTstDatetime, ?string $pTstTimestamp, ?string $pTstTime, ?int $pTstYear, ?string $pTstChar, ?string $pTstVarchar, ?string $pTstBinary, ?string $pTstVarbinary, ?string $pTstTinyblob, ?string $pTstBlob, ?string $pTstMediumblob, ?string $pTstLongblob, ?string $pTstTinytext, ?string $pTstText, ?string $pTstMediumtext, ?string $pTstLongtext, ?string $pTstEnum, ?string $pTstSet): int
   {
     $query = 'call tst_test_type_hint_with_blobs('.$this->quoteInt($pTstInt).','.$this->quoteInt($pTstSmallint).','.$this->quoteInt($pTstTinyint).','.$this->quoteInt($pTstMediumint).','.$this->quoteInt($pTstBigint).','.$this->quoteDecimal($pTstDecimal).','.$this->quoteDecimal($pTstDecimal0).','.$this->quoteFloat($pTstFloat).','.$this->quoteFloat($pTstDouble).','.$this->quoteBit($pTstBit).','.$this->quoteString($pTstDate).','.$this->quoteString($pTstDatetime).','.$this->quoteString($pTstTimestamp).','.$this->quoteString($pTstTime).','.$this->quoteInt($pTstYear).','.$this->quoteString($pTstChar).','.$this->quoteString($pTstVarchar).','.$this->quoteBinary($pTstBinary).','.$this->quoteBinary($pTstVarbinary).',?,?,?,?,?,?,?,?,'.$this->quoteString($pTstEnum).','.$this->quoteString($pTstSet).')';
     $stmt  = @$this->mysqli->prepare($query);
@@ -2091,64 +2108,64 @@ class TestMySqlDataLayer extends MySqlDataLayer
   /**
    * Test type hint with schema.
    *
-   * @param int|null              $pTstInt               Parameter of type int.
-   *                                                     int(11)
-   * @param int|null              $pTstSmallint          Parameter of type smallint.
-   *                                                     smallint(6)
-   * @param int|null              $pTstTinyint           Parameter of type tinyint.
-   *                                                     tinyint(4)
-   * @param int|null              $pTstMediumint         Parameter of type mediumint.
-   *                                                     mediumint(9)
-   * @param int|null              $pTstBigint            Parameter of type bigint.
-   *                                                     bigint(20)
-   * @param int|null              $pTstIntUnsigned       Parameter of type int unsigned.
-   *                                                     int(10) unsigned
-   * @param int|null              $pTstSmallintUnsigned  Parameter of type smallint unsigned.
-   *                                                     smallint(5) unsigned
-   * @param int|null              $pTstTinyintUnsigned   Parameter of type tinyint unsigned.
-   *                                                     tinyint(3) unsigned
-   * @param int|null              $pTstMediumintUnsigned Parameter of type mediumint unsigned.
-   *                                                     mediumint(8) unsigned
-   * @param int|null              $pTstBigintUnsigned    Parameter of type bigint unsigned.
-   *                                                     bigint(20) unsigned
-   * @param int|float|string|null $pTstDecimal           Parameter of type decimal.
-   *                                                     decimal(10,2)
-   * @param int|float|string|null $pTstDecimal0          Parameter of type decimal with 0 scale.
-   *                                                     decimal(65,0)
-   * @param float|null            $pTstFloat             Parameter of type float.
-   *                                                     float
-   * @param float|null            $pTstDouble            Parameter of type double.
-   *                                                     double
-   * @param string|null           $pTstBit               Parameter of type bit.
-   *                                                     bit(8)
-   * @param string|null           $pTstDate              Parameter of type date.
-   *                                                     date
-   * @param string|null           $pTstDatetime          Parameter of type datetime.
-   *                                                     datetime
-   * @param string|null           $pTstTimestamp         Parameter of type timestamp.
-   *                                                     timestamp
-   * @param string|null           $pTstTime              Parameter of type time.
-   *                                                     time
-   * @param int|null              $pTstYear              Parameter of type year.
-   *                                                     year(4)
-   * @param string|null           $pTstChar              Parameter of type char.
-   *                                                     char(10) character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pTstVarchar           Parameter of type varchar.
-   *                                                     varchar(10) character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pTstBinary            Parameter of type binary.
-   *                                                     binary(10)
-   * @param string|null           $pTstVarbinary         Parameter of type varbinary.
-   *                                                     varbinary(10)
-   * @param string|null           $pTstEnum              Parameter of type enum.
-   *                                                     enum('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
-   * @param string|null           $pTstSet               Parameter of type set.
-   *                                                     set('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
+   * @param int|null    $pTstInt               Parameter of type int.
+   *                                           int(11)
+   * @param int|null    $pTstSmallint          Parameter of type smallint.
+   *                                           smallint(6)
+   * @param int|null    $pTstTinyint           Parameter of type tinyint.
+   *                                           tinyint(4)
+   * @param int|null    $pTstMediumint         Parameter of type mediumint.
+   *                                           mediumint(9)
+   * @param int|null    $pTstBigint            Parameter of type bigint.
+   *                                           bigint(20)
+   * @param int|null    $pTstIntUnsigned       Parameter of type int unsigned.
+   *                                           int(10) unsigned
+   * @param int|null    $pTstSmallintUnsigned  Parameter of type smallint unsigned.
+   *                                           smallint(5) unsigned
+   * @param int|null    $pTstTinyintUnsigned   Parameter of type tinyint unsigned.
+   *                                           tinyint(3) unsigned
+   * @param int|null    $pTstMediumintUnsigned Parameter of type mediumint unsigned.
+   *                                           mediumint(8) unsigned
+   * @param int|null    $pTstBigintUnsigned    Parameter of type bigint unsigned.
+   *                                           bigint(20) unsigned
+   * @param mixed       $pTstDecimal           Parameter of type decimal.
+   *                                           decimal(10,2)
+   * @param mixed       $pTstDecimal0          Parameter of type decimal with 0 scale.
+   *                                           decimal(65,0)
+   * @param float|null  $pTstFloat             Parameter of type float.
+   *                                           float
+   * @param float|null  $pTstDouble            Parameter of type double.
+   *                                           double
+   * @param string|null $pTstBit               Parameter of type bit.
+   *                                           bit(8)
+   * @param string|null $pTstDate              Parameter of type date.
+   *                                           date
+   * @param string|null $pTstDatetime          Parameter of type datetime.
+   *                                           datetime
+   * @param string|null $pTstTimestamp         Parameter of type timestamp.
+   *                                           timestamp
+   * @param string|null $pTstTime              Parameter of type time.
+   *                                           time
+   * @param int|null    $pTstYear              Parameter of type year.
+   *                                           year(4)
+   * @param string|null $pTstChar              Parameter of type char.
+   *                                           char(10) character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pTstVarchar           Parameter of type varchar.
+   *                                           varchar(10) character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pTstBinary            Parameter of type binary.
+   *                                           binary(10)
+   * @param string|null $pTstVarbinary         Parameter of type varbinary.
+   *                                           varbinary(10)
+   * @param string|null $pTstEnum              Parameter of type enum.
+   *                                           enum('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
+   * @param string|null $pTstSet               Parameter of type set.
+   *                                           set('a','b','c') character set utf8mb4 collation utf8mb4_general_ci
    *
    * @return int
    *
    * @throws MySqlQueryErrorException
    */
-  public function tstTestTypeHintWithSchema(?int $pTstInt, ?int $pTstSmallint, ?int $pTstTinyint, ?int $pTstMediumint, ?int $pTstBigint, ?int $pTstIntUnsigned, ?int $pTstSmallintUnsigned, ?int $pTstTinyintUnsigned, ?int $pTstMediumintUnsigned, ?int $pTstBigintUnsigned, int|float|string|null $pTstDecimal, int|float|string|null $pTstDecimal0, ?float $pTstFloat, ?float $pTstDouble, ?string $pTstBit, ?string $pTstDate, ?string $pTstDatetime, ?string $pTstTimestamp, ?string $pTstTime, ?int $pTstYear, ?string $pTstChar, ?string $pTstVarchar, ?string $pTstBinary, ?string $pTstVarbinary, ?string $pTstEnum, ?string $pTstSet): int
+  public function tstTestTypeHintWithSchema(?int $pTstInt, ?int $pTstSmallint, ?int $pTstTinyint, ?int $pTstMediumint, ?int $pTstBigint, ?int $pTstIntUnsigned, ?int $pTstSmallintUnsigned, ?int $pTstTinyintUnsigned, ?int $pTstMediumintUnsigned, ?int $pTstBigintUnsigned, mixed $pTstDecimal, mixed $pTstDecimal0, ?float $pTstFloat, ?float $pTstDouble, ?string $pTstBit, ?string $pTstDate, ?string $pTstDatetime, ?string $pTstTimestamp, ?string $pTstTime, ?int $pTstYear, ?string $pTstChar, ?string $pTstVarchar, ?string $pTstBinary, ?string $pTstVarbinary, ?string $pTstEnum, ?string $pTstSet): int
   {
     return $this->executeNone('call tst_test_type_hint_with_schema('.$this->quoteInt($pTstInt).','.$this->quoteInt($pTstSmallint).','.$this->quoteInt($pTstTinyint).','.$this->quoteInt($pTstMediumint).','.$this->quoteInt($pTstBigint).','.$this->quoteInt($pTstIntUnsigned).','.$this->quoteInt($pTstSmallintUnsigned).','.$this->quoteInt($pTstTinyintUnsigned).','.$this->quoteInt($pTstMediumintUnsigned).','.$this->quoteInt($pTstBigintUnsigned).','.$this->quoteDecimal($pTstDecimal).','.$this->quoteDecimal($pTstDecimal0).','.$this->quoteFloat($pTstFloat).','.$this->quoteFloat($pTstDouble).','.$this->quoteBit($pTstBit).','.$this->quoteString($pTstDate).','.$this->quoteString($pTstDatetime).','.$this->quoteString($pTstTimestamp).','.$this->quoteString($pTstTime).','.$this->quoteInt($pTstYear).','.$this->quoteString($pTstChar).','.$this->quoteString($pTstVarchar).','.$this->quoteBinary($pTstBinary).','.$this->quoteBinary($pTstVarbinary).','.$this->quoteString($pTstEnum).','.$this->quoteString($pTstSet).')');
   }

@@ -11,7 +11,7 @@ class C
   /**
    * @setbased.stratum.constants
    *
-   * PhpStratum will insert below this doc block constants.
+   * PhpStratum will insert below this doc block all constants retrieved from the database.
    */
   public const int TST_ID_BUNNY    = 3;
   public const int TST_ID_CAT      = 4;

@@ -314,7 +314,7 @@ class MySqlDataTypeHelper implements CommonDataTypeHelper
         break;
 
       case 'decimal':
-        $phpType = 'int|float|string';
+        $phpType = 'mixed';
         break;
 
       case 'float':

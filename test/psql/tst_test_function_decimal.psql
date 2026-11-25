@@ -1,0 +1,16 @@
+/**
+ * Test for stored function with return type decimal wrapper.
+ *
+ * @param p_ret The return value.
+ *
+ * @type function decimal
+ */
+create function tst_test_function_decimal
+(
+  p_ret decimal(10,2)
+) returns decimal(10,2)
+  deterministic
+  reads sql data
+begin
+  return p_ret;
+end

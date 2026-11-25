@@ -19,8 +19,8 @@ class ParameterTypeTest extends DataLayerTestCase
 
     $doc_block = $reflection_method->getDocComment();
 
-    self::assertStringContainsString('@param int|float|string|null $pPhpType1', $doc_block);
-    self::assertStringContainsString('@param int|float|string|null $pPhpType2', $doc_block);
+    self::assertStringContainsString('@param mixed $pPhpType1', $doc_block);
+    self::assertStringContainsString('@param mixed $pPhpType2', $doc_block);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

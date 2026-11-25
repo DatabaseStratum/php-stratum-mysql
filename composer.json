@@ -19,13 +19,13 @@
     "setbased/exception": "^2.6.0",
     "setbased/helper-code-store-mysql": "^2.3.0",
     "setbased/php-stratum-backend": "^6.3.1",
-    "setbased/php-stratum-common": "^7.3.0",
+    "setbased/php-stratum-common": "^7.3.2",
     "setbased/php-stratum-middle": "^5.14.0"
   },
   "require-dev": {
-    "phing/phing": "^3.0.1",
-    "phpunit/phpunit": "^11.5.22",
-    "setbased/php-stratum": "^6.5.0"
+    "phing/phing": "^3.1.2",
+    "phpunit/phpunit": "^11.5.58",
+    "setbased/php-stratum": "^6.5.1"
   },
   "autoload": {
     "psr-4": {

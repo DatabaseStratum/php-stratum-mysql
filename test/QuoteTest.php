@@ -163,6 +163,8 @@ class QuoteTest extends DataLayerTestCase
     $tests[] = ['column' => 'bigint_unsigned', 'value' => 1];
 
     $tests[] = ['column' => 'decimal', 'value' => '0.1'];
+    $tests[] = ['column' => 'decimal', 'value' => new Decimal1('0.2')];
+    $tests[] = ['column' => 'decimal', 'value' => new Decimal2('0.3')];
     $tests[] = ['column' => 'decimal0', 'value' => 1];
     $tests[] = ['column' => 'float', 'value' => 0.1];
     $tests[] = ['column' => 'double', 'value' => 0.1];
